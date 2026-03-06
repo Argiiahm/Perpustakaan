@@ -64,7 +64,6 @@ class ProfileController extends Controller
             "profile_photo.mimes" => "Profile Photo harus berupa file dengan ekstensi jpeg, png, jpg",
             "profile_photo.max" => "Profile Photo maksimal berukuran 2MB",
         ]);
-
         // UPDATE USER
         $user->update([
             "username" => $request->username,
