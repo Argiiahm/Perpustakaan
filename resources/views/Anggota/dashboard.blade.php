@@ -1,0 +1,85 @@
+@extends('layouts.index')
+
+@section('main')
+
+    {{-- Header --}}
+    <section>
+        <h1 class="text-[30px] text-[#35094D]">Hallo, <span class="font-semibold">{{ Auth::user()->Anggota->nama_lengkap ?? Auth::user()->username }}</span></h1>
+        <span class="text-[#35094d90]">Selamat Datang Kembali Di Halaman <span class="font-medium text-[#35094D]">Dashboard</span> Anda!</span>
+    </section>
+
+    {{-- Informasi --}}
+    <section class="grid grid-cols-4 gap-6 my-16">
+        {{-- Jumlah Pinjaman saat ini --}}
+        <div class="bg-[#35094D] p-6 rounded-[32px]">
+            <div class="flex flex-col gap-4">
+                <span class="text-[20px] text-[#FFFFFF]">Jumlah Pinjaman <br> Saat Ini</span>
+                <span class="text-5xl text-[#FFFFFF]">2</span>
+                <span class="text-[#FFFFFF90] text-[10px]">
+                    *setiap kamu pinjam angka pinjaman akan <br> bertambah
+                </span>
+            </div>
+        </div>
+        {{-- Jumlah Kembalikan Buku --}}
+        <div class="bg-[#F99D22] p-6 rounded-[32px]">
+            <div class="flex flex-col gap-4">
+                <span class="text-[20px] text-[#FFFFFF]">Jumlah Kembalikan <br> Buku</span>
+                <span class="text-5xl text-[#FFFFFF]">18</span>
+                <span class="text-[#FFFFFF90] text-[10px]">
+                    *setiap kamu kembalikan Buku seluruh <br> pengembalian bukumu akan tercatat disini
+                </span>
+            </div>
+        </div>
+        {{-- Kelengkapan Profile --}}
+        <div class="bg-[#0B4B88] p-6 rounded-[32px]">
+            <div class="flex flex-col gap-4">
+                <span class="text-[20px] text-[#FFFFFF]">Kelengkapan Profile <br> Anda</span>
+                <span class="text-5xl text-[#FFFFFF]">{{ $Presentase }}%</span>
+                <span class="text-[#FFFFFF90] text-[10px]">
+                    *Lengkapi Profile Anda Agar Petugas Bisa Cepat
+                    Konfirmasi Peminjaman Anda!
+                </span>
+            </div>
+        </div>
+    </section>
+
+    {{-- Table Dashboard - PINJAMAN AKTIF --}}
+    <section>
+        {{-- Label --}}
+        <span class="text-[20px] font-medium text-[#35094D]">
+            Pinjaman Aktif
+        </span>
+
+        <div class="bg-white w-full rounded-xl mt-4 p-6">
+            {{-- Table Dshborad --}}
+            <table class="w-full">
+                <thead>
+                    <tr class="text-left border-b border-gray-200">
+                        <th class="pb-4 text-gray-400 font-normal">Judul Buku</th>
+                        <th class="pb-4 text-gray-400 font-normal">Tanggal Pinjam</th>
+                        <th class="pb-4 text-gray-400 font-normal">Tanggal Jatuh Tempo</th>
+                    </tr>
+                </thead>
+                <tbody class="text-[#35094D]">
+                    <tr class="border-b border-gray-200">
+                        <td class="py-4">Laut Bercerita</td>
+                        <td class="py-4">20/1/2026</td>
+                        <td class="py-4">1/2/2026</td>
+                    </tr>
+                    <tr class="border-b border-gray-200">
+                        <td class="py-4">Bulan</td>
+                        <td class="py-4">20/1/2026</td>
+                        <td class="py-4">1/2/2026</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            {{-- Keterangan --}}
+            <p class="text-red-500 font-medium text-sm mt-6">
+                *Diingatkan kembali agar mengembalikan buku tepat waktu.
+                Jika pengembalian terlambat maka ada denda yang harus dibayar sesuai ketentuan berlaku. Terima kasih.
+            </p>
+        </div>
+    </section>
+
+@endsection
