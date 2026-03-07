@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardAnggotaController;
 use App\Http\Controllers\DashboardKepalaPerpusController;
+use App\Http\Controllers\KelolaPenggunaController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RedirectController;
 use App\Http\Middleware\isAnggota;
@@ -63,10 +64,16 @@ Route::middleware(isAnggota::class)->group(function () {
 
 // Kepala Perpustakaan Routes
 Route::middleware(isKepalaPerpus::class)->group(function () {
+    // Dashboard Kepala Perpus
     Route::get('/dashboard-kepala-perpustakaan',[DashboardKepalaPerpusController::class, 'Dashboard_Kepala_Perpustakaan']);
+    // End Dashboard Kepala Perpus
 
+    // Daftar Pengguna
+    Route::get('/daftar-pengguna',[KelolaPenggunaController::class, 'daftar_pengguna']); 
+    Route::get('/cari-pengguna',[KelolaPenggunaController::class, 'cari_pengguna']);
+    // End Daftar Pengguna
     
-     // Profile Kepala Perpus
+    // Profile Kepala Perpus
     Route::get('/profile-kepala-perpus',[ProfileController::class, 'profile_kepala_perpus']);
     Route::put('/profile-kepala-perpus',[ProfileController::class, 'profile_update']);
     // End Profile Kepala Perpus

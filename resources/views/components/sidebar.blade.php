@@ -119,10 +119,10 @@
                 {{-- Daftar Pengguna - Kepala perpustakaan --}}
                 @role('kepala_perpus')
                     <li class="mt-4 ">
-                        <a class="{{ request()->is('kelola-pengguna*') ? ' text-[#35094D] font-medium' : 'text-[#35094d90]' }} flex items-center gap-2 text-[16px]"
-                            href="/kelola-pengguna">
+                        <a class="{{ request()->is('daftar-pengguna*') ? ' text-[#35094D] font-medium' : 'text-[#35094d90]' }} flex items-center gap-2 text-[16px]"
+                            href="/daftar-pengguna">
                             <div class="w-6 h-6 flex items-center justify-center">
-                                <img src="{{ request()->is('kelola-pengguna*') ? asset('icons/svg/pengguna-aktif.svg') : asset('icons/svg/pengguna-inaktif.svg') }}"
+                                <img src="{{ request()->is('daftar-pengguna*') ? asset('icons/svg/pengguna-aktif.svg') : asset('icons/svg/pengguna-inaktif.svg') }}"
                                     class="w-5 h-5 object-contain" alt="">
                             </div>
                             <span>Daftar Pengguna</span>

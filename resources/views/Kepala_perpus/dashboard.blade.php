@@ -4,7 +4,7 @@
 
     {{-- Header --}}
     <section>
-        <h1 class="text-[30px] text-[#35094D]">Hallo, <span class="font-semibold">{{ Auth::user()->Anggota->nama_lengkap ?? Auth::user()->username }}</span></h1>
+        <h1 class="text-[30px] text-[#35094D]">Hallo, <span class="font-semibold">{{ Auth::user()->KepalaPerpus->nama_lengkap ?? Auth::user()->username }}</span></h1>
         <span class="text-[#35094d90]">Selamat Datang Kembali Di Halaman <span class="font-medium text-[#35094D]">Dashboard</span> Anda!</span>
     </section>
 
