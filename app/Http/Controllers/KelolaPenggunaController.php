@@ -7,15 +7,9 @@ use Illuminate\Http\Request;
 
 class KelolaPenggunaController extends Controller
 {
-    public function daftar_pengguna()
-    {
-        return view('Kepala_perpus.daftar-pengguna', [
-            "Users"    =>    User::all()
-        ]);
-    }
-
-    public function cari_pengguna(Request $request)
-    {
+    public function daftar_pengguna(Request $request)
+    {   
+        // Searcing
         $cari = $request->input('cari');
 
         $users = User::where(function ($query) use ($cari) {
@@ -23,6 +17,7 @@ class KelolaPenggunaController extends Controller
             $query->where('username', 'like', "%{$cari}%")
                 ->orWhere('email', 'like', "%{$cari}%")
 
+                // Anggota
                 ->orWhereHas('anggota', function ($q) use ($cari) {
                     $q->where('nama_lengkap', 'like', "%{$cari}%")
                         ->orWhere('nomer_induk', 'like', "%{$cari}%");
@@ -33,14 +28,28 @@ class KelolaPenggunaController extends Controller
                 //         ->orWhere('nomer_induk', 'like', "%{$cari}%");
                 // })
 
+                // Kpala Perpus
                 ->orWhereHas('KepalaPerpus', function ($q) use ($cari) {
                     $q->where('nama_lengkap', 'like', "%{$cari}%")
                         ->orWhere('nomer_induk', 'like', "%{$cari}%");
                 });
-        })->get();
+        })->paginate(6)
+        // Paginasi
+            ->withQueryString();
 
         return view('Kepala_perpus.daftar-pengguna', [
-            "Users" => $users
+            "Users"    =>    $users
         ]);
+        
+    }
+
+    public function detail_pengguna(User $user) {
+        return view('Kepala_perpus.detail-pengguna',[
+            "User"   =>   $user
+        ]);
+    }
+
+    public function tambah_pengguna_index() {
+        return view('Kepala_perpus.tambah-pengguna');
     }
 }

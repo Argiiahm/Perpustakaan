@@ -13,7 +13,7 @@
     <section class="flex justify-between items-center">
         {{-- Searching --}}
         <div class="mt-20">
-            <form action="/cari-pengguna" method="GET" class="form-cari flex items-center gap-2">
+            <form action="/daftar-pengguna" method="GET" class="form-cari flex items-center gap-2">
                 @csrf
                 <div class="relative w-full max-w-[450px]">
                     <div class="absolute inset-y-0 left-4 flex items-center">
@@ -29,7 +29,7 @@
         </div>
         {{-- Btn Tambah Pengguna --}}
         <div>
-            <a href="/tambah-pengguna"
+            <a href="/daftar-pengguna/tambah-pengguna"
                 class="flex item-center gap-2 mt-6 border border-gray-200 text-[#35094D] px-6 py-3 rounded-md">
                 <img src="{{ asset('icons/svg/pengguna-aktif.svg') }}" alt="">
                 Tambah Pengguna</a>
@@ -60,7 +60,7 @@
                                     src="{{ $user->profile_photo ? asset('storage/' . $user->profile_photo) : asset('icons/default-avatar.png') }}"
                                     alt="">
                             </td>
-                            <td class="py-4">{{ $user->username }}</td>
+                            <td class="py-4 px-4 capitalize">{{ $user->username }}</td>
                             {{-- Nama Lengkap ANggota --}}
                             @if ($user->role === 'anggota')
                                 <td class="py-4">{{ $user->Anggota->nama_lengkap ?? 'N/A' }}</td>
@@ -80,7 +80,7 @@
                             <td class="py-4">{{ $user->role }}</td>
                             <td class="py-4">
                                 <div class="flex items-center gap-2">
-                                    <a href="">
+                                    <a href="/daftar-pengguna/pengguna_perpustakaan={{ $user->id }}">
                                         <img src="{{ asset('icons/svg/eye-detail.svg') }}" alt="">
                                     </a>
                                     <a href="">
@@ -100,6 +100,9 @@
                     @endforelse
                 </tbody>
             </table>
+            <div class="mt-6">
+                {{ $Users->links() }}
+            </div>
         </div>
     </section>
 
@@ -133,7 +136,7 @@
         formCari.addEventListener("submit", function() {
             modalLoading.classList.remove("hidden");
             loading_spinner.classList.remove("hidden");
-            text_loading.textContent = "Sedang mencari pengguna...";
+            text_loading.textContent = "Sedang mencari data...";
         });
     </script>
 @endsection

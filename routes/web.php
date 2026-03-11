@@ -68,10 +68,13 @@ Route::middleware(isKepalaPerpus::class)->group(function () {
     Route::get('/dashboard-kepala-perpustakaan',[DashboardKepalaPerpusController::class, 'Dashboard_Kepala_Perpustakaan']);
     // End Dashboard Kepala Perpus
 
-    // Daftar Pengguna
+    // Kelola Pengguna
     Route::get('/daftar-pengguna',[KelolaPenggunaController::class, 'daftar_pengguna']); 
-    Route::get('/cari-pengguna',[KelolaPenggunaController::class, 'cari_pengguna']);
-    // End Daftar Pengguna
+    Route::get('/daftar-pengguna/pengguna_perpustakaan={user:id}',[KelolaPenggunaController::class, 'detail_pengguna']);
+
+    Route::get('/daftar-pengguna/tambah-pengguna',[KelolaPenggunaController::class, 'tambah_pengguna_index']);
+    // End Kelola Pengguna
+    
     
     // Profile Kepala Perpus
     Route::get('/profile-kepala-perpus',[ProfileController::class, 'profile_kepala_perpus']);
