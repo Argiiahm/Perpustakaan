@@ -222,23 +222,4 @@
             </div>
         </form>
     </section>
-
-
-    <script>
-        function togglePassword() {
-            const password = document.querySelector(".password");
-            const eyeOpen = document.querySelector(".eye-open");
-            const eyeClose = document.querySelector(".eye-close");
-
-            if (password.type === "password") {
-                password.type = "text";
-                eyeOpen.classList.add("hidden");
-                eyeClose.classList.remove("hidden");
-            } else {
-                password.type = "password";
-                eyeOpen.classList.remove("hidden");
-                eyeClose.classList.add("hidden");
-            }
-        }
-    </script>
 @endsection

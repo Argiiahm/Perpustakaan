@@ -9,7 +9,6 @@
                 class="font-medium text-[#35094D]">Profile</span> Anda!</span>
     </section>
 
-
     {{-- FORM PROFILE --}}
     <section class="mt-20">
         <form class="profile-form" action="/profile-kepala-perpus" method="POST" enctype="multipart/form-data">
@@ -70,7 +69,7 @@
                     {{-- No telp --}}
                     <div class="my-5">
                         <label for="no_telp" class="block text-sm font-medium text-gray-700">No Telepon*</label>
-                         @error('no_telepon')
+                        @error('no_telepon')
                             <div style="color:red; font-size:14px;">{{ $message }}</div>
                         @enderror
                         <input type="text" name="no_telepon"
@@ -81,7 +80,7 @@
                     {{-- Tanggal Lahir --}}
                     <div class="my-5">
                         <label for="tanggal_lahir" class="block text-sm font-medium text-gray-700">Tanggal Lahir*</label>
-                         @error('tanggal_lahir')
+                        @error('tanggal_lahir')
                             <div style="color:red; font-size:14px;">{{ $message }}</div>
                         @enderror
                         <input type="date" name="tanggal_lahir"
@@ -180,45 +179,4 @@
         </form>
 
     </section>
-
-
-    {{-- JS PROFILE PREVIEW --}}
-    <script>
-        // Preview Tambah Profile
-
-        // Variable Preview Foto
-        const uploadBtn = document.querySelector(".uploadBtn");
-        const photoInput = document.querySelector(".photoInput");
-        const photoPreview = document.querySelector(".photoPreview");
-        // End Variable Preview Foto
-
-        // Variable Baagian Loading SImpan  Perubahan
-        const form_profile = document.querySelector(".profile-form");
-        const btn_simpan = document.querySelector(".btn_simpan_perubahan");
-        const spinner_loading = document.querySelector(".spinner_load");
-        const text_simpan = document.querySelector(".text_simpan");
-        //End Variable Baagian Loading SImpan  Perubahan
-
-        // Js Bagian Preview Foto
-        uploadBtn.addEventListener("click", () => {
-            photoInput.click();
-        });
-
-        photoInput.addEventListener("change", function() {
-            const file = this.files[0];
-            if (file) {
-                photoPreview.src = URL.createObjectURL(file);
-            }
-        });
-        // End Js Bagian Preview Foto
-
-        // Js Bagian Loading Btn Simpan Perubahan
-        form_profile.addEventListener("submit", function() {
-            btn_simpan.disabled = true;
-            btn_simpan.classList.add('opacity-70', 'cursor-not-allowed');
-            spinner_loading.classList.remove("hidden");
-            text_simpan.innerHTML = 'Tunggu...';
-        })
-        // End Js Bagian Loading Btn Simpan Perubahan
-    </script>
 @endsection

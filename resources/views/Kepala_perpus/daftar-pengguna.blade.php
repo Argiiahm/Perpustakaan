@@ -125,18 +125,4 @@
         </div>
     </section>
 
-
-    {{-- JS Loading Modal Mencari Pengguna --}}
-    <script>
-        const formCari = document.querySelector('.form-cari');
-        const loading_spinner = document.querySelector('#loading_spinner');
-        const text_loading = document.querySelector('.text-loading');
-        const modalLoading = document.querySelector('.open_modal_loading');
-
-        formCari.addEventListener("submit", function() {
-            modalLoading.classList.remove("hidden");
-            loading_spinner.classList.remove("hidden");
-            text_loading.textContent = "Sedang mencari data...";
-        });
-    </script>
 @endsection
