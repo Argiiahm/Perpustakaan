@@ -8,7 +8,7 @@
 
     {{-- FORM PROFILE --}}
     <section class="mt-20">
-        <form class="profile-form" action="/profile-anggota" method="POST" enctype="multipart/form-data">
+        <form class="all_form" action="/profile-anggota" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             {{-- POTO Profile --}}
@@ -19,7 +19,7 @@
                 <input type="file" class="photoInput" name="profile_photo" hidden>
 
                 <div class="flex flex-col">
-                    <span class="text-[20px] text-[#35094D] font-medium">{{ Auth::user()->username }}</span>
+                    <span class="text-[20px] text-[#35094D] font-medium capitalize">{{ Auth::user()->username }}</span>
                     <span class="text-[#35094d90] text-[11px]">{{ Auth::user()->role }}#{{ Auth::user()->id }}</span>
                     @error('profile_photo')
                         <div style="color:red; font-size:14px;">{{ $message }}</div>

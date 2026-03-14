@@ -73,6 +73,7 @@ Route::middleware(isKepalaPerpus::class)->group(function () {
     Route::get('/daftar-pengguna/pengguna_perpustakaan={user:id}',[KelolaPenggunaController::class, 'detail_pengguna']);
 
     Route::get('/daftar-pengguna/tambah-pengguna',[KelolaPenggunaController::class, 'tambah_pengguna_index']);
+    Route::post('/daftar-pengguna/tambah-pengguna',[KelolaPenggunaController::class, 'tambah_pengguna']);
     // End Kelola Pengguna
     
     

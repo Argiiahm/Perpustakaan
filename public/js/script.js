@@ -60,13 +60,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Simpan Perubahan Profile - Loading
-    const form_profile = document.querySelector(".profile-form");
+    const all_form = document.querySelector(".all_form");
     const btn_simpan = document.querySelector(".btn_simpan_perubahan");
     const spinner_loading = document.querySelector(".spinner_load");
     const text_simpan = document.querySelector(".text_simpan");
 
-    if (form_profile && btn_simpan && spinner_loading && text_simpan) {
-        form_profile.addEventListener("submit", function () {
+    if (all_form && btn_simpan && spinner_loading && text_simpan) {
+        all_form.addEventListener("submit", function () {
             btn_simpan.disabled = true;
             btn_simpan.classList.add("opacity-70", "cursor-not-allowed");
             spinner_loading.classList.remove("hidden");

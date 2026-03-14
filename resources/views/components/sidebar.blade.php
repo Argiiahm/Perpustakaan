@@ -16,7 +16,7 @@
         </div>
         <div class="flex flex-col">
             <span class="text-[14px] font-medium text-[#35094D]">Anda Masuk Sebagai :</span>
-            <span class="text-[10px] text-[#35094d90]">{{ Auth::user()->username }} -
+            <span class="text-[10px] text-[#35094d90] capitalize">{{ Auth::user()->username }} -
                 {{ Auth::user()->role }}#{{ Auth::user()->id }}</span>
         </div>
     </div>

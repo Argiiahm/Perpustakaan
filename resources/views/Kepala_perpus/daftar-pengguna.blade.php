@@ -59,8 +59,13 @@
                             {{-- Nama Lengkap ANggota --}}
                             @if ($user->role === 'anggota')
                                 <td class="py-4">{{ $user->Anggota->nama_lengkap ?? 'N/A' }}</td>
-                            @elseif($user->role === 'kepala_perpus')
+
+                                {{-- Nama Lengkap Petugas --}}
+                            @elseif($user->role === 'petugas')
+                                <td class="py-4">{{ $user->Petugas->nama_lengkap ?? 'N/A' }}</td>
+
                                 {{-- Nama Lengkap Kepala Perpustakaan --}}
+                            @elseif($user->role === 'kepala_perpus')
                                 <td class="py-4">{{ $user->KepalaPerpus->nama_lengkap ?? 'N/A' }}</td>
                             @endif
                             <td class="py-4">{{ $user->email }}</td>
@@ -68,8 +73,13 @@
                             {{-- NIK/NIS Anggota --}}
                             @if ($user->role === 'anggota')
                                 <td class="py-4">{{ $user->Anggota->nomer_induk ?? 'N/A' }}</td>
-                            @elseif($user->role === 'kepala_perpus')
+
+                                {{-- NIK/NIS Petugas --}}
+                            @elseif($user->role === 'petugas')
+                                <td class="py-4">{{ $user->Petugas->nomer_induk ?? 'N/A' }}</td>
+
                                 {{-- NIK/NIS Kepala Perpustakaan --}}
+                            @elseif($user->role === 'kepala_perpus')
                                 <td class="py-4">{{ $user->KepalaPerpus->nomer_induk ?? 'N/A' }}</td>
                             @endif
                             <td class="py-4">{{ $user->role }}</td>
@@ -119,5 +129,35 @@
             </div>
         </div>
     </section>
+
+    {{-- Modal Berhasil Menambahkan Pengguna --}}
+    @if (session('success'))
+        <section class="success_modal fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-center items-center z-50">
+            <div class="bg-white p-6 w-full max-w-[32rem] rounded-xl">
+
+                {{-- Keterangan Modal --}}
+                <div class="flex flex-col items-center gap-4">
+                    <img class="w-32" src="{{ asset('icons/svg/lamp-success.svg') }}" alt="">
+                    <span class="text-[#35094D] font-bold text-center">
+                        Success!, Pengguna Baru Berhasil <br> Ditambahkan.
+                    </span>
+                </div>
+
+                {{-- Action Buttons --}}
+                <div class="flex justify-end my-6">
+                    <button
+                        class="close_modal_success bg-[#35094D] text-white px-10 py-2 rounded-full cursor-pointer">
+                        Kembali
+                    </button>
+                </div>
+            </div>
+        </section>
+        <script>
+            document.querySelector('.close_modal_success')?.addEventListener('click', function() {
+                document.querySelector('.success_modal').remove();
+                 location.reload();
+            });
+        </script>
+    @endif
 
 @endsection

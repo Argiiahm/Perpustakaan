@@ -2,9 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\KepalaPerpus;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -17,9 +19,26 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        // User::factory()->create([
+        //     'name' => 'Test User',
+        //     'email' => 'test@example.com',
+        // ]);
+
+        User::create([
+            "username"   =>   "Argii221",
+            "no_telepon" =>   "08219012441",
+            "email"      =>   "argii@gmail.com",
+            "password"   =>   Hash::make("123456"),
+            "role"       =>   "kepala_perpus",
+        ]);
+
+        KepalaPerpus::create([
+            "user_id"       =>     1,
+            "nama_lengkap"   =>    "Argi Ahmes Halepiyandra",
+            "nomer_induk"   =>     "121099121",
+            "jenis_kelamin"   =>   "Laki-Laki",
+            "tanggal_lahir" => "2007-11-27",
+            "alamat"          =>    "Jalan Janti Nomer 21"
         ]);
     }
 }

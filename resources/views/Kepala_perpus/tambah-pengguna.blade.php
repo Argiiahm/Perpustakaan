@@ -5,14 +5,12 @@
 @section('main')
 
     <section class="mt-10">
-        <form class="" action="" method="POST" enctype="multipart/form-data">
+        <form class="all_form" action="/daftar-pengguna/tambah-pengguna" method="POST" enctype="multipart/form-data">
             @csrf
-            @method('PUT')
             {{-- POTO Profile --}}
             <div class="">
                 <img class="photoPreview w-32 h-32 object-cover border border-gray-200 p-1" id=""
-                    src="{{ asset('icons/default-avatar.png') }}"
-                    alt="">
+                    src="{{ asset('icons/default-avatar.png') }}" alt="">
                 <input type="file" class="photoInput" name="profile_photo" hidden>
 
                 <button class="uploadBtn bg-[#35094D] text-white px-5 py-1 rounded-sm cursor-pointer" type="button"
@@ -32,7 +30,7 @@
                         @enderror
                         <input type="text" name="username"
                             class="mt-1 block w-full border border-gray-200 rounded-md bg-white p-2 text-gray-400"
-                            value="" placeholder="Masukan Username">
+                            value="{{ old('username') }}" placeholder="Masukan Username">
                     </div>
 
                     {{-- Email --}}
@@ -43,7 +41,7 @@
                         @enderror
                         <input type="email" name="email"
                             class="mt-1 block w-full border border-gray-200 rounded-md bg-white p-2 text-gray-400"
-                            value="" placeholder="Masukan Email">
+                            value="{{ old('email') }}" placeholder="Masukan Email">
                     </div>
 
                     {{-- No telp --}}
@@ -54,7 +52,7 @@
                         @enderror
                         <input type="text" name="no_telepon"
                             class="mt-1 block w-full border border-gray-200 rounded-md bg-white p-2 text-gray-400"
-                            value="" placeholder="Masukan No Telp">
+                            value="{{ old('no_telepon') }}" placeholder="Masukan No Telp">
                     </div>
 
                     {{-- Password --}}
@@ -64,32 +62,33 @@
                             <div style="color:red; font-size:14px;">{{ $message }}</div>
                         @enderror
                         <div class="flex items-center relative">
-                            <input class="password mt-1 block w-full border border-gray-200 rounded-md bg-white p-2 text-gray-400" type="password" name="password"
-                                id="" placeholder="Password" required />
+                            <input
+                                class="password mt-1 block w-full border border-gray-200 rounded-md bg-white p-2 text-gray-400"
+                                type="password" name="password" id="" placeholder="Password" />
 
                             <button type="button" onclick="togglePassword()"
                                 class="absolute right-3 text-gray-500 focus:outline-none">
                                 <!-- Eye Open -->
-                                <svg id="" xmlns="http://www.w3.org/2000/svg" class="eye-open h-5 w-5" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
+                                <svg id="" xmlns="http://www.w3.org/2000/svg" class="eye-open h-5 w-5"
+                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5
-                                        c4.477 0 8.268 2.943 9.542 7
-                                        -1.274 4.057-5.065 7-9.542 7
-                                        -4.477 0-8.268-2.943-9.542-7z" />
+                                                c4.477 0 8.268 2.943 9.542 7
+                                                -1.274 4.057-5.065 7-9.542 7
+                                                -4.477 0-8.268-2.943-9.542-7z" />
                                 </svg>
 
                                 <!-- Eye Closed -->
-                                <svg id="" xmlns="http://www.w3.org/2000/svg" class="eye-close h-5 w-5 hidden" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
+                                <svg id="" xmlns="http://www.w3.org/2000/svg" class="eye-close h-5 w-5 hidden"
+                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19
-                                        c-4.478 0-8.268-2.943-9.543-7
-                                        a9.956 9.956 0 012.223-3.592M6.18 6.18
-                                        A9.956 9.956 0 0112 5
-                                        c4.478 0 8.268 2.943 9.543 7
-                                        a9.96 9.96 0 01-4.043 4.568M6.18 6.18L4 4
-                                        m2.18 2.18l11.64 11.64" />
+                                                c-4.478 0-8.268-2.943-9.543-7
+                                                a9.956 9.956 0 012.223-3.592M6.18 6.18
+                                                A9.956 9.956 0 0112 5
+                                                c4.478 0 8.268 2.943 9.543 7
+                                                a9.96 9.96 0 01-4.043 4.568M6.18 6.18L4 4
+                                                m2.18 2.18l11.64 11.64" />
                                 </svg>
                             </button>
                         </div>
@@ -103,16 +102,19 @@
                         @enderror
                         <select name="role"
                             class="mt-1 block w-full border border-gray-200 text-gray-400 rounded-md bg-white p-2">
-                            <option value="" disabled selected>
+                            <option value="" disabled {{ old('role') ? '' : 'selected' }}>
                                 Pilih Role
                             </option>
-                            <option value="anggota">
+
+                            <option value="anggota" {{ old('role') == 'anggota' ? 'selected' : '' }}>
                                 Anggota
                             </option>
-                            <option value="petugas">
+
+                            <option value="petugas" {{ old('role') == 'petugas' ? 'selected' : '' }}>
                                 Petugas
                             </option>
-                            <option value="kepala_perpus">
+
+                            <option value="kepala_perpus" {{ old('role') == 'kepala_perpus' ? 'selected' : '' }}>
                                 Kepala Perpustakaan
                             </option>
                         </select>
@@ -130,7 +132,7 @@
                         @enderror
                         <input type="text" name="nama_lengkap"
                             class="mt-1 block w-full border border-gray-200 rounded-md bg-white p-2 text-gray-400"
-                            placeholder="Masukan Nama Lengkap" value="">
+                            placeholder="Masukan Nama Lengkap" value="{{ old('nama_lengkap') }}">
                     </div>
 
                     {{-- Nomer Induk --}}
@@ -141,28 +143,28 @@
                         @enderror
                         <input type="text" name="nomer_induk"
                             class="mt-1 block w-full border border-gray-200 rounded-md bg-white p-2 text-gray-400"
-                            placeholder="Masukan NIS/NIK" value="">
+                            placeholder="Masukan NIS/NIK" value="{{ old('nomer_induk') }}">
                     </div>
 
                     {{-- Jenis Kelamin --}}
                     <div class="my-5">
                         <label class="block text-sm font-medium text-gray-700">Jenis Kelamin*</label>
-
+                        @error('jenis_kelamin')
+                            <div style="color:red; font-size:14px;">{{ $message }}</div>
+                        @enderror
                         <select name="jenis_kelamin"
                             class="mt-1 block w-full border border-gray-200 text-gray-400 rounded-md bg-white p-2">
-
-                            <option value="" disabled selected>
+                            <option value="" disabled {{ old('jenis_kelamin') ? '' : 'selected' }}>
                                 Pilih Jenis Kelamin
                             </option>
 
-                            <option value="Laki-laki">
+                            <option value="Laki-laki" {{ old('jenis_kelamin') == 'Laki-laki' ? 'selected' : '' }}>
                                 Laki-Laki
                             </option>
 
-                            <option value="Perempuan">
+                            <option value="Perempuan" {{ old('jenis_kelamin') == 'Perempuan' ? 'selected' : '' }}>
                                 Perempuan
                             </option>
-
                         </select>
                     </div>
 
@@ -174,7 +176,7 @@
                         @enderror
                         <input type="date" name="tanggal_lahir"
                             class="mt-1 block w-full border border-gray-200 rounded-md bg-white p-2 text-gray-400"
-                            value="">
+                            value="{{ old('tanggal_lahir') }}">
                     </div>
 
                     {{-- Alamat --}}
@@ -185,7 +187,7 @@
                         @enderror
                         <textarea type="text" name="alamat"
                             class="mt-1 block w-full border border-gray-200 rounded-md bg-white p-2 text-gray-400"
-                            placeholder="Masukan Alamat"></textarea>
+                            placeholder="Masukan Alamat">{{ old('alamat') }}</textarea>
                     </div>
                 </div>
             </div>
@@ -199,7 +201,7 @@
                 {{-- Btn Simpan Perubahan --}}
                 <button id="" type="submit"
                     class="btn_simpan_perubahan bg-[#35094D] text-white py-2 px-10 cursor-pointer rounded mt-5 flex items-center gap-2">
-                    <svg id="" class="hidden animate-spin h-5 w-5 text-white"
+                    <svg id="" class="spinner_load hidden animate-spin h-5 w-5 text-white"
                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
                             stroke-width="4">

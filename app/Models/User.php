@@ -55,6 +55,13 @@ class User extends Authenticatable
         return $this->hasOne(Anggota::class, 'user_id');
     }
 
+    // Relasi User dan Petugas
+    public function Petugas() {
+        // Satu User Satu Anggota
+        return $this->hasOne(Petugas::class, 'user_id');
+    }
+
+    // Relasi User Dan Kepala Perpus
     public function KepalaPerpus() {
         // Satu User Satu Kepala Perpus
         return $this->hasOne(KepalaPerpus::class, 'user_id');
