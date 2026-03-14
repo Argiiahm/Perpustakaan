@@ -1,13 +1,9 @@
 @extends('layouts.index')
 
+@section('halaman', 'Detail Buku - #BOOK200202')
+
 @section('main')
-    {{-- Header --}}
-    <section>
-        <h1 class="text-[30px] text-[#35094D]">Hallo, <span
-                class="font-semibold">{{ Auth::user()->Anggota->nama_lengkap ?? Auth::user()->username }}</span></h1>
-        <span class="text-[#35094d90]">Selamat Datang Kembali Di Halaman <span class="font-medium text-[#35094D]">
-                Detail Buku - #BOOK200202</span></span>
-    </section>
+
 
     {{-- Bg Belkng --}}
     <section class="bg-[#FFFFFF] mt-36 px-14">

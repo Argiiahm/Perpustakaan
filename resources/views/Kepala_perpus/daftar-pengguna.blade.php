@@ -1,13 +1,8 @@
 @extends('layouts.index')
 
+@section('halaman', 'Daftar Pengguna')
+
 @section('main')
-    {{-- Header --}}
-    <section>
-        <h1 class="text-[30px] text-[#35094D]">Hallo, <span
-                class="font-semibold">{{ Auth::user()->KepalaPerpus->nama_lengkap ?? Auth::user()->username }}</span></h1>
-        <span class="text-[#35094d90]">Selamat Datang Kembali Di Halaman <span
-                class="font-medium text-[#35094D]">Dashboard</span> Anda!</span>
-    </section>
 
     {{-- Searching Dan Btn Tambah Pengguna --}}
     <section class="flex justify-between items-center">

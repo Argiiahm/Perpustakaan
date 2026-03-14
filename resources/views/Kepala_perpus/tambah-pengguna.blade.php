@@ -1,13 +1,8 @@
 @extends('layouts.index')
 
+@section('halaman', 'Tambah Pengguna')
+
 @section('main')
-    {{-- Header --}}
-    <section>
-        <h1 class="text-[30px] text-[#35094D]">Hallo, <span
-                class="font-semibold">{{ Auth::user()->KepalaPerpus->nama_lengkap ?? Auth::user()->username }}</span></h1>
-        <span class="text-[#35094d90]">Selamat Datang Kembali Di Halaman <span class="font-medium text-[#35094D]">Tambah
-                Pengguna</span></span>
-    </section>
 
     <section class="mt-10">
         <form class="" action="" method="POST" enctype="multipart/form-data">
@@ -97,39 +92,35 @@
                                         m2.18 2.18l11.64 11.64" />
                                 </svg>
                             </button>
-
                         </div>
                     </div>
 
                     {{-- Jenis Kelamin --}}
                     <div class="my-5">
                         <label class="block text-sm font-medium text-gray-700">Pilih Role*</label>
-
+                        @error('role')
+                            <div style="color:red; font-size:14px;">{{ $message }}</div>
+                        @enderror
                         <select name="role"
                             class="mt-1 block w-full border border-gray-200 text-gray-400 rounded-md bg-white p-2">
-
                             <option value="" disabled selected>
                                 Pilih Role
                             </option>
-
                             <option value="anggota">
                                 Anggota
                             </option>
-
                             <option value="petugas">
                                 Petugas
                             </option>
-
                             <option value="kepala_perpus">
                                 Kepala Perpustakaan
                             </option>
-
                         </select>
                     </div>
 
                 </div>
 
-                {{-- data laina --}}
+                {{-- data lainya --}}
                 <div class="w-1/2">
                     {{-- Nama Lengkap --}}
                     <div class="my-5">

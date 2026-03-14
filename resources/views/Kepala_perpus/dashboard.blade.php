@@ -1,12 +1,9 @@
 @extends('layouts.index')
 
-@section('main')
+@section('halaman', 'Dashboard')
+@section('suffix', 'Anda!')
 
-    {{-- Header --}}
-    <section>
-        <h1 class="text-[30px] text-[#35094D]">Hallo, <span class="font-semibold">{{ Auth::user()->KepalaPerpus->nama_lengkap ?? Auth::user()->username }}</span></h1>
-        <span class="text-[#35094d90]">Selamat Datang Kembali Di Halaman <span class="font-medium text-[#35094D]">Dashboard</span> Anda!</span>
-    </section>
+@section('main')
 
     {{-- Informasi --}}
     <section class="grid grid-cols-3 gap-6 my-16">
