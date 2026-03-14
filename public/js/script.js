@@ -87,4 +87,44 @@ document.addEventListener("DOMContentLoaded", () => {
             text_loading.textContent = "Sedang mencari data...";
         });
     }
+
+    // Modal Delete Pengguna
+    const modalDelete = document.querySelector(".open_modal_delete_pengguna");
+    const closeBtn = modalDelete?.querySelector(".btn_close_delete_pengguna");
+    const deleteForm = modalDelete?.querySelector(".delete_form_pengguna");
+    const deleteButtons = document.querySelectorAll(".btn_open_delete");
+    const spinner = deleteForm?.querySelector(".spinner_delete");
+    const textBtn = deleteForm?.querySelector(".text_close_delete_pengguna");
+
+    if (modalDelete && deleteForm && deleteButtons.length > 0) {
+        // Buka modal & set action form sesuai row
+        deleteButtons.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                const userId = btn.dataset.userId;
+                deleteForm.action = `/daftar-pengguna/${userId}`;
+                modalDelete.classList.remove("hidden");
+            });
+        });
+
+        // Tutup modal via tombol Batal
+        closeBtn?.addEventListener("click", () => {
+            modalDelete.classList.add("hidden");
+        });
+
+        // Tutup modal dengan klik background
+        modalDelete.addEventListener("click", (e) => {
+            if (e.target === modalDelete) {
+                modalDelete.classList.add("hidden");
+            }
+        });
+
+        // Submit form → spinner + disable button
+        deleteForm.addEventListener("submit", () => {
+            const submitBtn = deleteForm.querySelector(".btn_delete_pengguna");
+            submitBtn.disabled = true;
+            submitBtn.classList.add("opacity-70", "cursor-not-allowed");
+            spinner.classList.remove("hidden");
+            textBtn.innerText = "Tunggu...";
+        });
+    }
 });

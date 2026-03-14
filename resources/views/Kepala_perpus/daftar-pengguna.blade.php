@@ -85,15 +85,15 @@
                             <td class="py-4">{{ $user->role }}</td>
                             <td class="py-4">
                                 <div class="flex items-center gap-2">
-                                    <a href="/daftar-pengguna/pengguna_perpustakaan={{ $user->id }}">
+                                    <a href="/daftar-pengguna/detail/pengguna_perpustakaan={{ $user->id }}">
                                         <img src="{{ asset('icons/svg/eye-detail.svg') }}" alt="">
                                     </a>
-                                    <a href="">
+                                    <a href="/daftar-pengguna/edit/pengguna_perpustakaan={{ $user->id }}">
                                         <img src="{{ asset('icons/svg/pen.svg') }}" alt="">
                                     </a>
-                                    <a href="">
+                                    <div class="btn_open_delete cursor-pointer" data-user-id="{{ $user->id }}">
                                         <img src="{{ asset('icons/svg/trash.svg') }}" alt="">
-                                    </a>
+                                    </div>
                                 </div>
                             </td>
                         </tr>
@@ -130,7 +130,42 @@
         </div>
     </section>
 
-    {{-- Modal Berhasil Menambahkan Pengguna --}}
+    {{-- Modal Delete Pengguna --}}
+    <section
+        class="open_modal_delete_pengguna hidden fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-center items-center z-50">
+        <div class="bg-white p-8 w-full max-w-[32rem] rounded-xl">
+            <div class="flex flex-col items-center gap-4">
+                <img class="w-36" src="{{ asset('icons/svg/delete-icon.svg') }}" alt="">
+                <span class="text-[#35094D] font-bold text-center">
+                    Yakin ingin Hapus pengguna ini? <br>
+                    <span class="font-normal text-[14px]">Tindakan Ini Akan Hapus Data Secara Permanen.</span>
+                </span>
+            </div>
+            <div class="flex justify-center gap-4 my-6">
+                <button
+                    class="btn_close_delete_pengguna border border-gray-200 text-[#35094D] px-10 py-2 rounded-full cursor-pointer">
+                    Batal
+                </button>
+                <form class="delete_form_pengguna" action="" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit"
+                        class="btn_delete_pengguna bg-[#35094D] text-white px-10 py-2 rounded-full flex items-center justify-center gap-2 min-w-[140px]">
+                        <span class="text_close_delete_pengguna">Ya, Hapus</span>
+                        <svg class="spinner_delete hidden animate-spin h-5 w-5 text-white"
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z">
+                            </path>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    {{-- Modal Berhasil --}}
     @if (session('success'))
         <section class="success_modal fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-center items-center z-50">
             <div class="bg-white p-6 w-full max-w-[32rem] rounded-xl">
@@ -139,14 +174,13 @@
                 <div class="flex flex-col items-center gap-4">
                     <img class="w-32" src="{{ asset('icons/svg/lamp-success.svg') }}" alt="">
                     <span class="text-[#35094D] font-bold text-center">
-                        Success!, Pengguna Baru Berhasil <br> Ditambahkan.
+                        {{ session('success') }}
                     </span>
                 </div>
 
                 {{-- Action Buttons --}}
                 <div class="flex justify-end my-6">
-                    <button
-                        class="close_modal_success bg-[#35094D] text-white px-10 py-2 rounded-full cursor-pointer">
+                    <button class="close_modal_success bg-[#35094D] text-white px-10 py-2 rounded-full cursor-pointer">
                         Kembali
                     </button>
                 </div>
@@ -155,7 +189,36 @@
         <script>
             document.querySelector('.close_modal_success')?.addEventListener('click', function() {
                 document.querySelector('.success_modal').remove();
-                 location.reload();
+                location.reload();
+            });
+        </script>
+    @endif
+
+    {{-- Modal Gagal --}}
+    @if (session('error'))
+        <section class="success_modal fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-center items-center z-50">
+            <div class="bg-white p-6 w-full max-w-[30rem] rounded-xl">
+
+                {{-- Keterangan Modal --}}
+                <div class="flex flex-col items-center gap-4">
+                    <img class="w-52 -ml-20" src="{{ asset('icons/svg/oops.svg') }}" alt="">
+                    <span class="text-[#35094D] font-bold text-center">
+                        {!! session('error') !!}
+                    </span>
+                </div>
+
+                {{-- Action Buttons --}}
+                <div class="flex justify-end my-6">
+                    <button class="close_modal_success bg-[#35094D] text-white px-10 py-2 rounded-full cursor-pointer">
+                        Kembali
+                    </button>
+                </div>
+            </div>
+        </section>
+        <script>
+            document.querySelector('.close_modal_success')?.addEventListener('click', function() {
+                document.querySelector('.success_modal').remove();
+                location.reload();
             });
         </script>
     @endif

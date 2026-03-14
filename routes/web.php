@@ -70,7 +70,10 @@ Route::middleware(isKepalaPerpus::class)->group(function () {
 
     // Kelola Pengguna
     Route::get('/daftar-pengguna',[KelolaPenggunaController::class, 'daftar_pengguna']); 
-    Route::get('/daftar-pengguna/pengguna_perpustakaan={user:id}',[KelolaPenggunaController::class, 'detail_pengguna']);
+    Route::delete('/daftar-pengguna/{user:id}',[KelolaPenggunaController::class, 'delete_pengguna']); 
+    Route::put('/daftar-pengguna/{user:id}',[KelolaPenggunaController::class, 'update_pengguna']); 
+    Route::get('/daftar-pengguna/detail/pengguna_perpustakaan={user:id}',[KelolaPenggunaController::class, 'detail_pengguna']);
+    Route::get('/daftar-pengguna/edit/pengguna_perpustakaan={user:id}',[KelolaPenggunaController::class, 'edit_pengguna']);
 
     Route::get('/daftar-pengguna/tambah-pengguna',[KelolaPenggunaController::class, 'tambah_pengguna_index']);
     Route::post('/daftar-pengguna/tambah-pengguna',[KelolaPenggunaController::class, 'tambah_pengguna']);

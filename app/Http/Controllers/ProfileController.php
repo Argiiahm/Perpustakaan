@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Anggota;
 use App\Models\KepalaPerpus;
+use App\Models\Petugas;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -89,6 +90,20 @@ class ProfileController extends Controller
         // UPDATE ATAU CREATE ANGOTA
         if ($user->role == 'anggota') {
             Anggota::updateOrCreate(
+                ['user_id' => $user->id],
+                $request->only([
+                    'nama_lengkap',
+                    'nomer_induk',
+                    'jenis_kelamin',
+                    'tanggal_lahir',
+                    'alamat'
+                ])
+            );
+        }
+
+        // UPDATE ATAU CREATE Petugas
+        if ($user->role == 'petugas') {
+            Petugas::updateOrCreate(
                 ['user_id' => $user->id],
                 $request->only([
                     'nama_lengkap',
