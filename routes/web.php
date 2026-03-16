@@ -1,13 +1,16 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BukuController;
 use App\Http\Controllers\DashboardAnggotaController;
 use App\Http\Controllers\DashboardKepalaPerpusController;
 use App\Http\Controllers\KelolaPenggunaController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RedirectController;
+use App\Http\Middleware\is_pengguna_and_kepala_perpus;
 use App\Http\Middleware\isAnggota;
 use App\Http\Middleware\isKepalaPerpus;
+use App\Http\Middleware\isPetugas;
 use Illuminate\Support\Facades\Route;
 
 
@@ -84,4 +87,10 @@ Route::middleware(isKepalaPerpus::class)->group(function () {
     Route::get('/profile-kepala-perpus',[ProfileController::class, 'profile_kepala_perpus']);
     Route::put('/profile-kepala-perpus',[ProfileController::class, 'profile_update']);
     // End Profile Kepala Perpus
+});
+
+// Kelola Buku Petugas Perpus, Dan Kepala Perpus
+Route::middleware(is_pengguna_and_kepala_perpus::class)->group(function() {
+    Route::get('/kelola-buku',[BukuController::class, 'index']);
+    Route::get('/kelola-buku/tambah-buku',[BukuController::class, 'tambah_buku']);
 });
