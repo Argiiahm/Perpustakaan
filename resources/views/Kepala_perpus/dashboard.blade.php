@@ -31,7 +31,7 @@
         <div class="bg-[#0B4B88] p-6 rounded-[32px]">
             <div class="flex flex-col gap-4">
                 <span class="text-[20px] text-[#FFFFFF]">Jumlah Keseluruhan <br> Buku</span>
-                <span class="text-5xl text-[#FFFFFF]">9</span>
+                <span class="text-5xl text-[#FFFFFF]">{{ $jumlah_buku }}</span>
                 <span class="text-[#FFFFFF90] text-[10px]">
                     *Menampilkan Jumlah Keseluruhan <br> Buku
                 </span>
@@ -58,7 +58,4 @@
             </div>
         </div>
     </section>
-
-
-
 @endsection

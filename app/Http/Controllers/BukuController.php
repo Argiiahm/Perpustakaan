@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Buku;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BukuController extends Controller
 {
@@ -61,9 +62,56 @@ class BukuController extends Controller
         return redirect('/kelola-buku')->with('success', 'Buku Berhasil Ditambahkan.');
     }
 
-    public function delete_buku(Buku $buku) {
-        $buku->delete($buku->id);
-        return back()->with('success','Buku Berhasil dihapus.');
+    public  function edit_buku(Buku $buku)
+    {
+        return view('kelola-buku.edit-buku', [
+            "buku"    =>   $buku
+        ]);
     }
 
+    public function update_buku(Request $request, Buku $buku)
+    {
+        $validasiBuku = $request->validate([
+            'kode_buku' => 'required|unique:buku,kode_buku,' . $buku->id,
+            "judul_buku"    =>     "required|max:30",
+            "penulis"       =>     "required|max:30",
+            "tahun_terbit"  =>     "required|date",
+            "stok_buku"     =>     "required|integer|min:0",
+            "cover_buku"    =>     "nullable|mimes:png,jpg,jpeg,webp|max:2048"
+        ], [
+            "kode_buku.required"              =>     "Kode buku harus di isi.",
+            "kode_buku.unique"                =>     "Kode buku sudah di gunakan.",
+            "judul_buku.required"             =>     "Judul buku harus di isi.",
+            "judul_buku.max"                  =>     "Judul buku maksimal 30 karakter.",
+            "penulis.required"                =>     "Penulis harus di isi.",
+            "penulis.max"                     =>     "maksimal 30 karakter.",
+            "tahun_terbit.required"           =>     "Tahun terbit harus di isi.",
+            "tahun_terbit.date"               =>     "Tahun terbit harus berupa tanggal.",
+            "stok_buku.required"              =>     "Stok buku harus di isi",
+            "stok_buku.min"                   =>     "Stok buku tidak valid!",
+            "cover_buku.mimes"                =>     "Cover buku harus berupa png,jpg,jpeg dan webp.",
+            "cover_buku.max"                  =>     "Cover buku maskimal berukuran 2mb.",
+        ]);
+
+        // CEK COVER BUKU
+        if ($request->hasFile('cover_buku')) {
+            if ($buku->cover_buku && Storage::disk('public')->exists($buku->cover_buku)) {
+                Storage::disk('public')->delete($buku->cover_buku);
+            }
+            $validasiBuku['cover_buku'] = $request->file('cover_buku')->store('cover_bukus', 'public');
+        }
+
+        $buku->update($validasiBuku);
+        return back()->with('success', 'Buku Berhasil DiPembaharui.');
+    }
+
+    public function delete_buku(Buku $buku)
+    {
+        if ($buku->cover_buku && Storage::disk('public')->exists($buku->cover_buku)) {
+            Storage::disk('public')->delete($buku->cover_buku);
+        }
+
+        $buku->delete($buku->id);
+        return back()->with('success', 'Buku Berhasil dihapus.');
+    }
 }

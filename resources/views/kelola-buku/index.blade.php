@@ -79,7 +79,7 @@
                             </td>
                             {{-- Aksi --}}
                             <td class="py-4 text-center">
-                                <button
+                                <button onclick=window.location='/kelola-buku/{{ $buku->id }}'
                                     class="btn_open_modal_kembalikan bg-[#F99D2282] cursor-pointer text-white px-6 py-2 rounded-full">
                                     Edit
                                 </button>
@@ -157,33 +157,5 @@
                 </div>
             </div>
         </section>
-
-        @if (session('success'))
-            <section class="success_modal fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-center items-center z-50">
-                <div class="bg-white p-6 w-full max-w-[32rem] rounded-xl">
-
-                    {{-- Keterangan Modal --}}
-                    <div class="flex flex-col items-center gap-4">
-                        <img class="w-32" src="{{ asset('icons/svg/lamp-success.svg') }}" alt="">
-                        <span class="text-[#35094D] font-bold text-center">
-                            {{ session('success') }}
-                        </span>
-                    </div>
-
-                    {{-- Action Buttons --}}
-                    <div class="flex justify-end my-6">
-                        <button class="close_modal_success bg-[#35094D] text-white px-10 py-2 rounded-full cursor-pointer">
-                            Kembali
-                        </button>
-                    </div>
-                </div>
-            </section>
-            <script>
-                document.querySelector('.close_modal_success')?.addEventListener('click', function() {
-                    document.querySelector('.success_modal').remove();
-                    location.reload();
-                });
-            </script>
-        @endif
     </section>
 @endsection

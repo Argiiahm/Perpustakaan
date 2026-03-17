@@ -94,5 +94,7 @@ Route::middleware(is_pengguna_and_kepala_perpus::class)->group(function() {
     Route::get('/kelola-buku',[BukuController::class, 'index']);
     Route::get('/kelola-buku/tambah-buku',[BukuController::class, 'tambah_buku']);
     Route::post('/kelola-buku',[BukuController::class, 'store_buku']);
+    Route::get('/kelola-buku/{buku:id}',[BukuController::class, 'edit_buku']);
+    Route::put('/kelola-buku/{buku:id}',[BukuController::class, 'update_buku']);
     Route::delete('/kelola-buku/{buku:id}',[BukuController::class, 'delete_buku']);
 });

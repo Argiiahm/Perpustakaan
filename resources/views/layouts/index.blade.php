@@ -41,6 +41,10 @@
         @yield('main')
     </main>
 
+    {{-- Modal alert --}}
+    @include('components.alert-success')
+    @include('components.alert-error')
+
     <script src="{{ asset('js/script.js') }}"></script>
 
 </body>

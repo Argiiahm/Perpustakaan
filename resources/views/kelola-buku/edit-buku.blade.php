@@ -5,13 +5,16 @@
 @section('main')
 
     <section class="bg-white mt-10 p-10 rounded-lg">
-        <form action="/kelola-buku" method="POST" class="all_form flex gap-12" enctype="multipart/form-data">
+        <form action="/kelola-buku/{{ $buku->id }}" method="POST" class="all_form flex gap-12"
+            enctype="multipart/form-data">
             @csrf
+            @method('PUT')
             <div class="w-1/2 flex justify-center items-center">
                 <div class="w-[350px] flex flex-col items-center text-center relative">
+
                     <div class="mb-6">
                         <img id="previewImage"
-                            src="{{ asset('icons/no-image.jpg') }}"
+                            src="{{ $buku->cover_buku ? asset('storage/' . $buku->cover_buku) : asset('icons/no-image.jpg') }}"
                             class="photoPreview w-[120px] h-auto shadow-lg rounded-sm object-cover" alt="Cover Buku">
                     </div>
                     <input name="cover_buku" type="file" id="imageInput" class="photoInput hidden">
@@ -37,7 +40,7 @@
                     @enderror
                     <input type="text" placeholder="Kode buku" name="kode_buku"
                         class="w-full border rounded-md px-4 py-2 mt-1 border-gray-300 text-gray-400"
-                        value="{{ old('kode_buku') }}">
+                        value="{{ $buku->kode_buku }}">
                 </div>
 
                 <div>
@@ -47,7 +50,7 @@
                     @enderror
                     <input type="text" placeholder="Judul Buku" name="judul_buku"
                         class="w-full border rounded-md px-4 py-2 mt-1 border-gray-300 text-gray-400"
-                        value="{{ old('judul_buku') }}">
+                        value="{{ $buku->judul_buku }}">
                 </div>
 
                 <div>
@@ -57,7 +60,7 @@
                     @enderror
                     <input type="text" placeholder="Penulis" name="penulis"
                         class="w-full border rounded-md px-4 py-2 mt-1 border-gray-300 text-gray-400"
-                        value="{{ old('penulis') }}">
+                        value="{{ $buku->penulis }}">
                 </div>
 
                 <div>
@@ -67,7 +70,7 @@
                     @enderror
                     <input name="tahun_terbit" type="date"
                         class="w-full border rounded-md px-4 py-2 mt-1 border-gray-300 text-gray-400"
-                        value="{{ old('tahun_terbit') }}">
+                        value="{{ $buku->tahun_terbit }}">
                 </div>
 
 
@@ -78,7 +81,7 @@
                     @enderror
                     <input type="number" placeholder="Stok Buku" name="stok_buku"
                         class="w-full border rounded-md px-4 py-2 mt-1 border-gray-300 text-gray-400"
-                        value="{{ old('stok_buku') }}">
+                        value="{{ $buku->stok_buku }}">
                 </div>
 
                 <!-- Button -->
