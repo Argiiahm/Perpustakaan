@@ -54,7 +54,7 @@
                         @csrf
                         <label for="username" class="font-semibold text-[#35094D]">Username*</label>
                         @error('username')
-                            <div style="color:red; font-size:14px;">{{ $message }}</div>
+                            <div class="text-red-500 text-[14px]">{{ $message }}</div>
                         @enderror
                         <div class="flex items-center border-2 border-gray-200 mt-2 mb-4 py-2 px-3">
                             <input id="username" class=" pl-2 w-full outline-none border-none" type="text"
@@ -63,7 +63,7 @@
                         </div>
                         <label for="email" class="font-semibold text-[#35094D]">Email*</label>
                         @error('email')
-                            <div style="color:red; font-size:14px;">{{ $message }}</div>
+                            <div class="text-red-500 text-[14px]">{{ $message }}</div>
                         @enderror
                         <div class="flex items-center border-2 border-gray-200 mt-2 mb-4 py-2 px-3">
                             <input id="email" class=" pl-2 w-full outline-none border-none" type="text" name="email"
@@ -71,7 +71,7 @@
                         </div>
                         <label for="no_telepon" class="font-semibold text-[#35094D]">No.telp*</label>
                         @error('no_telepon')
-                            <div style="color:red; font-size:14px;">{{ $message }}</div>
+                            <div class="text-red-500 text-[14px]">{{ $message }}</div>
                         @enderror
                         <div class="flex items-center border-2 border-gray-200 mt-2 mb-4 py-2 px-3">
                             <input id="no_telepon" class=" pl-2 w-full outline-none border-none" type="text"
@@ -80,7 +80,7 @@
                         </div>
                         <label for="password" class="font-semibold text-[#35094D]">Password*</label>
                         @error('password')
-                            <div style="color:red; font-size:14px;">{{ $message }}</div>
+                            <div class="text-red-500 text-[14px]">{{ $message }}</div>
                         @enderror
                         <div class="flex items-center border-2 border-gray-200 py-2 mt-2 px-3 mb-3 relative">
 

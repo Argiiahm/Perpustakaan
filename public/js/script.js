@@ -127,4 +127,50 @@ document.addEventListener("DOMContentLoaded", () => {
             textBtn.innerText = "Tunggu...";
         });
     }
+
+    // Modal Delete Buku
+    const modalDeleteBuku = document.querySelector(".open_modal_delete_buku");
+    const closeBtnBuku = modalDeleteBuku?.querySelector(
+        ".btn_close_delete_buku",
+    );
+    const deleteFormBuku = modalDeleteBuku?.querySelector(".delete_form_buku");
+    const deleteButtonsBuku = document.querySelectorAll(
+        ".btn_open_delete_buku",
+    );
+    const spinnerBuku = deleteFormBuku?.querySelector(".spinner_delete");
+    const textBtnBuku = deleteFormBuku?.querySelector(
+        ".text_close_delete_buku",
+    );
+
+    if (modalDeleteBuku && deleteFormBuku && deleteButtonsBuku.length > 0) {
+        // Buka modal & set action form sesuai row
+        deleteButtonsBuku.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                const bukuId = btn.dataset.bukuId;
+                deleteFormBuku.action = `/kelola-buku/${bukuId}`;
+                modalDeleteBuku.classList.remove("hidden");
+            });
+        });
+
+        // Tutup modal via tombol Batal
+        closeBtnBuku?.addEventListener("click", () => {
+            modalDeleteBuku.classList.add("hidden");
+        });
+
+        // Tutup modal dengan klik background
+        modalDeleteBuku.addEventListener("click", (e) => {
+            if (e.target === modalDeleteBuku) {
+                modalDeleteBuku.classList.add("hidden");
+            }
+        });
+
+        // Submit form → spinner + disable button
+        deleteFormBuku.addEventListener("submit", () => {
+            const submitBtn = deleteFormBuku.querySelector(".btn_delete_buku");
+            submitBtn.disabled = true;
+            submitBtn.classList.add("opacity-70", "cursor-not-allowed");
+            spinnerBuku.classList.remove("hidden");
+            textBtnBuku.innerText = "Tunggu...";
+        });
+    }
 });

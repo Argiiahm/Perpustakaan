@@ -26,7 +26,7 @@
                     <div class="my-5">
                         <label for="nama" class="block text-sm font-medium text-gray-700">Username*</label>
                         @error('username')
-                            <div style="color:red; font-size:14px;">{{ $message }}</div>
+                            <div class="text-red-500 text-[14px]">{{ $message }}</div>
                         @enderror
                         <input type="text" name="username"
                             class="mt-1 block w-full border border-gray-200 rounded-md bg-white p-2 text-gray-400"
@@ -37,7 +37,7 @@
                     <div class="my-5">
                         <label for="email" class="block text-sm font-medium text-gray-700">Email*</label>
                         @error('email')
-                            <div style="color:red; font-size:14px;">{{ $message }}</div>
+                            <div class="text-red-500 text-[14px]">{{ $message }}</div>
                         @enderror
                         <input type="email" name="email"
                             class="mt-1 block w-full border border-gray-200 rounded-md bg-white p-2 text-gray-400"
@@ -48,7 +48,7 @@
                     <div class="my-5">
                         <label for="no_telp" class="block text-sm font-medium text-gray-700">No Telepon*</label>
                         @error('no_telepon')
-                            <div style="color:red; font-size:14px;">{{ $message }}</div>
+                            <div class="text-red-500 text-[14px]">{{ $message }}</div>
                         @enderror
                         <input type="text" name="no_telepon"
                             class="mt-1 block w-full border border-gray-200 rounded-md bg-white p-2 text-gray-400"
@@ -59,7 +59,7 @@
                     <div class="my-5">
                         <label for="password" class="block text-sm font-medium text-gray-700">Password*</label>
                         @error('password')
-                            <div style="color:red; font-size:14px;">{{ $message }}</div>
+                            <div class="text-red-500 text-[14px]">{{ $message }}</div>
                         @enderror
                         <div class="flex items-center relative">
                             <input
@@ -98,7 +98,7 @@
                     <div class="my-5">
                         <label class="block text-sm font-medium text-gray-700">Pilih Role*</label>
                         @error('role')
-                            <div style="color:red; font-size:14px;">{{ $message }}</div>
+                            <div class="text-red-500 text-[14px]">{{ $message }}</div>
                         @enderror
                         <select name="role"
                             class="mt-1 block w-full border border-gray-200 text-gray-400 rounded-md bg-white p-2">
@@ -128,7 +128,7 @@
                     <div class="my-5">
                         <label for="nama" class="block text-sm font-medium text-gray-700">Nama Lengkap*</label>
                         @error('nama_lengkap')
-                            <div style="color:red; font-size:14px;">{{ $message }}</div>
+                            <div class="text-red-500 text-[14px]">{{ $message }}</div>
                         @enderror
                         <input type="text" name="nama_lengkap"
                             class="mt-1 block w-full border border-gray-200 rounded-md bg-white p-2 text-gray-400"
@@ -139,7 +139,7 @@
                     <div class="my-5">
                         <label for="nomer_induk" class="block text-sm font-medium text-gray-700">Nomer Induk*</label>
                         @error('nomer_induk')
-                            <div style="color:red; font-size:14px;">{{ $message }}</div>
+                            <div class="text-red-500 text-[14px]">{{ $message }}</div>
                         @enderror
                         <input type="text" name="nomer_induk"
                             class="mt-1 block w-full border border-gray-200 rounded-md bg-white p-2 text-gray-400"
@@ -150,7 +150,7 @@
                     <div class="my-5">
                         <label class="block text-sm font-medium text-gray-700">Jenis Kelamin*</label>
                         @error('jenis_kelamin')
-                            <div style="color:red; font-size:14px;">{{ $message }}</div>
+                            <div class="text-red-500 text-[14px]">{{ $message }}</div>
                         @enderror
                         <select name="jenis_kelamin"
                             class="mt-1 block w-full border border-gray-200 text-gray-400 rounded-md bg-white p-2">
@@ -172,7 +172,7 @@
                     <div class="my-5">
                         <label for="tanggal_lahir" class="block text-sm font-medium text-gray-700">Tanggal Lahir*</label>
                         @error('tanggal_lahir')
-                            <div style="color:red; font-size:14px;">{{ $message }}</div>
+                            <div class="text-red-500 text-[14px]">{{ $message }}</div>
                         @enderror
                         <input type="date" name="tanggal_lahir"
                             class="mt-1 block w-full border border-gray-200 rounded-md bg-white p-2 text-gray-400"
@@ -183,7 +183,7 @@
                     <div class="my-5">
                         <label for="alamat" class="block text-sm font-medium text-gray-700">Alamat*</label>
                         @error('alamat')
-                            <div style="color:red; font-size:14px;">{{ $message }}</div>
+                            <div class="text-red-500 text-[14px]">{{ $message }}</div>
                         @enderror
                         <textarea type="text" name="alamat"
                             class="mt-1 block w-full border border-gray-200 rounded-md bg-white p-2 text-gray-400"
