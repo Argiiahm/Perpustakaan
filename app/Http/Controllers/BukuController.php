@@ -35,7 +35,7 @@ class BukuController extends Controller
             "judul_buku"    =>     "required|max:30",
             "penulis"       =>     "required|max:30",
             "tahun_terbit"  =>     "required|date",
-            "stok_buku"     =>     "required|integer|min:0",
+            "stok_buku"     =>     "required|integer|min:0|max:300",
             "cover_buku"    =>     "nullable|mimes:png,jpg,jpeg,webp|max:2048"
         ], [
             "kode_buku.required"              =>     "Kode buku harus di isi.",
@@ -48,6 +48,7 @@ class BukuController extends Controller
             "tahun_terbit.date"               =>     "Tahun terbit harus berupa tanggal.",
             "stok_buku.required"              =>     "Stok buku harus di isi",
             "stok_buku.min"                   =>     "Stok buku tidak valid!",
+            "stok_buku.max"                   =>     "Stok buku maksimal 300 Buku!",
             "cover_buku.mimes"                =>     "Cover buku harus berupa png,jpg,jpeg dan webp.",
             "cover_buku.max"                  =>     "Cover buku maskimal berukuran 2mb.",
         ]);
@@ -76,7 +77,7 @@ class BukuController extends Controller
             "judul_buku"    =>     "required|max:30",
             "penulis"       =>     "required|max:30",
             "tahun_terbit"  =>     "required|date",
-            "stok_buku"     =>     "required|integer|min:0",
+            "stok_buku"     =>     "required|integer|min:0|max:300",
             "cover_buku"    =>     "nullable|mimes:png,jpg,jpeg,webp|max:2048"
         ], [
             "kode_buku.required"              =>     "Kode buku harus di isi.",
@@ -89,6 +90,7 @@ class BukuController extends Controller
             "tahun_terbit.date"               =>     "Tahun terbit harus berupa tanggal.",
             "stok_buku.required"              =>     "Stok buku harus di isi",
             "stok_buku.min"                   =>     "Stok buku tidak valid!",
+            "stok_buku.max"                   =>     "Stok buku maksimal 300 Buku!",
             "cover_buku.mimes"                =>     "Cover buku harus berupa png,jpg,jpeg dan webp.",
             "cover_buku.max"                  =>     "Cover buku maskimal berukuran 2mb.",
         ]);
