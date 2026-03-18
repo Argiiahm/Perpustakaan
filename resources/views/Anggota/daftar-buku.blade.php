@@ -22,118 +22,29 @@
 
     {{-- Bg Belakang --}}
     <section class="w-full bg-[#FFFFFF] mt-32 px-10">
-        {{-- Menampilakn 5 Data Per Baris --}}
         <section class="grid grid-cols-5 gap-6">
-            {{-- Card Buku --}}
-            <div class="transform translate-y-[-30%] bg-[#FFFFFF] w-fit p-2 shadow-sm shadow-gray-100">
-                <a href="/detail-buku">
-                    <img class="w-36"
-                        src="https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1516602134i/36393774.jpg"
-                        alt="">
-                    <div class="flex flex-col mt-2">
-                        <span class="font-semibold text-[20px] text-[#35094D]">Laut Bercerita</span>
-                        <span class="font-medium text-[12px] text-[#757575]">Penulis: Tere Liye</span>
-                    </div>
-                </a>
-            </div>
-            <a href="/detail-buku" class="transform translate-y-[-30%] bg-[#FFFFFF] w-fit p-2 shadow-sm shadow-gray-100">
-                <img class="w-36"
-                    src="https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1516602134i/36393774.jpg"
-                    alt="">
-                <div class="flex flex-col mt-2">
-                    <span class="font-semibold text-[20px] text-[#35094D]">Laut Bercerita</span>
-                    <span class="font-medium text-[12px] text-[#757575]">Penulis: Tere Liye</span>
+            @forelse ($Bukus as $buku)
+                {{-- Card Buku --}}
+                <div class="transform translate-y-[-30%] bg-[#FFFFFF] w-fit p-2 shadow-sm shadow-gray-100">
+                    <a href="/detail-buku/buku={{ $buku->id }}">
+                        <img class="w-36"
+                            src="{{ $buku->cover_buku ? asset('storage/' . $buku->cover_buku) : asset('icons/no-image.jpg') }}"
+                            alt="{{ $buku->judul_buku ?? 'cover' }}">
+                        <div class="flex flex-col mt-2">
+                            <span
+                                class="font-semibold text-[20px] text-[#35094D]">{{ $buku->judul_buku ?? 'Tidak Ada Judul.' }}</span>
+                            <span class="font-medium text-[12px] text-[#757575]">Penulis:
+                                {{ $buku->penulis ?? 'Tidak diketahui.' }}</span>
+                        </div>
+                    </a>
                 </div>
-            </a>
-            {{-- End Card Buku --}}
-            {{-- Card Buku --}}
-            <a href="" class="transform translate-y-[-30%] bg-[#FFFFFF] w-fit p-2 shadow-sm shadow-gray-100">
-                <img class="w-36"
-                    src="https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1516602134i/36393774.jpg"
-                    alt="">
-                <div class="flex flex-col mt-2">
-                    <span class="font-semibold text-[20px] text-[#35094D]">Laut Bercerita</span>
-                    <span class="font-medium text-[12px] text-[#757575]">Penulis: Tere Liye</span>
-                </div>
-            </a>
-            {{-- End Card Buku --}}
-            {{-- Card Buku --}}
-            <a href="" class="transform translate-y-[-30%] bg-[#FFFFFF] w-fit p-2 shadow-sm shadow-gray-100">
-                <img class="w-36"
-                    src="https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1516602134i/36393774.jpg"
-                    alt="">
-                <div class="flex flex-col mt-2">
-                    <span class="font-semibold text-[20px] text-[#35094D]">Laut Bercerita</span>
-                    <span class="font-medium text-[12px] text-[#757575]">Penulis: Tere Liye</span>
-                </div>
-            </a>
-            {{-- End Card Buku --}}
-            {{-- Card Buku --}}
-            <a href="" class="transform translate-y-[-30%] bg-[#FFFFFF] w-fit p-2 shadow-sm shadow-gray-100">
-                <img class="w-36"
-                    src="https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1516602134i/36393774.jpg"
-                    alt="">
-                <div class="flex flex-col mt-2">
-                    <span class="font-semibold text-[20px] text-[#35094D]">Laut Bercerita</span>
-                    <span class="font-medium text-[12px] text-[#757575]">Penulis: Tere Liye</span>
-                </div>
-            </a>
-            {{-- End Card Buku --}}
-            {{-- Card Buku --}}
-            <a href="" class="transform translate-y-[-30%] bg-[#FFFFFF] w-fit p-2 shadow-sm shadow-gray-100">
-                <img class="w-36"
-                    src="https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1516602134i/36393774.jpg"
-                    alt="">
-                <div class="flex flex-col mt-2">
-                    <span class="font-semibold text-[20px] text-[#35094D]">Laut Bercerita</span>
-                    <span class="font-medium text-[12px] text-[#757575]">Penulis: Tere Liye</span>
-                </div>
-            </a>
-            {{-- End Card Buku --}}
-            {{-- Card Buku --}}
-            <a href="" class="transform translate-y-[-30%] bg-[#FFFFFF] w-fit p-2 shadow-sm shadow-gray-100">
-                <img class="w-36"
-                    src="https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1516602134i/36393774.jpg"
-                    alt="">
-                <div class="flex flex-col mt-2">
-                    <span class="font-semibold text-[20px] text-[#35094D]">Laut Bercerita</span>
-                    <span class="font-medium text-[12px] text-[#757575]">Penulis: Tere Liye</span>
-                </div>
-            </a>
-            {{-- End Card Buku --}}
-            {{-- Card Buku --}}
-            <a href="" class="transform translate-y-[-30%] bg-[#FFFFFF] w-fit p-2 shadow-sm shadow-gray-100">
-                <img class="w-36"
-                    src="https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1516602134i/36393774.jpg"
-                    alt="">
-                <div class="flex flex-col mt-2">
-                    <span class="font-semibold text-[20px] text-[#35094D]">Laut Bercerita</span>
-                    <span class="font-medium text-[12px] text-[#757575]">Penulis: Tere Liye</span>
-                </div>
-            </a>
-            {{-- End Card Buku --}}
-            {{-- Card Buku --}}
-            <a href="" class="transform translate-y-[-30%] bg-[#FFFFFF] w-fit p-2 shadow-sm shadow-gray-100">
-                <img class="w-36"
-                    src="https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1516602134i/36393774.jpg"
-                    alt="">
-                <div class="flex flex-col mt-2">
-                    <span class="font-semibold text-[20px] text-[#35094D]">Laut Bercerita</span>
-                    <span class="font-medium text-[12px] text-[#757575]">Penulis: Tere Liye</span>
-                </div>
-            </a>
-            {{-- End Card Buku --}}
-            {{-- Card Buku --}}
-            <a href="" class="transform translate-y-[-30%] bg-[#FFFFFF] w-fit p-2 shadow-sm shadow-gray-100">
-                <img class="w-36"
-                    src="https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1516602134i/36393774.jpg"
-                    alt="">
-                <div class="flex flex-col mt-2">
-                    <span class="font-semibold text-[20px] text-[#35094D]">Laut Bercerita</span>
-                    <span class="font-medium text-[12px] text-[#757575]">Penulis: Tere Liye</span>
-                </div>
-            </a>
-            {{-- End Card Buku --}}
+                {{-- End Card Buku --}}
+            @empty
+            @endforelse
         </section>
     </section>
+
+    <div class="mt-5">
+        {{ $Bukus->links() }}
+    </div>
 @endsection

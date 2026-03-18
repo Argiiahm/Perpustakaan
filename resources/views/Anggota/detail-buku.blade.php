@@ -1,6 +1,6 @@
 @extends('layouts.index')
 
-@section('halaman', 'Detail Buku - #BOOK200202')
+@section('halaman', 'Detail Buku - ' . $buku->kode_buku)
 
 @section('main')
 
@@ -11,11 +11,11 @@
         <div>
             <div class="flex gap-4 transform -translate-y-20">
                 <img class="w-40"
-                    src="https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1516602134i/36393774.jpg"
-                    alt="">
+                    src="{{ $buku->cover_buku ? asset('storage/' . $buku->cover_buku) : asset('icons/no-image.jpg') }}"
+                    alt="{{ $buku->judul_buku ?? 'Cover Buku' }}">
                 <div class="">
-                    <h1 class="text-[#35094D] font-semibold text-[30px]">Laut Bercerita</h1>
-                    <span class="text-[#B5B7C0] font-medium">Leila S. Chudori</span>
+                    <h1 class="text-[#35094D] font-semibold text-[30px]">{{ $buku->judul_buku ?? 'Tidak Ada Judul.' }}</h1>
+                    <span class="text-[#B5B7C0] font-medium">{{ $buku->penulis ?? 'tidak diberitahu.' }}</span>
                 </div>
             </div>
 
@@ -27,7 +27,7 @@
                         <span class="font-semibold text-[#35094D]">#</span>
                         <span class="font-semibold text-[#35094D]">Kode Buku : </span>
                     </div>
-                    <span class="font-medium text-[#35094D6B]">BOOK200202</span>
+                    <span class="font-medium text-[#35094D6B]">{{ $buku->kode_buku ?? 'N/A' }}</span>
                 </div>
                 {{-- Judul Buku --}}
                 <div class="flex flex-col">
@@ -35,7 +35,7 @@
                         <img src="{{ asset('icons/svg/judul-buku.svg') }}" alt="">
                         <span class="font-semibold text-[#35094D]">Judul Buku : </span>
                     </div>
-                    <span class="font-medium text-[#35094D6B]">Laut Bercerita</span>
+                    <span class="font-medium text-[#35094D6B]">{{ $buku->judul_buku ?? 'N/A' }}</span>
                 </div>
                 {{-- Stok Buku --}}
                 <div class="flex flex-col">
@@ -43,7 +43,7 @@
                         <img src="{{ asset('icons/svg/stock.svg') }}" alt="">
                         <span class="font-semibold text-[#35094D]">Stok Buku : </span>
                     </div>
-                    <span class="font-medium text-[#35094D6B]">10</span>
+                    <span class="font-medium text-[#35094D6B]">{{ $buku->stok_buku ?? 0 }}</span>
                 </div>
                 {{-- Tahun Terbit Buku --}}
                 <div class="flex flex-col">
@@ -51,7 +51,7 @@
                         <img src="{{ asset('icons/svg/calendar.svg') }}" alt="">
                         <span class="font-semibold text-[#35094D]">Tahun Terbit : </span>
                     </div>
-                    <span class="font-medium text-[#35094D6B]">1/1/2017</span>
+                    <span class="font-medium text-[#35094D6B]">{{ $buku->tahun_terbit ?? 'N/A' }}</span>
                 </div>
                 {{-- Penulis Buku --}}
                 <div class="flex flex-col">
@@ -59,13 +59,13 @@
                         <img src="{{ asset('icons/svg/penulis.svg') }}" alt="">
                         <span class="font-semibold text-[#35094D]">Penulis : </span>
                     </div>
-                    <span class="font-medium text-[#35094D6B]">Leila S. Chudori</span>
+                    <span class="font-medium text-[#35094D6B]">{{ $buku->penulis ?? 'N/A' }}</span>
                 </div>
             </div>
             {{-- Button Ajukan Jadwal --}}
             <div class="py-10 flex justify-end">
-                <button id="btn_open_modal"
-                    class="bg-[#35094D] text-white px-8 py-3 rounded-full cursor-pointer mt-4 flex items-center gap-2">
+                <button type="button"
+                    class="btn_open_modal_ajukan bg-[#35094D] text-white px-8 py-3 rounded-full cursor-pointer mt-4 flex items-center gap-2">
                     <img src="{{ asset('icons/svg/ajukan-jadwal.svg') }}" alt="">
                     <span>Ajukan Jadwal</span>
                 </button>
@@ -74,8 +74,8 @@
     </section>
 
     {{-- Modal Ajukan Buku --}}
-    <section id="open_modal"
-        class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-center items-center z-50">
+    <section 
+        class="open_modal_ajukan hidden fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-center items-center z-50">
         <div class="bg-white p-4 w-full max-w-[32rem] rounded-xl">
             {{-- Keterangan Modal --}}
             <div class="flex flex-col items-center gap-4">
@@ -84,8 +84,8 @@
             </div>
             {{-- Action Buttons --}}
             <div class="flex justify-center gap-4 my-6">
-                <button id="btn_close"
-                    class="border border-gray-200 text-[#35094D] px-10 py-2 rounded-full cursor-pointer">Nanti Saja</button>
+                <button
+                    class="btn_close_ajukan border border-gray-200 text-[#35094D] px-10 py-2 rounded-full cursor-pointer">Nanti Saja</button>
                 <form action="">
                     @csrf
                     <button class="bg-[#35094D] text-white px-10 py-2 rounded-full cursor-pointer">Ya, Pinjam</button>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\DashboardAnggotaController;
@@ -10,7 +11,6 @@ use App\Http\Controllers\RedirectController;
 use App\Http\Middleware\is_pengguna_and_kepala_perpus;
 use App\Http\Middleware\isAnggota;
 use App\Http\Middleware\isKepalaPerpus;
-use App\Http\Middleware\isPetugas;
 use Illuminate\Support\Facades\Route;
 
 
@@ -21,11 +21,10 @@ Route::get('/', [RedirectController::class, 'index']);
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'login'])->name('login'); // Form Login
     Route::get('/register', [AuthController::class, 'register']); // Form Register
-
     Route::post('/masuk', [AuthController::class, 'masuk']); // Fungsi Login
     Route::post('/daftar', [AuthController::class, 'daftar']); // Fungsi Register
 });
-Route::post('/logout', [AuthController::class, 'logout']); // Fungsi Logout
+    Route::post('/logout', [AuthController::class, 'logout']); // Fungsi Logout
 // End Authentication
 
 Route::middleware('auth')->group(function () {
@@ -35,19 +34,14 @@ Route::middleware('auth')->group(function () {
 
 // Anggota Routes
 Route::middleware(isAnggota::class)->group(function () {
-    Route::get('/dashboard-anggota',[DashboardAnggotaController::class, 'Dashboard_Anggota']);
-
-    Route::get('/riwayat-pinjaman', function () {
-        return view('Anggota.riwayat-pinjaman');
-    });
-
-    Route::get('/daftar-buku', function () {
-        return view('Anggota.daftar-buku');
-    });
-    
-    Route::get('/detail-buku', function () {
-        return view('Anggota.detail-buku');
-    });
+    // Dashboard Anggota
+    Route::get('/dashboard-anggota',[AnggotaController::class, 'Dashboard_Anggota']);
+    // Riwayat Pinjaman
+    Route::get('/riwayat-pinjaman',[AnggotaController::class, 'riwayat_pinjaman']);
+    // Daftar Buku
+    Route::get('/daftar-buku',[AnggotaController::class, 'daftar_buku']);
+    // Detail Buku
+    Route::get('/detail-buku/buku={buku:id}',[AnggotaController::class, 'detail_buku']);
 
     // Profile Anggota
     Route::get('/profile-anggota',[ProfileController::class, 'profile_anggota']);
@@ -91,6 +85,7 @@ Route::middleware(isKepalaPerpus::class)->group(function () {
 
 // Kelola Buku Petugas Perpus, Dan Kepala Perpus
 Route::middleware(is_pengguna_and_kepala_perpus::class)->group(function() {
+    // Kelola Buku
     Route::get('/kelola-buku',[BukuController::class, 'index']);
     Route::get('/kelola-buku/tambah-buku',[BukuController::class, 'tambah_buku']);
     Route::post('/kelola-buku',[BukuController::class, 'store_buku']);

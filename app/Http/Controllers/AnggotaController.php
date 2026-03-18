@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Buku;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class DashboardAnggotaController extends Controller
+class AnggotaController extends Controller
 {
-
-// Menghitung Presentase Kelengkapan Profile Anggota
+    // Menghitung Presentase Kelengkapan Profile Anggota
     private function calculatePresentase()
     {
         $anggota = Auth::user();
@@ -50,6 +50,27 @@ class DashboardAnggotaController extends Controller
     {
         return view('Anggota.dashboard', [
             "Presentase"   =>    $this->calculatePresentase()
+        ]);
+    }
+
+    // Halaman Riwayat Pinjaman
+    public function riwayat_pinjaman() {
+        return view('Anggota.riwayat-pinjaman');
+    }
+
+    // Halaman Daftar Buku
+    public function daftar_buku() {
+        $Bukus = Buku::paginate(2);
+        return view('Anggota.daftar-buku',[
+            "Bukus"   =>    $Bukus
+        ]);
+    }
+
+    // Detail Buku
+    public function detail_buku(Buku $buku) {
+        // dd($buku);
+        return view('Anggota.detail-buku',[
+            "buku"   =>    $buku
         ]);
     }
 }

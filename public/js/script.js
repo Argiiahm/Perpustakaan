@@ -19,24 +19,24 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Modal Kembalikan Buku
-    const opanModalKembalikan = document.querySelectorAll(
-        ".btn_open_modal_kembalikan",
+    const openModalAjukanBukku = document.querySelectorAll(
+        ".btn_open_modal_ajukan",
     );
-    const closeModalKembalikan = document.querySelector(
-        ".btn_close_kembalikan",
+    const closeModalAjukan = document.querySelector(
+        ".btn_close_ajukan",
     );
-    const modalKembalikan = document.querySelector(".open_modal_kembalikan");
+    const modalAjukan = document.querySelector(".open_modal_ajukan");
 
-    if (modalKembalikan) {
-        opanModalKembalikan.forEach((button) => {
+    if (modalAjukan) {
+        openModalAjukanBukku.forEach((button) => {
             button.addEventListener("click", () => {
-                modalKembalikan.classList.remove("hidden");
+                modalAjukan.classList.remove("hidden");
             });
         });
 
-        if (closeModalKembalikan) {
-            closeModalKembalikan.addEventListener("click", () => {
-                modalKembalikan.classList.add("hidden");
+        if (closeModalAjukan) {
+            closeModalAjukan.addEventListener("click", () => {
+                modalAjukan.classList.add("hidden");
             });
         }
     }
