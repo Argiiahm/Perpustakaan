@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('penulis');
             $table->date('tahun_terbit');
             $table->integer('stok_buku');
+            $table->text('sinopsis')->nullable();
             $table->string('cover_buku')->nullable();
             $table->timestamps();
         });

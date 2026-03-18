@@ -4,93 +4,116 @@
 
 @section('main')
 
+    {{-- Container Utama --}}
+    <section class="mt-20 px-6">
 
-    {{-- Bg Belkng --}}
-    <section class="bg-[#FFFFFF] mt-36 px-14">
-        {{-- Header Cover Buku --}}
-        <div>
-            <div class="flex gap-4 transform -translate-y-20">
-                <img class="w-40"
-                    src="{{ $buku->cover_buku ? asset('storage/' . $buku->cover_buku) : asset('icons/no-image.jpg') }}"
-                    alt="{{ $buku->judul_buku ?? 'Cover Buku' }}">
+        {{-- Card Utama --}}
+        <div class="bg-white rounded-3xl border border-gray-100 overflow-hidden">
+            <div class="flex flex-col md:flex-row gap-10 p-8 md:p-12">
+
                 <div class="">
-                    <h1 class="text-[#35094D] font-semibold text-[30px]">{{ $buku->judul_buku ?? 'Tidak Ada Judul.' }}</h1>
-                    <span class="text-[#B5B7C0] font-medium">{{ $buku->penulis ?? 'tidak diberitahu.' }}</span>
+                    <img class="w-64 rounded-2xl object-cover"
+                        src="{{ $buku->cover_buku ? asset('storage/' . $buku->cover_buku) : asset('icons/no-image.jpg') }}"
+                        alt="{{ $buku->judul_buku ?? 'Cover Buku' }}">
                 </div>
-            </div>
 
-            {{-- Detail Buku Lainya --}}
-            <div class="grid grid-cols-3 gap-6 -mt-8">
-                {{-- Kode Buku --}}
-                <div class="flex flex-col">
-                    <div class="flex items-center gap-1">
-                        <span class="font-semibold text-[#35094D]">#</span>
-                        <span class="font-semibold text-[#35094D]">Kode Buku : </span>
+                {{-- Informasi & Sinopsis --}}
+                <div class="w-full flex flex-col">
+                    <div class="mb-6">
+                        <span
+                            class="text-[#35094D] font-bold tracking-widest text-xs uppercase opacity-60">{{ $buku->kode_buku ?? 'N/A' }}</span>
+                        <h1 class="text-[#35094D] font-extrabold text-4xl mt-2">
+                            {{ $buku->judul_buku ?? 'Tidak Ada Judul.' }}</h1>
+                        <p class="text-gray-500 text-lg mt-2 font-medium">Karya <span
+                                class="text-[#35094D]">{{ $buku->penulis ?? 'Penulis Anonim' }}</span></p>
                     </div>
-                    <span class="font-medium text-[#35094D6B]">{{ $buku->kode_buku ?? 'N/A' }}</span>
-                </div>
-                {{-- Judul Buku --}}
-                <div class="flex flex-col">
-                    <div class="flex items-center gap-1">
-                        <img src="{{ asset('icons/svg/judul-buku.svg') }}" alt="">
-                        <span class="font-semibold text-[#35094D]">Judul Buku : </span>
+
+                    <hr class="border-gray-100 mb-8">
+
+                    {{-- Section Sinopsis --}}
+                    <div class="mb-10">
+                        <h3 class="text-[#35094D] font-bold text-xl mb-3 flex items-center gap-2">
+                            <img src="{{ asset('icons/svg/buku-aktif.svg') }}" alt="">
+                            Sinopsis Buku
+                        </h3>
+                        <p class="text-gray-600 leading-relaxed text-justify italic">
+                            {{ $buku->sinopsis ?? 'Belum ada sinopsis untuk buku ini. Silakan hubungi pustakawan untuk informasi lebih lanjut mengenai isi buku.' }}
+                        </p>
                     </div>
-                    <span class="font-medium text-[#35094D6B]">{{ $buku->judul_buku ?? 'N/A' }}</span>
-                </div>
-                {{-- Stok Buku --}}
-                <div class="flex flex-col">
-                    <div class="flex items-center gap-1">
-                        <img src="{{ asset('icons/svg/stock.svg') }}" alt="">
-                        <span class="font-semibold text-[#35094D]">Stok Buku : </span>
+
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-6 mb-10">
+                        <div class="bg-gray-50 p-4 rounded-2xl">
+                            <p class="text-xs text-gray-400 font-bold uppercase mb-1">Tahun Terbit</p>
+                            <p class="font-bold text-[#35094D]">{{ $buku->tahun_terbit ?? '-' }}</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-2xl">
+                            <p class="text-xs text-gray-400 font-bold uppercase mb-1">Stok Tersedia</p>
+                            <p class="font-bold text-[#35094D]">{{ $buku->stok_buku ?? 0 }} Tersedia</p>
+                        </div>
                     </div>
-                    <span class="font-medium text-[#35094D6B]">{{ $buku->stok_buku ?? 0 }}</span>
-                </div>
-                {{-- Tahun Terbit Buku --}}
-                <div class="flex flex-col">
-                    <div class="flex items-center gap-1">
-                        <img src="{{ asset('icons/svg/calendar.svg') }}" alt="">
-                        <span class="font-semibold text-[#35094D]">Tahun Terbit : </span>
+
+                    {{-- Action Button --}}
+                    <div class="mt-auto flex gap-4">
+                        {{-- Jika Status Menunggu --}}
+                        @if ($pending)
+                            <button type="button"
+                                class="flex-1 bg-[#35094d52] text-white font-bold cursor-no-drop py-4 rounded-2xl transition-all flex items-center justify-center gap-3">
+                                <img src="{{ asset('icons/svg/ajukan-jadwal.svg') }}" class="w-5 h-5 brightness-0 invert"
+                                    alt="">
+                                <span>Menunggu...</span>
+                            </button>
+                        @else
+                            {{-- Jika Tidak --}}
+                            <button type="button"
+                                class="btn_open_modal_ajukan flex-1 bg-[#35094D] hover:bg-[#4d126b] text-white font-bold py-4 rounded-2xl transition-all flex items-center justify-center gap-3">
+                                <img src="{{ asset('icons/svg/ajukan-jadwal.svg') }}" class="w-5 h-5 brightness-0 invert"
+                                    alt="">
+                                <span>Pinjam Buku Sekarang</span>
+                            </button>
+                        @endif
                     </div>
-                    <span class="font-medium text-[#35094D6B]">{{ $buku->tahun_terbit ?? 'N/A' }}</span>
                 </div>
-                {{-- Penulis Buku --}}
-                <div class="flex flex-col">
-                    <div class="flex items-center gap-1">
-                        <img src="{{ asset('icons/svg/penulis.svg') }}" alt="">
-                        <span class="font-semibold text-[#35094D]">Penulis : </span>
-                    </div>
-                    <span class="font-medium text-[#35094D6B]">{{ $buku->penulis ?? 'N/A' }}</span>
-                </div>
-            </div>
-            {{-- Button Ajukan Jadwal --}}
-            <div class="py-10 flex justify-end">
-                <button type="button"
-                    class="btn_open_modal_ajukan bg-[#35094D] text-white px-8 py-3 rounded-full cursor-pointer mt-4 flex items-center gap-2">
-                    <img src="{{ asset('icons/svg/ajukan-jadwal.svg') }}" alt="">
-                    <span>Ajukan Jadwal</span>
-                </button>
             </div>
         </div>
     </section>
 
-    {{-- Modal Ajukan Buku --}}
-    <section 
-        class="open_modal_ajukan hidden fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-center items-center z-50">
-        <div class="bg-white p-4 w-full max-w-[32rem] rounded-xl">
-            {{-- Keterangan Modal --}}
-            <div class="flex flex-col items-center gap-4">
-                <img class="w-52" src="{{ asset('icons/logo-modal-1.png') }}" alt="">
-                <span class="text-[#35094D] font-bold">Ingin Ajukan Pinjaman Buku Ini?</span>
-            </div>
-            {{-- Action Buttons --}}
-            <div class="flex justify-center gap-4 my-6">
-                <button
-                    class="btn_close_ajukan border border-gray-200 text-[#35094D] px-10 py-2 rounded-full cursor-pointer">Nanti Saja</button>
-                <form action="">
-                    @csrf
-                    <button class="bg-[#35094D] text-white px-10 py-2 rounded-full cursor-pointer">Ya, Pinjam</button>
-                </form>
+    {{-- Modal Ajukan --}}
+    <section
+        class="open_modal_ajukan hidden fixed inset-0 bg-[#0F172A]/60 backdrop-blur-md flex justify-center items-center z-50 p-4 transition-all">
+        <div class="bg-white w-full max-w-md rounded-3xl  overflow-hidden transform transition-all scale-100">
+            <div class="p-8 text-center">
+                <div class="w-20 h-20 bg-[#35094D]/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <img class="w-12" src="{{ asset('icons/svg/ajukan-jadwal.svg') }}" alt="">
+                </div>
+                <h2 class="text-[#35094D] text-2xl font-extrabold mb-2">Konfirmasi Pinjaman</h2>
+                <p class="text-gray-500 mb-8">Apakah kamu yakin ingin mengajukan peminjaman buku <span
+                        class="font-bold text-gray-700">"{{ $buku->judul_buku }}"</span>?</p>
+
+                <div class="flex flex-col gap-3">
+                    <form class="all_form" action="/ajukan-buku" method="POST">
+                        @csrf
+                        <input type="hidden" name="buku_id" value="{{ $buku->id }}">
+                        <button type="submit"
+                            class="btn_simpan_perubahan w-full bg-[#35094D] text-white font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-2">
+                            <svg id="" class="spinner_load hidden animate-spin h-5 w-5 text-white"
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                    stroke-width="4">
+                                </circle>
+                                <path class="opacity-75" fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                </path>
+                            </svg>
+                            <span class="text_simpan">Ya, Konfirmasi Pinjaman</span>
+                        </button>
+                    </form>
+                    <button
+                        class="btn_close_ajukan w-full border-2 border-gray-100 text-gray-400 font-bold py-4 rounded-xl hover:bg-gray-50 transition-all">
+                        Batalkan
+                    </button>
+                </div>
             </div>
         </div>
     </section>
+
 @endsection

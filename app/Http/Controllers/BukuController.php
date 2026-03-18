@@ -35,6 +35,7 @@ class BukuController extends Controller
             "judul_buku"    =>     "required|max:30",
             "penulis"       =>     "required|max:30",
             "tahun_terbit"  =>     "required|date",
+            "sinopsis"      =>     "nullable|min:20",
             "stok_buku"     =>     "required|integer|min:0|max:300",
             "cover_buku"    =>     "nullable|mimes:png,jpg,jpeg,webp|max:2048"
         ], [
@@ -46,6 +47,7 @@ class BukuController extends Controller
             "penulis.max"                     =>     "maksimal 30 karakter.",
             "tahun_terbit.required"           =>     "Tahun terbit harus di isi.",
             "tahun_terbit.date"               =>     "Tahun terbit harus berupa tanggal.",
+            "sinopsis.min"                    =>     "Sinopsis minimal 20 kata.",
             "stok_buku.required"              =>     "Stok buku harus di isi",
             "stok_buku.min"                   =>     "Stok buku tidak valid!",
             "stok_buku.max"                   =>     "Stok buku maksimal 300 Buku!",
@@ -77,6 +79,7 @@ class BukuController extends Controller
             "judul_buku"    =>     "required|max:30",
             "penulis"       =>     "required|max:30",
             "tahun_terbit"  =>     "required|date",
+            "sinopsis"      =>     "nullable|min:20",
             "stok_buku"     =>     "required|integer|min:0|max:300",
             "cover_buku"    =>     "nullable|mimes:png,jpg,jpeg,webp|max:2048"
         ], [
@@ -88,6 +91,7 @@ class BukuController extends Controller
             "penulis.max"                     =>     "maksimal 30 karakter.",
             "tahun_terbit.required"           =>     "Tahun terbit harus di isi.",
             "tahun_terbit.date"               =>     "Tahun terbit harus berupa tanggal.",
+            "sinopsis.min"                    =>     "Sinopsis minimal 20 kata.",
             "stok_buku.required"              =>     "Stok buku harus di isi",
             "stok_buku.min"                   =>     "Stok buku tidak valid!",
             "stok_buku.max"                   =>     "Stok buku maksimal 300 Buku!",

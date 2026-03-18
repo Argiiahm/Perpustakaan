@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('buku_id')->constrained('buku')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('anggota_id')->constrained('anggota')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('petugas_id')->constrained('petugas')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('petugas_id')->nullable()->constrained('petugas')->onDelete('cascade')->onUpdate('cascade');
             $table->date('tanggal_pinjam');
-            $table->date('tanggal_jatuh_tempo');
+            $table->date('tanggal_jatuh_tempo')->nullable();
             $table->enum('status',['menunggu','dipinjam','ditolak','dikembalikan'])->default('menunggu');
             $table->timestamps();
         });

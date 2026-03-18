@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Buku;
+use App\Models\Peminjaman;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -54,23 +55,38 @@ class AnggotaController extends Controller
     }
 
     // Halaman Riwayat Pinjaman
-    public function riwayat_pinjaman() {
+    public function riwayat_pinjaman()
+    {
         return view('Anggota.riwayat-pinjaman');
     }
 
     // Halaman Daftar Buku
-    public function daftar_buku() {
-        $Bukus = Buku::paginate(2);
-        return view('Anggota.daftar-buku',[
-            "Bukus"   =>    $Bukus
+    public function daftar_buku(Request $request)
+    {
+        $cari = $request->input('cari');
+        $bukus = Buku::where(function ($query) use ($cari) {
+
+            $query->where('judul_buku', 'like', "%{$cari}%")
+                ->orWhere('penulis', 'like', "%{$cari}%")
+                ->orWhere('kode_buku', 'like', "%{$cari}%");
+        })->paginate(10)
+            // Paginasi
+            ->withQueryString();
+
+        return view('Anggota.daftar-buku', [
+            "Bukus"   =>    $bukus
         ]);
     }
 
     // Detail Buku
-    public function detail_buku(Buku $buku) {
-        // dd($buku);
-        return view('Anggota.detail-buku',[
-            "buku"   =>    $buku
+    public function detail_buku(Buku $buku)
+    {
+        $anggota_id = Auth::user()->Anggota->id;
+        // Button Sedang pending
+        $pengajuan_pending = Peminjaman::where('anggota_id', $anggota_id)->where('buku_id', $buku->id)->where('status', 'menunggu')->exists();
+        return view('Anggota.detail-buku', [
+            "buku"   =>    $buku,
+            "pending"  =>  $pengajuan_pending
         ]);
     }
 }

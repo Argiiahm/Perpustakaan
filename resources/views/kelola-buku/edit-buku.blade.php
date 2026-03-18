@@ -64,6 +64,15 @@
                 </div>
 
                 <div>
+                    <label class="text-gray-600 text-sm font-semibold">Sinopsis*</label>
+                    @error('sinopsis')
+                        <div class="text-red-500 text-[14px]">{{ $message }}</div>
+                    @enderror
+                    <textarea placeholder="sinopsis" name="sinopsis"
+                        class="w-full border rounded-md px-4 py-2 mt-1 border-gray-300 text-gray-400">{{ $buku->sinopsis ?? 'Tidak Ada Sinopsis' }}</textarea>
+                </div>
+
+                <div>
                     <label class="text-gray-600 text-sm font-semibold">Tahun terbit*</label>
                     @error('tahun_terbit')
                         <div class="text-red-500 text-[14px]">{{ $message }}</div>

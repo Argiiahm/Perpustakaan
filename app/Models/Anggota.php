@@ -16,8 +16,10 @@ class Anggota extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    // Relasi Anggota Dengan Peminjaman Buku
     public function peminjaman_buku() {
-        // return $this->hasMany();
+        // satu anggota bisa pinjam lebih dari 1
+        return $this->hasMany(Peminjaman::class);
     }
 
 }

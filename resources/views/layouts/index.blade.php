@@ -45,6 +45,9 @@
     @include('components.alert-success')
     @include('components.alert-error')
 
+    {{-- Loading Search --}}
+    @include('components.loading-cari')
+
     <script src="{{ asset('js/script.js') }}"></script>
 
 </body>

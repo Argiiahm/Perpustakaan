@@ -6,6 +6,7 @@ use App\Http\Controllers\BukuController;
 use App\Http\Controllers\DashboardAnggotaController;
 use App\Http\Controllers\DashboardKepalaPerpusController;
 use App\Http\Controllers\KelolaPenggunaController;
+use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RedirectController;
 use App\Http\Middleware\is_pengguna_and_kepala_perpus;
@@ -40,8 +41,10 @@ Route::middleware(isAnggota::class)->group(function () {
     Route::get('/riwayat-pinjaman',[AnggotaController::class, 'riwayat_pinjaman']);
     // Daftar Buku
     Route::get('/daftar-buku',[AnggotaController::class, 'daftar_buku']);
+    // Ajukan Buku
+    Route::post('/ajukan-buku',[PeminjamanController::class, 'ajukanBuku']);
     // Detail Buku
-    Route::get('/detail-buku/buku={buku:id}',[AnggotaController::class, 'detail_buku']);
+    Route::get('/daftar-buku/detail-buku={buku:id}',[AnggotaController::class, 'detail_buku']);
 
     // Profile Anggota
     Route::get('/profile-anggota',[ProfileController::class, 'profile_anggota']);

@@ -10,8 +10,7 @@
             <div class="w-1/2 flex justify-center items-center">
                 <div class="w-[350px] flex flex-col items-center text-center relative">
                     <div class="mb-6">
-                        <img id="previewImage"
-                            src="{{ asset('icons/no-image.jpg') }}"
+                        <img id="previewImage" src="{{ asset('icons/no-image.jpg') }}"
                             class="photoPreview w-[120px] h-auto shadow-lg rounded-sm object-cover" alt="Cover Buku">
                     </div>
                     <input name="cover_buku" type="file" id="imageInput" class="photoInput hidden">
@@ -58,6 +57,15 @@
                     <input type="text" placeholder="Penulis" name="penulis"
                         class="w-full border rounded-md px-4 py-2 mt-1 border-gray-300 text-gray-400"
                         value="{{ old('penulis') }}">
+                </div>
+
+                <div>
+                    <label class="text-gray-600 text-sm font-semibold">Sinopsis*</label>
+                    @error('sinopsis')
+                        <div class="text-red-500 text-[14px]">{{ $message }}</div>
+                    @enderror
+                    <textarea placeholder="sinopsis" name="sinopsis"
+                        class="w-full border rounded-md px-4 py-2 mt-1 border-gray-300 text-gray-400">{{ old('sinopsis') }}</textarea>
                 </div>
 
                 <div>

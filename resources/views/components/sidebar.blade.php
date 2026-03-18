@@ -84,10 +84,10 @@
                 {{-- Daftar BUku --}}
                 @role('anggota')
                     <li class="mt-4 ">
-                        <a class="{{ request()->is('daftar-buku') ? ' text-[#35094D] font-medium' : 'text-[#35094d90]' }} flex items-center gap-2 text-[16px]"
+                        <a class="{{ request()->is('daftar-buku*') ? ' text-[#35094D] font-medium' : 'text-[#35094d90]' }} flex items-center gap-2 text-[16px]"
                             href="/daftar-buku">
                             <div class="w-6 h-6 flex items-center justify-center">
-                                <img src="{{ request()->is('daftar-buku') ? asset('icons/svg/buku-aktif.svg') : asset('icons/svg/buku-inactive.svg') }}"
+                                <img src="{{ request()->is('daftar-buku*') ? asset('icons/svg/buku-aktif.svg') : asset('icons/svg/buku-inactive.svg') }}"
                                     class="w-5 h-5 object-contain" alt="">
                             </div>
                             <span>Daftar Buku</span>
