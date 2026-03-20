@@ -81,7 +81,7 @@ class AnggotaController extends Controller
     // Detail Buku
     public function detail_buku(Buku $buku)
     {
-        $anggota_id = Auth::user()->Anggota->id;
+        $anggota_id = Auth::user()->Anggota->id ?? null;
         // Button Sedang pending
         $pengajuan_pending = Peminjaman::where('anggota_id', $anggota_id)->where('buku_id', $buku->id)->where('status', 'menunggu')->exists();
         return view('Anggota.detail-buku', [

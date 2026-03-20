@@ -14,7 +14,13 @@ class PeminjamanController extends Controller
     public function ajukanBuku(Request $request)
     {
         $buku_id = $request->buku_id;
+        // Jika Anggota id NuLL
+        $user = Auth::user();
+        if (!$user->anggota) {
+            return back()->with('error', 'Opps!, Profile Kamu Sepertinya Masih Kurang lengkap nih!, silahkan isi data yang lengkap yaaa.');
+        }
         $anggota_id = Auth::user()->Anggota->id;
+
 
         // Waktu Saat Ini
         $SaatIni = Carbon::now();
@@ -45,7 +51,7 @@ class PeminjamanController extends Controller
         ]);
 
         // Kurangi Stok Buku
-        $buku->decrement('stok_buku');
+        // $buku->decrement('stok_buku');
 
         return back()->with('success', 'selamat, pengajuan buku berhasil silahkan menunggu konfirmasi..');
     }
