@@ -17,7 +17,7 @@ class RedirectController extends Controller
                 return redirect('/dashboard-anggota');
             } else if (Auth::user()->role === "petugas") {
                 // Ptugas
-                return view('Petugas.dashboard');
+                return redirect('/dashboard-petugas');
             } else if (Auth::user()->role === "kepala_perpus") {
                 // Kpla perpustakaan
                 return redirect('/dashboard-kepala-perpustakaan');

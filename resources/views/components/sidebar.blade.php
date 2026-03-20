@@ -40,6 +40,19 @@
                         </a>
                     </li>
                 @endrole
+                {{-- Dashboard Petugas --}}
+                @role('petugas')
+                    <li class="mt-4">
+                        <a class="{{ request()->is('dashboard-petugas*') ? ' text-[#35094D] font-medium' : 'text-[#35094d90]' }} flex items-center gap-2 text-[16px] font-medium"
+                            href="/dashboard-petugas">
+                            <div class="w-6 h-6 flex items-center justify-center">
+                                <img src="{{ request()->is('dashboard-petugas*') ? asset('icons/svg/dashboard-active.svg') : asset('icons/svg/dashboard-inactive.svg') }}"
+                                    class="w-5 h-5 object-contain" alt="">
+                            </div>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                @endrole
                 {{-- Dashboard Kepala Perpustakaan --}}
                 @role('kepala_perpus')
                     <li class="mt-4">
@@ -116,6 +129,20 @@
                     </li>
                 @endrole
 
+                {{-- Daftar Buku - Petugas --}}
+                @role('petugas')
+                    <li class="mt-4 ">
+                        <a class="{{ request()->is('kelola-buku*') ? ' text-[#35094D] font-medium' : 'text-[#35094d90]' }} flex items-center gap-2 text-[16px]"
+                            href="/kelola-buku">
+                            <div class="w-6 h-6 flex items-center justify-center">
+                                <img src="{{ request()->is('kelola-buku*') ? asset('icons/svg/buku-aktif.svg') : asset('icons/svg/buku-inactive.svg') }}"
+                                    class="w-5 h-5 object-contain" alt="">
+                            </div>
+                            <span>Daftar Buku</span>
+                        </a>
+                    </li>
+                @endrole
+
                 {{-- Daftar Pengguna - Kepala perpustakaan --}}
                 @role('kepala_perpus')
                     <li class="mt-4 ">
@@ -132,30 +159,44 @@
 
                 {{-- Profile Anggota --}}
                 @role('anggota')
-                <li class="mt-4 ">
-                    <a class="{{ request()->is('profile-anggota*') ? ' text-[#35094D] font-medium' : 'text-[#35094d90]' }} flex items-center gap-2 text-[16px]"
-                        href="/profile-anggota">
-                        <div class="w-6 h-6 flex items-center justify-center">
-                            <img src="{{ request()->is('profile-anggota*') ? asset('icons/svg/profile-aktif.svg') : asset('icons/svg/profile-inactive.svg') }}"
-                                class="w-6 h-6 object-contain" alt="">
-                        </div>
-                        <span>Profile</span>
-                    </a>
-                </li>
+                    <li class="mt-4 ">
+                        <a class="{{ request()->is('profile-anggota*') ? ' text-[#35094D] font-medium' : 'text-[#35094d90]' }} flex items-center gap-2 text-[16px]"
+                            href="/profile-anggota">
+                            <div class="w-6 h-6 flex items-center justify-center">
+                                <img src="{{ request()->is('profile-anggota*') ? asset('icons/svg/profile-aktif.svg') : asset('icons/svg/profile-inactive.svg') }}"
+                                    class="w-6 h-6 object-contain" alt="">
+                            </div>
+                            <span>Profile</span>
+                        </a>
+                    </li>
+                @endrole
+
+                {{-- Profile Petugas --}}
+                @role('petugas')
+                    <li class="mt-4 ">
+                        <a class="{{ request()->is('profile-petugas*') ? ' text-[#35094D] font-medium' : 'text-[#35094d90]' }} flex items-center gap-2 text-[16px]"
+                            href="/profile-petugas">
+                            <div class="w-6 h-6 flex items-center justify-center">
+                                <img src="{{ request()->is('profile-petugas*') ? asset('icons/svg/profile-aktif.svg') : asset('icons/svg/profile-inactive.svg') }}"
+                                    class="w-6 h-6 object-contain" alt="">
+                            </div>
+                            <span>Profile</span>
+                        </a>
+                    </li>
                 @endrole
 
                 {{-- Profile Kepala Perpus --}}
                 @role('kepala_perpus')
-                <li class="mt-4 ">
-                    <a class="{{ request()->is('profile-kepala-perpus*') ? ' text-[#35094D] font-medium' : 'text-[#35094d90]' }} flex items-center gap-2 text-[16px]"
-                        href="/profile-kepala-perpus">
-                        <div class="w-6 h-6 flex items-center justify-center">
-                            <img src="{{ request()->is('profile-kepala-perpus*') ? asset('icons/svg/profile-aktif.svg') : asset('icons/svg/profile-inactive.svg') }}"
-                                class="w-6 h-6 object-contain" alt="">
-                        </div>
-                        <span>Profile</span>
-                    </a>
-                </li>
+                    <li class="mt-4 ">
+                        <a class="{{ request()->is('profile-kepala-perpus*') ? ' text-[#35094D] font-medium' : 'text-[#35094d90]' }} flex items-center gap-2 text-[16px]"
+                            href="/profile-kepala-perpus">
+                            <div class="w-6 h-6 flex items-center justify-center">
+                                <img src="{{ request()->is('profile-kepala-perpus*') ? asset('icons/svg/profile-aktif.svg') : asset('icons/svg/profile-inactive.svg') }}"
+                                    class="w-6 h-6 object-contain" alt="">
+                            </div>
+                            <span>Profile</span>
+                        </a>
+                    </li>
                 @endrole
 
                 {{-- Pemberitahuan --}}

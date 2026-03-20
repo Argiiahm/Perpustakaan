@@ -18,6 +18,11 @@ class ProfileController extends Controller
         return view('Anggota.profile');
     }
 
+    // Profile petugas
+    public function profile_petugas() {
+        return view('petugas.profile');
+    }
+
     // PROFILE KEPALA PERPUSTKAAN
     public function profile_kepala_perpus()
     {
