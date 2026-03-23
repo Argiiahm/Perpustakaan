@@ -80,6 +80,10 @@
                             </td>
                         </tr>
                     @empty
+                        <tr>
+                            <td colspan="9" class="text-center py-4 text-gray-500">Tidak ada data yang ditemukan.
+                            </td>
+                        </tr>
                     @endforelse
                 </tbody>
             </table>
