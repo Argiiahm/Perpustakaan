@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\DashboardKepalaPerpusController;
 use App\Http\Controllers\KelolaPenggunaController;
+use App\Http\Controllers\PemberitahuanController;
 use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\PetugasController;
 use App\Http\Controllers\ProfileController;
@@ -52,13 +53,9 @@ Route::middleware(isAnggota::class)->group(function () {
     Route::put('/profile-anggota', [ProfileController::class, 'profile_update']);
     // End Profile Anggota
 
-    Route::get('/pemberitahuan', function () {
-        return view('Anggota.pemberitahuan');
-    });
-
-    Route::get('/pemberitahuan/detail', function () {
-        return view('Anggota.detail-pemberitahuan');
-    });
+    Route::get('/pemberitahuan',[PemberitahuanController::class, 'index']);
+    Route::get('/pemberitahuan/detail/{pemberitahuan:id}',[PemberitahuanController::class, 'detailPemberitahuan']);
+    Route::post('/pemberitahuan/read/{id}',[PemberitahuanController::class, 'readPemberitahuan']);
 });
 
 // Petugas Routes
