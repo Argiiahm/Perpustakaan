@@ -4,8 +4,6 @@
 @section('suffix', 'Anda!')
 
 @section('main')
-
-
     {{-- Daftar Pesan MAsuk --}}
     <section class="mt-20">
         {{-- Card Pesan --}}

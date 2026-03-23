@@ -56,19 +56,31 @@
                         <th class="pb-4 text-gray-400 font-normal">Judul Buku</th>
                         <th class="pb-4 text-gray-400 font-normal">Tanggal Pinjam</th>
                         <th class="pb-4 text-gray-400 font-normal">Tanggal Jatuh Tempo</th>
+                        <th class="pb-4 text-gray-400 font-normal">Tersisa</th>
                     </tr>
                 </thead>
                 <tbody class="text-[#35094D]">
-                    <tr class="border-b border-gray-200">
-                        <td class="py-4">Laut Bercerita</td>
-                        <td class="py-4">20/1/2026</td>
-                        <td class="py-4">1/2/2026</td>
-                    </tr>
-                    <tr class="border-b border-gray-200">
-                        <td class="py-4">Bulan</td>
-                        <td class="py-4">20/1/2026</td>
-                        <td class="py-4">1/2/2026</td>
-                    </tr>
+                    @forelse ($Pinjaman_aktif as $pinjaman)
+                        <tr class="border-b border-gray-200">
+                            <td class="py-4">{{ $pinjaman->buku->judul_buku ?? 'N/A' }}</td>
+                            <td class="py-4">{{ $pinjaman->tanggal_pinjam ?? 'N/A' }}</td>
+                            <td class="py-4">{{ $pinjaman->tanggal_jatuh_tempo ?? 'N/A' }}</td>
+                            <td class="py-4">
+                                @if ($pinjaman->sisa_hari !== null)
+                                    @if ($pinjaman->sisa_hari > 0)
+                                        {{ $pinjaman->sisa_hari }} hari lagi
+                                    @elseif ($pinjaman->sisa_hari == 0)
+                                        Hari ini
+                                    @else
+                                        Terlambat {{ abs($pinjaman->sisa_hari) }} hari
+                                    @endif
+                                @else
+                                    -
+                                @endif
+                            </td>
+                        </tr>
+                    @empty
+                    @endforelse
                 </tbody>
             </table>
 

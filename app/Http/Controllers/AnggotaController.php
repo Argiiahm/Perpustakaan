@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Buku;
 use App\Models\Peminjaman;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -49,8 +50,22 @@ class AnggotaController extends Controller
     // Menampilkan Dashboard Anggota
     public function Dashboard_Anggota()
     {
+        $Pinjaman_aktif = Peminjaman::with('buku')
+            ->where('status', 'dipinjam')
+            ->get();
+
+        // Hitung Sisa Hari
+        foreach ($Pinjaman_aktif as $pinjaman) {
+            if ($pinjaman->tanggal_jatuh_tempo) {
+                $sisa = floor(Carbon::now()->diffInDays($pinjaman->tanggal_jatuh_tempo, false));
+                $pinjaman->sisa_hari = $sisa;
+            } else {
+                $pinjaman->sisa_hari = null;
+            }
+        }
         return view('Anggota.dashboard', [
-            "Presentase"   =>    $this->calculatePresentase()
+            "Presentase"   =>    $this->calculatePresentase(),
+            "Pinjaman_aktif"  =>  $Pinjaman_aktif
         ]);
     }
 
