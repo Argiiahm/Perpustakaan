@@ -25,6 +25,8 @@
                 $role = Auth::user()->role;
                 if ($role === 'kepala_perpus') {
                     $nama = Auth::user()->KepalaPerpus->nama_lengkap ?? Auth::user()->username;
+                } elseif ($role === 'petugas') {
+                    $nama = Auth::user()->Petugas->nama_lengkap ?? Auth::user()->username;
                 } elseif ($role === 'anggota') {
                     $nama = Auth::user()->Anggota->nama_lengkap ?? Auth::user()->username;
                 } else {
