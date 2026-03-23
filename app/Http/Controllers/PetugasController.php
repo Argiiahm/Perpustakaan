@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Buku;
 use App\Models\Pemberitahuan;
 use App\Models\Peminjaman;
 use Carbon\Carbon;
@@ -104,8 +105,12 @@ class PetugasController extends Controller
 
         $data->petugas_id = $petugas_id;
         $anggota_id  = $data->anggota_id;
+        $buku = Buku::where('id',$data->buku_id);
         $data->tanggal_jatuh_tempo = $request->tanggal_jatuh_tempo;
         $data->status = "dipinjam";
+
+        // Kurangi Stok Buku
+        $buku->decrement('stok_buku');
 
         $data->save();
 
