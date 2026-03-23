@@ -22,4 +22,9 @@ class Anggota extends Model
         return $this->hasMany(Peminjaman::class);
     }
 
+    // Relasi ke Notifikasi Atau Pemberitahuan
+    public function pemberitahuan() {
+        return $this->hasMany(Pemberitahuan::class);
+    }
+
 }

@@ -66,7 +66,7 @@
                         </a>
                     </li>
                 @endrole
-                {{-- Daftar Transaksi --}}
+                {{-- Daftar Transaksi Kepala Perpustakaan --}}
                 @role('kepala_perpus')
                     <li class="mt-4">
                         <a class="{{ request()->is('daftar-transaksi*') ? ' text-[#35094D] font-medium' : 'text-[#35094d90]' }} flex items-center gap-2 text-[16px] font-medium"
@@ -80,7 +80,21 @@
                     </li>
                 @endrole
 
-                {{-- RIwwayat Pinjaman --}}
+                {{-- Daftar Transaksi Kepala Perpustakaan --}}
+                @role('petugas')
+                    <li class="mt-4">
+                        <a class="{{ request()->is('pengajuan*') ? ' text-[#35094D] font-medium' : 'text-[#35094d90]' }} flex items-center gap-2 text-[16px] font-medium"
+                            href="/pengajuan">
+                            <div class="w-6 h-6 flex items-center justify-center">
+                                <img src="{{ request()->is('pengajuan*') ? asset('icons/svg/transaksi-aktif.svg') : asset('icons/svg/transaksi-inaktif.svg') }}"
+                                    class="w-6 h-6 object-contain" alt="">
+                            </div>
+                            <span>Pengajuan</span>
+                        </a>
+                    </li>
+                @endrole
+
+                {{-- RIwwayat Pinjaman Anggota --}}
                 @role('anggota')
                     <li class="mt-4">
                         <a class="{{ request()->is('riwayat-pinjaman') ? ' text-[#35094D] font-medium' : 'text-[#35094d90]' }} flex items-center gap-2 text-[16px]"
@@ -94,7 +108,7 @@
                     </li>
                 @endrole
 
-                {{-- Daftar BUku --}}
+                {{-- Daftar BUku Anggota --}}
                 @role('anggota')
                     <li class="mt-4 ">
                         <a class="{{ request()->is('daftar-buku*') ? ' text-[#35094D] font-medium' : 'text-[#35094d90]' }} flex items-center gap-2 text-[16px]"
@@ -114,7 +128,6 @@
         <div class="mb-5">
             <span class="text-[10px] font-medium text-[#35094d90]">LAINYA</span>
             <ul>
-
                 {{-- Daftar Buku - Kepala Perpustakaan --}}
                 @role('kepala_perpus')
                     <li class="mt-4 ">

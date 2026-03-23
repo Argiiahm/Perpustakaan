@@ -155,26 +155,4 @@
             </table>
         </div>
     </section>
-
-    {{-- Modal Kembalikan Buku --}}
-    <section
-        class="open_modal_kembalikan hidden fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-center items-center z-50">
-        <div class="bg-white p-4 w-full max-w-[32rem] rounded-xl">
-            {{-- Keterangan Modal --}}
-            <div class="flex flex-col items-center gap-4">
-                <img class="w-52" src="{{ asset('icons/logo-modal-1.png') }}" alt="">
-                <span class="text-[#35094D] font-bold">Ingin Mengembalikan Buku Ini?</span>
-            </div>
-            {{-- Action Buttons --}}
-            <div class="flex justify-center gap-4 my-6">
-                <button id=""
-                    class="btn_close_kembalikan border border-gray-200 text-[#35094D] px-10 py-2 rounded-full cursor-pointer">Nanti
-                    Saja</button>
-                <form action="">
-                    @csrf
-                    <button class="bg-[#35094D] text-white px-10 py-2 rounded-full cursor-pointer">Ya, Kembalikan</button>
-                </form>
-            </div>
-        </div>
-    </section>
 @endsection

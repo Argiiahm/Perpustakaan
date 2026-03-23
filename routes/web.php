@@ -65,9 +65,16 @@ Route::middleware(isAnggota::class)->group(function () {
 Route::middleware(isPetugas::class)->group(function () {
     // Dashboard Petugas
     Route::get('/dashboard-petugas', [PetugasController::class, 'Dashboard_petugas']);
+
+    // Pengajuan
+    Route::get('/pengajuan',[PetugasController::class, 'konfirmasiPeminjaman']);
+    Route::post('/pengajuan/konfirmasi/{id}',[PetugasController::class, 'konfirmasi']);
+    Route::post('/pengajuan/tolak/{id}',[PetugasController::class, 'tolak']);
+
     // Profile Petugas
     Route::get('/profile-petugas', [ProfileController::class, 'profile_petugas']);
     Route::put('/profile-petugas', [ProfileController::class, 'profile_update']);
+    
 });
 
 // Kepala Perpustakaan Routes
