@@ -28,6 +28,8 @@ class AuthController extends Controller
         $request->validate([
             "email"      =>    "email|required",
             "password"   =>    "required"
+        ],[
+            "email.email" => "Format email tidak valid.",
         ]);
 
         $user = User::where('email', $request->email)->first();
