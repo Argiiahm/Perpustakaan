@@ -14,7 +14,10 @@
 
     <section class="mt-20">
         <div class="bg-white w-full rounded-xl mt-4 p-6">
-            <div class="font-medium text-gray-500 pb-8">Daftar Pengajuan Buku - Pending</div>
+            <div class="mb-10">
+                <h2 class="text-2xl text-gray-500 font-medium">Daftar Pengajuan - Pending</h2>
+                <p class="text-sm text-gray-400">Konfirmasi pengajuan ataupun tolak pengajuan.</p>
+            </div>
             <table class="w-full">
                 <thead>
                     <tr class="text-left border-b border-gray-200">
@@ -72,9 +75,55 @@
         </div>
     </section>
 
-    <section>
+    <section class="mt-20">
+        {{-- Header --}}
+        <div class="flex flex-col gap-4 mb-6">
+
+            <div class="flex flex-col md:flex-row md:items-center justify-end gap-3">
+                <form action="/pengajuan" method="GET" class="form-cari flex gap-2 items-center">
+                    <select name="filter_waktu"
+                        class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500">
+                        <option value="" {{ request('filter_waktu') == '' ? 'selected' : '' }}>Semua</option>
+                        <option value="minggu_ini" {{ request('filter_waktu') == 'minggu_ini' ? 'selected' : '' }}>
+                            Minggu Ini
+                        </option>
+                        <option value="bulan_ini" {{ request('filter_waktu') == 'bulan_ini' ? 'selected' : '' }}>
+                            Bulan Ini
+                        </option>
+                        <option value="bulan_lalu" {{ request('filter_waktu') == 'bulan_lalu' ? 'selected' : '' }}>
+                            Bulan Lalu
+                        </option>
+                    </select>
+
+                    <button type="submit"
+                        class="flex items-center gap-2 bg-[#35094D] text-white px-4 py-2 rounded-lg text-sm cursor-pointer">
+                        <img class="w-5" src="{{ asset('icons/svg/filter.svg') }}" alt="">
+                        <span>Terapkan</span>
+                    </button>
+                </form>
+                {{-- Filter Preset --}}
+
+                {{-- Tombol Export PDF --}}
+                <a href="#" id="btnExport"
+                    class="flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-all shadow-sm">
+                    <img src="{{ asset('icons/svg/pdf-export.svg') }}" alt="">
+                    <span class="font-medium">Export PDF</span>
+                </a>
+
+            </div>
+        </div>
+
         <div class="bg-white w-full rounded-xl mt-4 p-6">
-            <div class="font-medium pb-8 text-gray-500">Daftar Pengajuan yang Anda Konfirmasi.</div>
+            <div class="mb-8 flex flex-col">
+                <div class="mb-3">
+                    <h2 class="text-2xl text-gray-500 font-medium">Daftar Konfirmasi Pengajuan</h2>
+                    <p class="text-sm text-gray-400">Kelola dan pantau riwayat peminjaman yang telah diproses.</p>
+                </div>
+                <div class="font-bold text-gray-500">Nama: <span
+                        class="font-medium">{{ Auth::user()->Petugas->nama_lengkap ?? Auth::user()->username }}<span></div>
+                <div class="font-bold text-gray-500">IDP: <span class="font-medium">
+                        Petugas#{{ Auth::user()->Petugas->id ?? 'N/A' }}<span></div>
+            </div>
             <table class="w-full">
                 <thead>
                     <tr class="text-left border-b border-gray-200">
@@ -91,19 +140,19 @@
                 <tbody class="text-[#35094D]">
                     @forelse ($pengajuans_konfirmasi as $pengajuan)
                         <tr class="border-b border-gray-200">
-                            <td class="py-4 text-center">{{ $pengajuan->buku->kode_buku ?? 'N/A' }}</td>
-                            <td class="py-4 text-center">{{ $pengajuan->buku->judul_buku ?? 'N/A' }}</td>
-                            <td class="py-4 text-center">{{ $pengajuan->anggota->nomer_induk ?? 'N/A' }}</td>
-                            <td class="py-4 text-center">{{ $pengajuan->anggota->nama_lengkap ?? 'N/A' }}</td>
-                            <td class="py-4 text-center">{{ $pengajuan->tanggal_pinjam ?? 'N/A' }}</td>
-                            <td class="py-4 text-center">{{ $pengajuan->tanggal_jatuh_tempo ?? 'N/A' }}</td>
+                            <td class="py-4 text-center">{{ $pengajuan->peminjaman->buku->kode_buku ?? 'N/A' }}</td>
+                            <td class="py-4 text-center">{{ $pengajuan->peminjaman->buku->judul_buku ?? 'N/A' }}</td>
+                            <td class="py-4 text-center">{{ $pengajuan->peminjaman->anggota->nomer_induk ?? 'N/A' }}</td>
+                            <td class="py-4 text-center">{{ $pengajuan->peminjaman->anggota->nama_lengkap ?? 'N/A' }}</td>
+                            <td class="py-4 text-center">{{ $pengajuan->peminjaman->tanggal_pinjam ?? 'N/A' }}</td>
+                            <td class="py-4 text-center">{{ $pengajuan->peminjaman->tanggal_jatuh_tempo ?? 'N/A' }}</td>
                             <td class="py-4">
                                 <div class="flex justify-center">
                                     <img src="{{ asset('icons/svg/detail.svg') }}" alt="">
                                 </div>
                             </td>
                             <td class="py-4 text-center capitalize">
-                                @if ($pengajuan->status === 'dipinjam')
+                                @if ($pengajuan->status === 'dipinjamkan')
                                     <span class="bg-[#16C09861] font-medium text-[#008767] px-6 py-2 rounded-full">
                                         {{ $pengajuan->status }}
                                     </span>
@@ -168,7 +217,7 @@
                                 d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
                             </path>
                         </svg>
-                        <span class="text_simpan">Simpan Perubahan</span>
+                        <span class="text_simpan">Ya, Konfirmasi</span>
                     </button>
                 </div>
             </form>
@@ -185,7 +234,7 @@
                 </p>
             </div>
 
-            <form id="formTolak" action="" method="POST" class="p-8">
+            <form id="formTolak" action="" method="POST" class="all_form p-8">
                 @csrf
 
                 <div class="mb-6">
@@ -223,9 +272,18 @@
                         class="close_modal_tolak_ajukan border border-gray-300 text-gray-600 font-medium px-6 py-3 rounded-xl cursor-pointer hover:bg-gray-50 transition-colors flex-1 text-center">
                         Batalkan
                     </button>
-                    <button type="submit"
-                        class="bg-red-500 text-white font-medium px-6 py-3 rounded-xl cursor-pointer hover:bg-red-600 transition-colors flex-1 text-center">
-                        Ya, Tolak
+                    <button id="" type="submit"
+                        class="btn_simpan_perubahan bg-[#35094D] flex-1 text-white font-medium px-6 py-3 rounded-xl cursor-pointer flex items-center gap-2 justify-center">
+                        <svg id="" class="spinner_load hidden animate-spin h-5 w-5 text-white"
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                stroke-width="4">
+                            </circle>
+                            <path class="opacity-75" fill="currentColor"
+                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                            </path>
+                        </svg>
+                        <span class="text_simpan">Ya, Tolak</span>
                     </button>
                 </div>
             </form>

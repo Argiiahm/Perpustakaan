@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Buku;
 use App\Models\Pemberitahuan;
 use App\Models\Peminjaman;
+use App\Models\RiwayatPengajuan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -75,10 +76,43 @@ class PetugasController extends Controller
     }
 
     // Konfirmasi Peminjaman 
-    public function konfirmasiPeminjaman()
+    public function RiwayatKonfirmasiPeminjaman(Request $request)
     {
         $pengajuans = Peminjaman::where('status', 'menunggu')->latest()->paginate(3);
-        $pengajuans_konfirmasi = Peminjaman::where('status', 'dipinjam')->orWhere('status','ditolak')->latest()->get();
+
+        $query = RiwayatPengajuan::with('peminjaman')
+            ->whereHas('peminjaman', function ($q) {
+                $q->where('petugas_id', Auth::user()->petugas->id);
+            });
+
+        // Filter Waktu
+        if ($request->filter_waktu) {
+            // Filter Minngu ini
+            if ($request->filter_waktu === 'minggu_ini') {
+                $query->whereBetween('created_at', [
+                    now()->startOfWeek(),
+                    now()->endOfWeek()
+                ]);
+            }
+
+            // Filter Bulan Ini
+            if ($request->filter_waktu == 'bulan_ini') {
+                $query->whereMonth('created_at', now()->month)
+                    ->whereYear('created_at', now()->year);
+            }
+
+            // Bulan Lalu
+            if ($request->filter_waktu == 'bulan_lalu') {
+                $lastMonth = now()->subMonth();
+
+                $query->whereMonth('created_at', $lastMonth->month)
+                    ->whereYear('created_at', $lastMonth->year);
+            }
+        }
+
+        $pengajuans_konfirmasi = $query->latest()->get();
+
+
         return view('petugas.pengajuan', [
             "pengajuans"     =>     $pengajuans,
             "pengajuans_konfirmasi"  =>   $pengajuans_konfirmasi
@@ -97,31 +131,46 @@ class PetugasController extends Controller
         $tglTempo = Carbon::parse($request->tanggal_jatuh_tempo);
         $petugas_id  = Auth::user()->Petugas->id;
 
+
         // Cek Apakah Tgl Jatuh Tempo lebih kecil dari tanggal pinjam
         // Atau tgl tempo kurang dari tgl pinjam
         if ($tglTempo->lt($tglPinjam)) {
             return back()->with('error', 'Tanggal jatuh tempo tidak boleh kurang dari tanggal pinjam');
         }
 
+        // Cek Apakah Stok Buku Tersedia
+        $buku = Buku::where('id', $data->buku_id)->first();
+        if ($buku->stok_buku === 0) {
+            return back()->with('error', 'Mohon Maaf, Sepertinya stok buku ini kosong!');
+        }
+
+
         $data->petugas_id = $petugas_id;
         $anggota_id  = $data->anggota_id;
-        $buku = Buku::where('id',$data->buku_id);
         $data->tanggal_jatuh_tempo = $request->tanggal_jatuh_tempo;
         $data->status = "dipinjam";
 
         // Kurangi Stok Buku
         $buku->decrement('stok_buku');
 
-        $data->save();
+        // Simpam Data
+        $data->save(); 
 
-       $pesan = "Peminjaman buku Anda telah disetujui.
+        $pesan = "Peminjaman buku Anda telah disetujui.
                     Rincian:
-                    - Judul Buku        : {$data->buku->judul_buku}
-                    - Tanggal Pinjam    : " . Carbon::parse($data->tanggal_pinjam)->format('d/m/Y') . "
+                    - Judul Buku          : {$data->buku->judul_buku}
+                    - Tanggal Pinjam      : " . Carbon::parse($data->tanggal_pinjam)->format('d/m/Y') . "
                     - Tanggal Jatuh Tempo : " . Carbon::parse($request->tanggal_jatuh_tempo)->format('d/m/Y') . "    
                 Harap mengembalikan buku sebelum tanggal jatuh tempo untuk menghindari denda.";
 
         if ($data) {
+            // Simpan Data Riwayat Konfirmasi Pengajuan
+            RiwayatPengajuan::create([
+                "peminjam_id"    =>    $data->id,
+                "status"         =>    "dipinjamkan"
+            ]);
+
+            // Kirim Pemberitahua ke anggota
             Pemberitahuan::create([
                 "anggota_id"   =>    $anggota_id,
                 "pesan"        =>    $pesan
@@ -148,6 +197,13 @@ class PetugasController extends Controller
         $data->save();
 
         if ($data) {
+            // Simpan Data Riwayat Konfirmasi Pengajuan
+            RiwayatPengajuan::create([
+                "peminjam_id"    =>    $data->id,
+                "status"         =>    "ditolak"
+            ]);
+
+            //Kirim Pemberitahuan ke anggota
             Pemberitahuan::create([
                 "anggota_id"   =>    $anggota_id,
                 "pesan"        =>    $alasan

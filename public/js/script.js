@@ -22,9 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const openModalAjukanBukku = document.querySelectorAll(
         ".btn_open_modal_ajukan",
     );
-    const closeModalAjukan = document.querySelector(
-        ".btn_close_ajukan",
-    );
+    const closeModalAjukan = document.querySelector(".btn_close_ajukan");
     const modalAjukan = document.querySelector(".open_modal_ajukan");
 
     if (modalAjukan) {
@@ -60,20 +58,20 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Simpan Perubahan Profile - Loading
-    const all_form = document.querySelector(".all_form");
-    const btn_simpan = document.querySelector(".btn_simpan_perubahan");
-    const spinner_loading = document.querySelector(".spinner_load");
-    const text_simpan = document.querySelector(".text_simpan");
+    document.querySelectorAll(".all_form").forEach((form) => {
+        form.addEventListener("submit", function () {
+            const btn = form.querySelector(".btn_simpan_perubahan");
+            const spinner = form.querySelector(".spinner_load");
+            const text = form.querySelector(".text_simpan");
 
-    if (all_form && btn_simpan && spinner_loading && text_simpan) {
-        all_form.addEventListener("submit", function () {
-            btn_simpan.disabled = true;
-            btn_simpan.classList.add("opacity-70", "cursor-not-allowed");
-            spinner_loading.classList.remove("hidden");
-            text_simpan.innerHTML = "Tunggu...";
+            if (btn && spinner && text) {
+                btn.disabled = true;
+                btn.classList.add("opacity-70", "cursor-not-allowed");
+                spinner.classList.remove("hidden");
+                text.innerHTML = "Tunggu...";
+            }
         });
-    }
-
+    });
     // Loading Mencari Data
     const formCari = document.querySelector(".form-cari");
     const loading_spinner = document.querySelector("#loading_spinner");

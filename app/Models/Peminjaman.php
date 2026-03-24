@@ -17,4 +17,8 @@ class Peminjaman extends Model
         return $this->belongsTo(Buku::class, 'buku_id');
     }
 
+    public function riwayat_konfirmasi_pengajuan() {
+        return $this->hasMany(RiwayatPengajuan::class);
+    }
+
 }

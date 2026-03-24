@@ -64,7 +64,7 @@ Route::middleware(isPetugas::class)->group(function () {
     Route::get('/dashboard-petugas', [PetugasController::class, 'Dashboard_petugas']);
 
     // Pengajuan
-    Route::get('/pengajuan',[PetugasController::class, 'konfirmasiPeminjaman']);
+    Route::get('/pengajuan',[PetugasController::class, 'RiwayatKonfirmasiPeminjaman']);
     Route::post('/pengajuan/konfirmasi/{id}',[PetugasController::class, 'konfirmasi']);
     Route::post('/pengajuan/tolak/{id}',[PetugasController::class, 'tolak']);
 
