@@ -80,7 +80,7 @@
                     </li>
                 @endrole
 
-                {{-- Daftar Transaksi Kepala Perpustakaan --}}
+                {{-- Pengajuan - Petugas --}}
                 @role('petugas')
                     <li class="mt-4">
                         <a class="{{ request()->is('pengajuan*') ? ' text-[#35094D] font-medium' : 'text-[#35094d90]' }} flex items-center gap-2 text-[16px] font-medium"
@@ -90,6 +90,19 @@
                                     class="w-6 h-6 object-contain" alt="">
                             </div>
                             <span>Pengajuan</span>
+                        </a>
+                    </li>
+                @endrole
+                {{-- Pengembalian - Petugas --}}
+                @role('petugas')
+                    <li class="mt-4">
+                        <a class="{{ request()->is('pengembalian*') ? ' text-[#35094D] font-medium' : 'text-[#35094d90]' }} flex items-center gap-2 text-[16px] font-medium"
+                            href="/pengembalian">
+                            <div class="w-6 h-6 flex items-center justify-center">
+                                <img src="{{ request()->is('pengembalian*') ? asset('icons/svg/transaksi-aktif.svg') : asset('icons/svg/transaksi-inaktif.svg') }}"
+                                    class="w-6 h-6 object-contain rotate-180" alt="">
+                            </div>
+                            <span>Pengembalian</span>
                         </a>
                     </li>
                 @endrole
@@ -121,6 +134,21 @@
                         </a>
                     </li>
                 @endrole
+
+                {{-- Daftar Buku - Petugas --}}
+                @role('petugas')
+                    <li class="mt-4 ">
+                        <a class="{{ request()->is('kelola-buku*') ? ' text-[#35094D] font-medium' : 'text-[#35094d90]' }} flex items-center gap-2 text-[16px]"
+                            href="/kelola-buku">
+                            <div class="w-6 h-6 flex items-center justify-center">
+                                <img src="{{ request()->is('kelola-buku*') ? asset('icons/svg/buku-aktif.svg') : asset('icons/svg/buku-inactive.svg') }}"
+                                    class="w-5 h-5 object-contain" alt="">
+                            </div>
+                            <span>Daftar Buku</span>
+                        </a>
+                    </li>
+                @endrole
+
             </ul>
         </div>
 
@@ -142,16 +170,30 @@
                     </li>
                 @endrole
 
-                {{-- Daftar Buku - Petugas --}}
+                {{-- Aktivitas - Petugas --}}
                 @role('petugas')
                     <li class="mt-4 ">
-                        <a class="{{ request()->is('kelola-buku*') ? ' text-[#35094D] font-medium' : 'text-[#35094d90]' }} flex items-center gap-2 text-[16px]"
-                            href="/kelola-buku">
+                        <a class="{{ request()->is('aktivitas*') ? ' text-[#35094D] font-medium' : 'text-[#35094d90]' }} flex items-center gap-2 text-[16px]"
+                            href="/aktivitas">
                             <div class="w-6 h-6 flex items-center justify-center">
-                                <img src="{{ request()->is('kelola-buku*') ? asset('icons/svg/buku-aktif.svg') : asset('icons/svg/buku-inactive.svg') }}"
+                                <img src="{{ request()->is('aktivitas*') ? asset('icons/svg/activity-aktif.svg') : asset('icons/svg/aktifity-inaktif.svg') }}"
+                                    class="w-10 h-10 object-contain" alt="">
+                            </div>
+                            <span>Aktivitas Saya</span>
+                        </a>
+                    </li>
+                @endrole
+
+                {{-- Aktivitas - Petugas --}}
+                @role('petugas')
+                    <li class="mt-4 ">
+                        <a class="{{ request()->is('kelola-laporan*') ? ' text-[#35094D] font-medium' : 'text-[#35094d90]' }} flex items-center gap-2 text-[16px]"
+                            href="/kelola-laporan">
+                            <div class="w-6 h-6 flex items-center justify-center">
+                                <img src="{{ request()->is('kelola-laporan*') ? asset('icons/svg/laporan-aktif.svg') : asset('icons/svg/laporan-inaktif.svg') }}"
                                     class="w-5 h-5 object-contain" alt="">
                             </div>
-                            <span>Daftar Buku</span>
+                            <span>Laporan</span>
                         </a>
                     </li>
                 @endrole

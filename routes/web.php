@@ -69,6 +69,9 @@ Route::middleware(isPetugas::class)->group(function () {
     Route::post('/pengajuan/konfirmasi/{id}',[PetugasController::class, 'konfirmasi']);
     Route::post('/pengajuan/tolak/{id}',[PetugasController::class, 'tolak']);
 
+    // Aktivitas
+    Route::get('/aktivitas',[PetugasController::class, 'aktivitas']);
+
     // Cetak PDF
     // Pengajuan 
     Route::get('/cetak-pdf/pengajuan',[pdfController::class, 'cetakPengajuan']);

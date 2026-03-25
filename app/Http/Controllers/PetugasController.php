@@ -78,44 +78,20 @@ class PetugasController extends Controller
     // Konfirmasi Peminjaman 
     public function RiwayatKonfirmasiPeminjaman(Request $request)
     {
-        $pengajuans = Peminjaman::where('status', 'menunggu')->latest()->paginate(3);
+        $cari = $request->input('cari');
 
-        $query = RiwayatPengajuan::with('peminjaman')
-            ->whereHas('peminjaman', function ($q) {
-                $q->where('petugas_id', Auth::user()->petugas->id);
-            });
-
-        // Filter Waktu
-        if ($request->filter_waktu) {
-            // Filter Minngu ini
-            if ($request->filter_waktu === 'minggu_ini') {
-                $query->whereBetween('created_at', [
-                    now()->startOfWeek(),
-                    now()->endOfWeek()
-                ]);
-            }
-
-            // Filter Bulan Ini
-            if ($request->filter_waktu == 'bulan_ini') {
-                $query->whereMonth('created_at', now()->month)
-                    ->whereYear('created_at', now()->year);
-            }
-
-            // Bulan Lalu
-            if ($request->filter_waktu == 'bulan_lalu') {
-                $lastMonth = now()->subMonth();
-
-                $query->whereMonth('created_at', $lastMonth->month)
-                    ->whereYear('created_at', $lastMonth->year);
-            }
-        }
-
-        $pengajuans_konfirmasi = $query->latest()->get();
+        $pengajuans = Peminjaman::where('status', 'menunggu')
+            ->when($cari, function ($query, $cari) {
+                $query->whereHas('anggota', function ($q) use ($cari) {
+                    $q->where('nomer_induk', 'like', '%' . $cari . '%')
+                        ->orWhere('nama_lengkap', 'like', '%' . $cari . '%');
+                });
+            })
+            ->paginate(5)->withQueryString();
 
 
         return view('petugas.pengajuan', [
             "pengajuans"     =>     $pengajuans,
-            "pengajuans_konfirmasi"  =>   $pengajuans_konfirmasi
         ]);
     }
 
@@ -154,7 +130,7 @@ class PetugasController extends Controller
         $buku->decrement('stok_buku');
 
         // Simpam Data
-        $data->save(); 
+        $data->save();
 
         $pesan = "Peminjaman buku Anda telah disetujui.
                     Rincian:
@@ -211,5 +187,45 @@ class PetugasController extends Controller
 
             return back()->with('success', 'berhasil menolak pengajuan.');
         }
+    }
+
+    // Aktivitas
+    public function aktivitas(Request $request)
+    {
+        $query = RiwayatPengajuan::with('peminjaman')
+            ->whereHas('peminjaman', function ($q) {
+                $q->where('petugas_id', Auth::user()->petugas->id);
+            });
+
+        // Filter Waktu
+        if ($request->filter_waktu) {
+            // Filter Minngu ini
+            if ($request->filter_waktu === 'minggu_ini') {
+                $query->whereBetween('created_at', [
+                    now()->startOfWeek(),
+                    now()->endOfWeek()
+                ]);
+            }
+
+            // Filter Bulan Ini
+            if ($request->filter_waktu == 'bulan_ini') {
+                $query->whereMonth('created_at', now()->month)
+                    ->whereYear('created_at', now()->year);
+            }
+
+            // Bulan Lalu
+            if ($request->filter_waktu == 'bulan_lalu') {
+                $lastMonth = now()->subMonth();
+
+                $query->whereMonth('created_at', $lastMonth->month)
+                    ->whereYear('created_at', $lastMonth->year);
+            }
+        }
+
+        $pengajuans_konfirmasi = $query->latest()->get();
+
+        return view('petugas.aktivitas', [
+            "pengajuans_konfirmasi"  =>   $pengajuans_konfirmasi
+        ]);
     }
 }

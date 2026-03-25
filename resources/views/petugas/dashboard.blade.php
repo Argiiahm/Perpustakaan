@@ -14,7 +14,7 @@
                 <span class="text-[20px] text-[#FFFFFF]">Jumlah Pengajuan <br> Saat Ini</span>
                 <span class="text-5xl text-[#FFFFFF]">{{ $Pengajuan }}</span>
                 <span class="text-[#FFFFFF90] text-[10px]">
-                    *setiap kamu pinjam angka pinjaman akan <br> bertambah
+                    *angka pengajuan akan <br> bertambah
                 </span>
             </div>
         </div>
