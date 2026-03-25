@@ -73,16 +73,28 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
     // Loading Mencari Data
-    const formCari = document.querySelector(".form-cari");
+    const formsCari = document.querySelectorAll(".form-cari");
     const loading_spinner = document.querySelector("#loading_spinner");
     const text_loading = document.querySelector(".text-loading");
     const modalLoading = document.querySelector(".open_modal_loading");
 
-    if (formCari && loading_spinner && text_loading && modalLoading) {
-        formCari.addEventListener("submit", function () {
-            modalLoading.classList.remove("hidden");
-            loading_spinner.classList.remove("hidden");
-            text_loading.textContent = "Sedang mencari data...";
+    if (formsCari.length > 0 && loading_spinner && text_loading && modalLoading) {
+        formsCari.forEach((form) => {
+            form.addEventListener("submit", function () {
+                modalLoading.classList.remove("hidden");
+                loading_spinner.classList.remove("hidden");
+                
+                if (this.action.includes('cetak-pdf')) {
+                    text_loading.textContent = "Sedang menyiapkan PDF...";
+                } else {
+                    text_loading.textContent = "Sedang mencari data...";
+                }
+                
+                setTimeout(() => {
+                    modalLoading.classList.add("hidden");
+                    loading_spinner.classList.add("hidden");
+                }, 3000);
+            });
         });
     }
 
