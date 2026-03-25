@@ -116,11 +116,15 @@
                 {{-- Filter Preset --}}
 
                 {{-- Tombol Export PDF --}}
-                <a href="#" id="btnExport"
-                    class="flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-all shadow-sm">
-                    <img src="{{ asset('icons/svg/pdf-export.svg') }}" alt="">
-                    <span class="font-medium">Export PDF</span>
-                </a>
+                <form action="/cetak-pdf/pengajuan" method="GET" class="form-cari">
+                    <input type="hidden" name="filter_waktu" value="{{ request('filter_waktu') }}">
+
+                    <button type="submit"
+                        class="flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-all shadow-sm">
+                        <img src="{{ asset('icons/svg/pdf-export.svg') }}" alt="">
+                        <span class="font-medium">Export PDF</span>
+                    </button>
+                </form>
 
             </div>
         </div>
@@ -582,7 +586,7 @@
                 })
             });
 
-            closeModalPengajuan.addEventListener("click",function() {
+            closeModalPengajuan.addEventListener("click", function() {
                 modalDetailPengajuan.classList.add('hidden');
             });
 

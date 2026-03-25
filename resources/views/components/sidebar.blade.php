@@ -225,7 +225,6 @@
                         </a>
                     </li>
                 @endrole
-
             </ul>
         </div>
     </div>

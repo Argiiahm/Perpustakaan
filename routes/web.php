@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\DashboardKepalaPerpusController;
 use App\Http\Controllers\KelolaPenggunaController;
+use App\Http\Controllers\pdfController;
 use App\Http\Controllers\PemberitahuanController;
 use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\PetugasController;
@@ -67,6 +68,10 @@ Route::middleware(isPetugas::class)->group(function () {
     Route::get('/pengajuan',[PetugasController::class, 'RiwayatKonfirmasiPeminjaman']);
     Route::post('/pengajuan/konfirmasi/{id}',[PetugasController::class, 'konfirmasi']);
     Route::post('/pengajuan/tolak/{id}',[PetugasController::class, 'tolak']);
+
+    // Cetak PDF
+    // Pengajuan 
+    Route::get('/cetak-pdf/pengajuan',[pdfController::class, 'cetakPengajuan']);
 
     // Profile Petugas
     Route::get('/profile-petugas', [ProfileController::class, 'profile_petugas']);
