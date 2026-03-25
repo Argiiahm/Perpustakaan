@@ -46,6 +46,8 @@ Route::middleware(isAnggota::class)->group(function () {
     Route::get('/daftar-buku', [AnggotaController::class, 'daftar_buku']);
     // Ajukan Buku
     Route::post('/ajukan-buku', [PeminjamanController::class, 'ajukanBuku']);
+    // Kembalikan Buku
+    Route::post('/kembalikan-buku/{id}',[PeminjamanController::class, 'kembalikanBuku']);
     // Detail Buku
     Route::get('/daftar-buku/detail-buku={buku:id}', [AnggotaController::class, 'detail_buku']);
 

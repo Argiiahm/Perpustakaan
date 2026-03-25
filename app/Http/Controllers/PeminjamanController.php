@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Buku;
 use App\Models\Peminjaman;
+use App\Models\Pengembalian;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -54,5 +55,28 @@ class PeminjamanController extends Controller
         // $buku->decrement('stok_buku');
 
         return back()->with('success', 'selamat, pengajuan buku berhasil silahkan menunggu konfirmasi..');
+    }
+
+    public function kembalikanBuku($id)
+    {
+        $peminjaman = Peminjaman::findOrFail($id);
+
+        $hariIni = Carbon::now();
+        $jatuhTempo = Carbon::parse($peminjaman->tanggal_jatuh_tempo);
+
+        // hitung selisih hari
+        $terlambat = 0;
+
+        if ($hariIni->gt($jatuhTempo)) {
+            $terlambat = $jatuhTempo->diffInDays($hariIni);
+        }
+
+        Pengembalian::create([
+            "peminjam_id"   =>   $peminjaman->id,
+            "total_hari_terlambat" => $terlambat,
+            "status"        =>   "menunggu"
+        ]);
+
+        return back()->with('success', 'Ajukan Pengembalian Berhasil, silahkan menunggu konfirmasi..');
     }
 }

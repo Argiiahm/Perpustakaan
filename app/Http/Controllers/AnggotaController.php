@@ -73,7 +73,13 @@ class AnggotaController extends Controller
     // Halaman Riwayat Pinjaman
     public function riwayat_pinjaman()
     {
-        return view('Anggota.riwayat-pinjaman');
+        $anggota_id = Auth::user()->Anggota->id ?? null;
+        $pengajuans = Peminjaman::whereIn('status', ['dipinjam', 'menunggu'])
+            ->where('anggota_id', $anggota_id)
+            ->paginate(10);
+        return view('Anggota.riwayat-pinjaman', [
+            "pengajuans"   =>    $pengajuans
+        ]);
     }
 
     // Halaman Daftar Buku

@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Modal Kembalikan Buku
+    // Modal Ajukan Buku
     const openModalAjukanBukku = document.querySelectorAll(
         ".btn_open_modal_ajukan",
     );
