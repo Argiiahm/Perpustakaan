@@ -50,7 +50,8 @@ class AnggotaController extends Controller
     // Menampilkan Dashboard Anggota
     public function Dashboard_Anggota()
     {
-        $Pinjaman_aktif = Peminjaman::with('buku')->where('anggota_id', Auth::user()->Anggota->id)
+        $anggota_id = Auth::user()->Anggota->id ?? null;
+        $Pinjaman_aktif = Peminjaman::with('buku')->where('anggota_id', $anggota_id)
             ->where('status', 'dipinjam')
             ->get();
 

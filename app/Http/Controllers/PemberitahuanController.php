@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 class PemberitahuanController extends Controller
 {
     public function index() {
-        $anggota_id     =  Auth::user()->Anggota->id;
+        $anggota_id     =  Auth::user()->Anggota->id ?? null;
         $pemberitahuans = Pemberitahuan::where('anggota_id',$anggota_id)->get();
         return view('Anggota.pemberitahuan',[
             "pemberitahuans"   =>   $pemberitahuans

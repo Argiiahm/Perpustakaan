@@ -70,19 +70,19 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5
-                                              c4.477 0 8.268 2.943 9.542 7
-                                              -1.274 4.057-5.065 7-9.542 7
-                                              -4.477 0-8.268-2.943-9.542-7z" />
+                                                          c4.477 0 8.268 2.943 9.542 7
+                                                          -1.274 4.057-5.065 7-9.542 7
+                                                          -4.477 0-8.268-2.943-9.542-7z" />
                             </svg>
                             <svg class="eye-close h-5 w-5 hidden" xmlns="http://www.w3.org/2000/svg" fill="none"
                                 viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19
-                                              c-4.478 0-8.268-2.943-9.543-7
-                                              a9.956 9.956 0 012.223-3.592M6.18 6.18
-                                              A9.956 9.956 0 0112 5
-                                              c4.478 0 8.268 2.943 9.543 7
-                                              a9.96 9.96 0 01-4.043 4.568M6.18 6.18L4 4
-                                              m2.18 2.18l11.64 11.64" />
+                                                          c-4.478 0-8.268-2.943-9.543-7
+                                                          a9.956 9.956 0 012.223-3.592M6.18 6.18
+                                                          A9.956 9.956 0 0112 5
+                                                          c4.478 0 8.268 2.943 9.543 7
+                                                          a9.96 9.96 0 01-4.043 4.568M6.18 6.18L4 4
+                                                          m2.18 2.18l11.64 11.64" />
                             </svg>
                         </button>
                     </div>
@@ -113,6 +113,9 @@
                     {{-- Nama Lengkap --}}
                     <div class="my-3">
                         <label class="block text-sm font-medium text-gray-700">Nama Lengkap*</label>
+                        @error('nama_lengkap')
+                            <div class="text-red-500 text-sm">{{ $message }}</div>
+                        @enderror
                         <input type="text" name="nama_lengkap"
                             value="{{ old('nama_lengkap', optional($Data->anggota ?? ($Data->petugas ?? $Data->kepalaPerpus))->nama_lengkap) }}"
                             class="mt-1 block w-full border border-gray-200 rounded-md bg-white p-2">
@@ -121,6 +124,9 @@
                     {{-- Nomer Induk --}}
                     <div class="my-3">
                         <label class="block text-sm font-medium text-gray-700">Nomer Induk*</label>
+                        @error('nomer_induk')
+                            <div class="text-red-500 text-sm">{{ $message }}</div>
+                        @enderror
                         <input type="text" name="nomer_induk"
                             value="{{ old('nomer_induk', optional($Data->anggota ?? ($Data->petugas ?? $Data->kepalaPerpus))->nomer_induk) }}"
                             class="mt-1 block w-full border border-gray-200 rounded-md bg-white p-2">
@@ -129,6 +135,9 @@
                     {{-- Jenis Kelamin --}}
                     <div class="my-3">
                         <label class="block text-sm font-medium text-gray-700">Jenis Kelamin*</label>
+                        @error('jenis_kelamin')
+                            <div class="text-red-500 text-sm">{{ $message }}</div>
+                        @enderror
                         <select name="jenis_kelamin"
                             class="mt-1 block w-full border border-gray-200 rounded-md bg-white p-2 text-gray-400">
                             <option value="" disabled {{ old('jenis_kelamin') ? '' : 'selected' }}>Pilih Jenis
@@ -145,6 +154,9 @@
                     {{-- Tanggal Lahir --}}
                     <div class="my-3">
                         <label class="block text-sm font-medium text-gray-700">Tanggal Lahir*</label>
+                        @error('tanggal_lahir')
+                            <div class="text-red-500 text-sm">{{ $message }}</div>
+                        @enderror
                         <input type="date" name="tanggal_lahir"
                             value="{{ old('tanggal_lahir', optional($Data->anggota ?? ($Data->petugas ?? $Data->kepalaPerpus))->tanggal_lahir) }}"
                             class="mt-1 block w-full border border-gray-200 rounded-md bg-white p-2">
@@ -153,6 +165,9 @@
                     {{-- Alamat --}}
                     <div class="my-3">
                         <label class="block text-sm font-medium text-gray-700">Alamat*</label>
+                         @error('alamat')
+                            <div class="text-red-500 text-sm">{{ $message }}</div>
+                        @enderror
                         <textarea name="alamat" class="mt-1 block w-full border border-gray-200 rounded-md bg-white p-2">{{ old('alamat', optional($Data->anggota ?? ($Data->petugas ?? $Data->kepalaPerpus))->alamat) }}</textarea>
                     </div>
                 </div>
@@ -177,64 +192,6 @@
             </div>
         </form>
     </section>
-
-    {{-- Modal Berhasil --}}
-    @if (session('success'))
-        <section class="success_modal fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-center items-center z-50">
-            <div class="bg-white p-6 w-full max-w-[32rem] rounded-xl">
-
-                {{-- Keterangan Modal --}}
-                <div class="flex flex-col items-center gap-4">
-                    <img class="w-32" src="{{ asset('icons/svg/lamp-success.svg') }}" alt="">
-                    <span class="text-[#35094D] font-bold text-center">
-                        {{ session('success') }}
-                    </span>
-                </div>
-
-                {{-- Action Buttons --}}
-                <div class="flex justify-end my-6">
-                    <button class="close_modal_success bg-[#35094D] text-white px-10 py-2 rounded-full cursor-pointer">
-                        Kembali
-                    </button>
-                </div>
-            </div>
-        </section>
-        <script>
-            document.querySelector('.close_modal_success')?.addEventListener('click', function() {
-                document.querySelector('.success_modal').remove();
-                location.reload();
-            });
-        </script>
-    @endif
-
-    {{-- Modal Gagal --}}
-    @if (session('error'))
-        <section class="success_modal fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-center items-center z-50">
-            <div class="bg-white p-6 w-full max-w-[30rem] rounded-xl">
-
-                {{-- Keterangan Modal --}}
-                <div class="flex flex-col items-center gap-4">
-                    <img class="w-52 -ml-20" src="{{ asset('icons/svg/oops.svg') }}" alt="">
-                    <span class="text-[#35094D] font-bold text-center">
-                        {!! session('error') !!}
-                    </span>
-                </div>
-
-                {{-- Action Buttons --}}
-                <div class="flex justify-end my-6">
-                    <button class="close_modal_success bg-[#35094D] text-white px-10 py-2 rounded-full cursor-pointer">
-                        Kembali
-                    </button>
-                </div>
-            </div>
-        </section>
-        <script>
-            document.querySelector('.close_modal_success')?.addEventListener('click', function() {
-                document.querySelector('.success_modal').remove();
-                location.reload();
-            });
-        </script>
-    @endif
 
     <script>
         // Toggle password visibility
