@@ -77,6 +77,7 @@ class AnggotaController extends Controller
         $pengajuans = Peminjaman::whereIn('status', ['dipinjam', 'menunggu'])
             ->where('anggota_id', $anggota_id)
             ->paginate(10);
+
         return view('Anggota.riwayat-pinjaman', [
             "pengajuans"   =>    $pengajuans
         ]);

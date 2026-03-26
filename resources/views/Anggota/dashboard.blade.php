@@ -72,7 +72,9 @@
                                     @elseif ($pinjaman->sisa_hari == 0)
                                         Hari ini
                                     @else
-                                        Terlambat {{ abs($pinjaman->sisa_hari) }} hari
+                                        <span class="text-red-500 font-medium">
+                                            Terlambat {{ abs($pinjaman->sisa_hari) }} hari
+                                        </span>
                                     @endif
                                 @else
                                     -

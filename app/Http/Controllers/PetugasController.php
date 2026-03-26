@@ -105,7 +105,7 @@ class PetugasController extends Controller
         $data = Peminjaman::findOrFail($id);
         $tglPinjam = Carbon::parse($data->tanggal_pinjam);
         $tglTempo = Carbon::parse($request->tanggal_jatuh_tempo);
-        $petugas_id  = Auth::user()->Petugas->id;
+        $petugas_id  = Auth::user()->Petugas->id ?? null;
 
 
         // Cek Apakah Tgl Jatuh Tempo lebih kecil dari tanggal pinjam
@@ -118,6 +118,12 @@ class PetugasController extends Controller
         $buku = Buku::where('id', $data->buku_id)->first();
         if ($buku->stok_buku === 0) {
             return back()->with('error', 'Mohon Maaf, Sepertinya stok buku ini kosong!');
+        }
+
+        // Cek Apakah Pengguna ini sedang pinjam buku sebanyakk 3 buku?
+        $pinjaman = Peminjaman::where('anggota_id', $data->anggota_id)->where('status', 'dipinjam')->count();
+        if ($pinjaman === 3 || $pinjaman >= 3) {
+            return back()->with('error', 'Jumlah Pinjaman Pengguna ini sudah Mencapai batas pinjaman.');
         }
 
 

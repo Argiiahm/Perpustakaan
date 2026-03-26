@@ -33,7 +33,13 @@
                             @if ($pengajuan->status === 'menunggu')
                                 <td class="py-4 text-center text-[#35094D66]">Menunggu...</td>
                             @else
-                                <td class="py-4 text-center">{{ $pengajuan->tanggal_jatuh_tempo }}</td>
+                                @php
+                                    $isTerlambat = \Carbon\Carbon::now()->gt(
+                                        \Carbon\Carbon::parse($pengajuan->tanggal_jatuh_tempo),
+                                    );
+                                @endphp
+                                <td class="py-4 text-center {{ $isTerlambat ? 'text-red-500 font-semibold' : '' }}">
+                                    {{ $pengajuan->tanggal_jatuh_tempo }}</td>
                             @endif
                             <td class="py-4">
                                 <div class="flex justify-center">
@@ -126,9 +132,9 @@
             class="relative bg-white w-full max-w-sm rounded-[2rem] shadow-2xl overflow-hidden transform transition-all scale-100 ring-1 ring-black/5">
             <div class="p-8">
                 <div class="relative w-24 h-24 mx-auto mb-6">
-                    <div class="absolute inset-0 bg-[#35094D]/10 rounded-full animate-pulse"></div>
+                    <div class="absolute inset-0 bg-[#35094D]/10 rounded-full"></div>
                     <div class="relative w-full h-full bg-[#35094D]/5 rounded-full flex items-center justify-center">
-                        <img class="w-12 h-12" src="{{ asset('icons/svg/ajukan-jadwal.svg') }}" alt="Return Book Icon">
+                        <img class="w-12 h-12" src="{{ asset('icons/svg/ajukan-jadwal.svg') }}" alt="">
                     </div>
                 </div>
 
