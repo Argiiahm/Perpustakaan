@@ -43,7 +43,21 @@
                             @endif
                             <td class="py-4">
                                 <div class="flex justify-center">
-                                    <img class="" src="{{ asset('icons/svg/detail.svg') }}" alt="">
+                                    <button class="openModalDetailPengajuan" data-id="{{ $pengajuan->id }}"
+                                        data-nomer_induk="{{ $pengajuan->anggota->nomer_induk }}"
+                                        data-nama="{{ $pengajuan->anggota->nama_lengkap }}"
+                                        data-jk="{{ $pengajuan->anggota->jenis_kelamin }}"
+                                        data-alamat="{{ $pengajuan->anggota->alamat }}"
+                                        data-tgl_pinjam="{{ $pengajuan->tanggal_pinjam }}"
+                                        data-tgl_tempo="{{ $pengajuan->tanggal_jatuh_tempo }}"
+                                        data-status="{{ $pengajuan->status }}"
+                                        data-kode_buku="{{ $pengajuan->buku->kode_buku }}"
+                                        data-judul_buku="{{ $pengajuan->buku->judul_buku }}"
+                                        data-penulis="{{ $pengajuan->buku->penulis }}"
+                                        data-thn_terbit="{{ $pengajuan->buku->tahun_terbit }}" type="button"
+                                        class="flex justify-center cursor-pointer">
+                                        <img src="{{ asset('icons/svg/detail.svg') }}" alt="">
+                                    </button>
                                 </div>
                             </td>
                             <td class="py-4 text-center">
@@ -171,6 +185,9 @@
             </div>
         </div>
     </section>
+
+    {{-- Modal Detail --}}
+    @include('components.modal-detail-pengajuan')
 
 
     <script>

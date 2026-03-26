@@ -149,7 +149,7 @@
              InputTgl_pinjam.value = tgl_pinjam;
              InputTgl_tempo.value = tgl_tempo ?? '-';
 
-             if (status === "dipinjamkan") {
+             if (status === "dipinjamkan" || status === "dipinjam") {
                  InputStatus.classList.add('bg-green-200', 'text-green-500');
                  InputStatus.innerHTML = status;
              } else if (status === "ditolak") {
