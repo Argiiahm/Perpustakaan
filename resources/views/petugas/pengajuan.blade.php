@@ -7,7 +7,7 @@
 
     {{-- Filter --}}
     <section class="mt-20 flex justify-end">
-        {{-- Searching Buku --}}
+        {{-- Searching --}}
         <form action="/pengajuan" method="GET" class="form-cari flex items-center gap-2">
             <div class="relative w-full max-w-[450px]">
                 <div class="absolute inset-y-0 left-4 flex items-center">

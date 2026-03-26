@@ -9,8 +9,8 @@ class Pengembalian extends Model
     protected $table = 'pengembalian_buku';
     protected $guarded = [];
 
-    public function peminjaman() {
-        return $this->belongsTo(Pengembalian::class, 'peminjam_id');
+    public function peminjaman()
+    {
+        return $this->belongsTo(Peminjaman::class, 'peminjam_id');
     }
-
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Buku;
 use App\Models\Pemberitahuan;
 use App\Models\Peminjaman;
+use App\Models\Pengembalian;
 use App\Models\RiwayatPengajuan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -75,8 +76,8 @@ class PetugasController extends Controller
         ]);
     }
 
-    // Konfirmasi Peminjaman 
-    public function RiwayatKonfirmasiPeminjaman(Request $request)
+    // halaman Konfirmasi Peminjaman 
+    public function pengajuan(Request $request)
     {
         $cari = $request->input('cari');
 
@@ -92,6 +93,27 @@ class PetugasController extends Controller
 
         return view('petugas.pengajuan', [
             "pengajuans"     =>     $pengajuans,
+        ]);
+    }
+
+    // Halaman Konfirmasi Pengembalian
+    public function pengembalian(Request $request)
+    {
+        $cari = $request->input('cari');
+
+        $pengembalians = Pengembalian::with('peminjaman.anggota')
+            ->where('status', 'menunggu')
+            ->when($cari, function ($query, $cari) {
+                $query->whereHas('peminjaman', function ($q) use ($cari) {
+                    $q->whereHas('anggota', function ($q2) use ($cari) {
+                        $q2->where('nomer_induk', 'like', '%' . $cari . '%')
+                            ->orWhere('nama_lengkap', 'like', '%' . $cari . '%');
+                    });
+                });
+            })->paginate(5)->withQueryString();
+        // dd($pengembalians);
+        return view('petugas.pengembalian', [
+            "pengembalians"   =>    $pengembalians
         ]);
     }
 
