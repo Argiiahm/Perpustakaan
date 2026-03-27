@@ -106,20 +106,20 @@
      // Modal Detail Pengajuan
      const openModalDetailPengajuan = document.querySelectorAll('.openModalDetailPengajuan');
      const modalDetailPengajuan = document.querySelector('.modal_detail_pengajuan');
-     const closeModalPengajuan = document.querySelector('.closeModalPengajuan');
-     const InputNomerInduk = document.querySelector('.nomer_induk');
-     const InputNama = document.querySelector('.nama_lengkap');
-     const InputJk = document.querySelector('.jenis_kelamin');
-     const InputAlamat = document.querySelector('.alamat');
+     const closeModalPengajuan = modalDetailPengajuan.querySelector('.closeModalPengajuan');
+     const InputNomerInduk = modalDetailPengajuan.querySelector('.nomer_induk');
+     const InputNama = modalDetailPengajuan.querySelector('.nama_lengkap');
+     const InputJk = modalDetailPengajuan.querySelector('.jenis_kelamin');
+     const InputAlamat = modalDetailPengajuan.querySelector('.alamat');
 
-     const InputTgl_pinjam = document.querySelector('.tgl_pinjam');
-     const InputTgl_tempo = document.querySelector('.tgl_tempo');
-     const InputStatus = document.querySelector('.status');
+     const InputTgl_pinjam = modalDetailPengajuan.querySelector('.tgl_pinjam');
+     const InputTgl_tempo = modalDetailPengajuan.querySelector('.tgl_tempo');
+     const InputStatus = modalDetailPengajuan.querySelector('.status');
 
-     const InputKode_buku = document.querySelector('.kode_buku');
-     const InputJudul_buku = document.querySelector('.judul_buku');
-     const InputPenulis = document.querySelector('.penulis');
-     const InputThn_terbit = document.querySelector('.thn_terbit');
+     const InputKode_buku = modalDetailPengajuan.querySelector('.kode_buku');
+     const InputJudul_buku = modalDetailPengajuan.querySelector('.judul_buku');
+     const InputPenulis = modalDetailPengajuan.querySelector('.penulis');
+     const InputThn_terbit = modalDetailPengajuan.querySelector('.thn_terbit');
 
      openModalDetailPengajuan.forEach(btn => {
          btn.addEventListener("click", function() {

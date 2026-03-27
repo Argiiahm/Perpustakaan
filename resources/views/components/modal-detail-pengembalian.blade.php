@@ -118,23 +118,23 @@
      // Modal Detail Pengembalian
      const btnOpenPengembalian = document.querySelectorAll('.openModalDetailPengembalian');
      const modalPengembalian = document.querySelector('.modal_detail_Pengembalian');
-     const btnClosePengembalian = document.querySelector('.closeModalPengembalian');
+     const btnClosePengembalian = modalPengembalian.querySelector('.closeModalPengembalian');
 
-     const pengembalianNomerInduk = document.querySelector('.nomer_induk');
-     const pengembalianNama = document.querySelector('.nama_lengkap');
-     const pengembalianJk = document.querySelector('.jenis_kelamin');
-     const pengembalianAlamat = document.querySelector('.alamat');
+     const pengembalianNomerInduk = modalPengembalian.querySelector('.nomer_induk');
+     const pengembalianNama = modalPengembalian.querySelector('.nama_lengkap');
+     const pengembalianJk = modalPengembalian.querySelector('.jenis_kelamin');
+     const pengembalianAlamat = modalPengembalian.querySelector('.alamat');
 
-     const pengembalianTglPinjam = document.querySelector('.tgl_pinjam');
-     const pengembalianTglTempo = document.querySelector('.tgl_tempo');
-     const pengembalianTglKembali = document.querySelector('.tgl_kembalikan');
-     const pengembalianHariTelat = document.querySelector('.total_hari_terlambat');
-     const pengembalianStatus = document.querySelector('.status');
+     const pengembalianTglPinjam = modalPengembalian.querySelector('.tgl_pinjam');
+     const pengembalianTglTempo = modalPengembalian.querySelector('.tgl_tempo');
+     const pengembalianTglKembali = modalPengembalian.querySelector('.tgl_kembalikan');
+     const pengembalianHariTelat = modalPengembalian.querySelector('.total_hari_terlambat');
+     const pengembalianStatus = modalPengembalian.querySelector('.status');
 
-     const pengembalianKodeBuku = document.querySelector('.kode_buku');
-     const pengembalianJudulBuku = document.querySelector('.judul_buku');
-     const pengembalianPenulis = document.querySelector('.penulis');
-     const pengembalianThnTerbit = document.querySelector('.thn_terbit');
+     const pengembalianKodeBuku = modalPengembalian.querySelector('.kode_buku');
+     const pengembalianJudulBuku = modalPengembalian.querySelector('.judul_buku');
+     const pengembalianPenulis = modalPengembalian.querySelector('.penulis');
+     const pengembalianThnTerbit = modalPengembalian.querySelector('.thn_terbit');
 
      btnOpenPengembalian.forEach(btn => {
          btn.addEventListener("click", function() {
@@ -166,7 +166,6 @@
              pengembalianTglKembali.value = tgl_kembalikan ?? '-';
              pengembalianHariTelat.value = hariTelat ?? 0;
 
-             // reset class dulu biar ga numpuk
              pengembalianStatus.className =
                  "status inline-flex items-center px-3 py-1 rounded-full text-xs font-medium";
 
