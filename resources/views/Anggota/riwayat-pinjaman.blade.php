@@ -139,7 +139,25 @@
                             <td class="py-4 text-center">{{ $pengembalian->tanggal_kembalikan ?? 'N/A' }}</td>
                             <td class="py-4">
                                 <div class="flex justify-center">
-                                    <img src="{{ asset('icons/svg/detail.svg') }}" alt="">
+                                    <button class="openModalDetailPengembalian flex justify-center cursor-pointer"
+                                        data-id="{{ $pengembalian->peminjaman->id }}"
+                                        data-nomer_induk="{{ $pengembalian->peminjaman->anggota->nomer_induk }}"
+                                        data-nama="{{ $pengembalian->peminjaman->anggota->nama_lengkap }}"
+                                        data-jk="{{ $pengembalian->peminjaman->anggota->jenis_kelamin }}"
+                                        data-alamat="{{ $pengembalian->peminjaman->anggota->alamat }}"
+                                        data-tgl_pinjam="{{ $pengembalian->peminjaman->tanggal_pinjam }}"
+                                        data-tgl_tempo="{{ $pengembalian->peminjaman->tanggal_jatuh_tempo }}"
+                                        data-tgl_kembalikan="{{ $pengembalian->tanggal_kembalikan }}"
+                                        data-total_hari_telat="{{ $pengembalian->total_hari_terlambat }}"
+                                        data-status="{{ $pengembalian->peminjaman->status }}"
+                                        data-kode_buku="{{ $pengembalian->peminjaman->buku->kode_buku }}"
+                                        data-judul_buku="{{ $pengembalian->peminjaman->buku->judul_buku }}"
+                                        data-penulis="{{ $pengembalian->peminjaman->buku->penulis }}"
+                                        data-thn_terbit="{{ $pengembalian->peminjaman->buku->tahun_terbit }}"
+                                        type="button">
+
+                                        <img src="{{ asset('icons/svg/detail.svg') }}" alt="">
+                                    </button>
                                 </div>
                             </td>
                             <td class="py-4 text-center">
@@ -209,6 +227,7 @@
 
     {{-- Modal Detail --}}
     @include('components.modal-detail-pengajuan')
+    @include('components.modal-detail-pengembalian')
 
 
     <script>

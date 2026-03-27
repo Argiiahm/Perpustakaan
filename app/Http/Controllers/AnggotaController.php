@@ -79,8 +79,11 @@ class AnggotaController extends Controller
             ->where('anggota_id', $anggota_id)
             ->paginate(10);
 
-        $pengembalians = Pengembalian::with('peminjaman')
-            ->where('status','dikembalikan')
+        $pengembalians = Pengembalian::with([
+            'peminjaman.anggota',
+            'peminjaman.buku'
+        ])
+            ->where('status', 'dikembalikan')
             ->whereHas('peminjaman', function ($query) use ($anggota_id) {
                 $query->where('anggota_id', $anggota_id);
             })
