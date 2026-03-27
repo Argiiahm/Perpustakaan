@@ -61,8 +61,23 @@
                                     {{ $pengembalian->tanggal_kembalikan ?? 'N/A' }}</td>
                             @endif
                             <td class="py-4 flex justify-center">
-                                <button class="openModalDetailpengembalian" type="button"
-                                    class="flex justify-center cursor-pointer">
+                                <button class="openModalDetailPengembalian flex justify-center cursor-pointer"
+                                    data-id="{{ $pengembalian->peminjaman->id }}"
+                                    data-nomer_induk="{{ $pengembalian->peminjaman->anggota->nomer_induk }}"
+                                    data-nama="{{ $pengembalian->peminjaman->anggota->nama_lengkap }}"
+                                    data-jk="{{ $pengembalian->peminjaman->anggota->jenis_kelamin }}"
+                                    data-alamat="{{ $pengembalian->peminjaman->anggota->alamat }}"
+                                    data-tgl_pinjam="{{ $pengembalian->peminjaman->tanggal_pinjam }}"
+                                    data-tgl_tempo="{{ $pengembalian->peminjaman->tanggal_jatuh_tempo }}"
+                                    data-tgl_kembalikan="{{ $pengembalian->tanggal_kembalikan }}"
+                                    data-total_hari_telat="{{ $pengembalian->total_hari_terlambat }}"
+                                    data-status_pinjaman="{{ $pengembalian->peminjaman->status }}"
+                                    data-status_kembalikan="{{ $pengembalian->status }}"
+                                    data-kode_buku="{{ $pengembalian->peminjaman->buku->kode_buku }}"
+                                    data-judul_buku="{{ $pengembalian->peminjaman->buku->judul_buku }}"
+                                    data-penulis="{{ $pengembalian->peminjaman->buku->penulis }}"
+                                    data-thn_terbit="{{ $pengembalian->peminjaman->buku->tahun_terbit }}" type="button">
+
                                     <img src="{{ asset('icons/svg/detail.svg') }}" alt="">
                                 </button>
                             </td>
@@ -77,7 +92,8 @@
                                         Hitung Denda
                                     </button>
                                 @else
-                                    <button type="button" data-id="{{ $pengembalian->id }}" class="openModalPengembalian bg-[#35094D] cursor-pointer text-white px-6 py-2 rounded-full">
+                                    <button type="button" data-id="{{ $pengembalian->id }}"
+                                        class="openModalPengembalian bg-[#35094D] cursor-pointer text-white px-6 py-2 rounded-full">
                                         Konfirmasi
                                     </button>
                                 @endif
@@ -96,6 +112,9 @@
             </div>
         </div>
     </section>
+
+    {{-- Detail Pengembalian Modal --}}
+    @include('components.modal-detail-pengembalian')
 
     {{-- Modal Pengembalian --}}
     <section
@@ -153,7 +172,6 @@
         closeModalPengembalian.addEventListener("click", function() {
             modalPengembalian.classList.add('hidden');
         });
-
     </script>
 
 @endsection

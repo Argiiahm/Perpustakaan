@@ -179,7 +179,8 @@
              pengembalianTglPinjam.value = tgl_pinjam ?? '-';
              pengembalianTglTempo.value = tgl_tempo ?? '-';
              pengembalianTglKembali.value = tgl_kembalikan ?? '-';
-             pengembalianHariTelat.value = hariTelat ?? 0;
+             const hariFix = Math.ceil(hariTelat || 0);
+             pengembalianHariTelat.value = hariFix + " hari";
 
              //  Status Peminjaman
              if (status_pinjaman === "dipinjamkan" || status_pinjaman === "dipinjam") {
