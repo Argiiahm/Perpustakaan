@@ -19,7 +19,8 @@
                         <th class="pb-4 text-center text-gray-400 font-normal">Tanggal Pinjam</th>
                         <th class="pb-4 text-center text-gray-400 font-normal">Tanggal Jatuh Tempo</th>
                         <th class="pb-4 text-center text-gray-400 font-normal">Detail</th>
-                        <th class="pb-4 text-center text-gray-400 font-normal">Status</th>
+                        <th class="pb-4 text-center text-gray-400 font-normal">Status Peminjaman</th>
+                        <th class="pb-4 text-center text-gray-400 font-normal">Status Pengembalian</th>
                         <th class="pb-4 text-center text-gray-400 font-normal">Aksi</th>
                     </tr>
                 </thead>
@@ -68,6 +69,17 @@
                                 @else
                                     <span class="bg-[#16C09861] text-[#008767] px-6 py-2 rounded-full">
                                         {{ $pengajuan->status }}
+                                    </span>
+                                @endif
+                            </td>
+                            <td class="py-4 text-center">
+                                @if (optional($pengajuan->pengembalian)->status === 'menunggu')
+                                    <span class="bg-[#f99c2272] text-white px-6 py-2 rounded-full">
+                                        menunggu konfirmasi
+                                    </span>
+                                @else
+                                    <span class="px-6 py-2 rounded-full">
+                                        -
                                     </span>
                                 @endif
                             </td>

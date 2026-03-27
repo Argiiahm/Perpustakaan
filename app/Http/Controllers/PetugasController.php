@@ -217,6 +217,40 @@ class PetugasController extends Controller
         }
     }
 
+    // Konfirmasi Pengembalian
+    public function pengembalianKonfirmasi(Request $request, $id)
+    {
+        $pengembalian = Pengembalian::findOrFail($id);
+
+        $anggota_id = $pengembalian->peminjaman->anggota->id;
+
+
+        $pesan1 = "Pengembalian buku Anda telah dikonfirmasi.
+                    Rincian:
+                    - Judul Buku          : {$pengembalian->peminjaman->buku->judul_buku}
+                    - Tanggal Kembalian      : " . Carbon::parse($pengembalian->tanggal_kembalian)->format('d/m/Y') . "
+                Terimakasih telah meminjam buku di perpustakaan kami dan terima kasih sudah mengembalikan buku tepat waktu.";
+
+        $pengembalian->jumlah_denda = $request->jumlah_denda ?? 0;
+        $pengembalian->total_bayar = $request->total_bayar ?? null;
+        $pengembalian->jumlah_bayar = $request->jumlah_bayar ?? null;
+        $pengembalian->jumlah_kembalian = $request->jumlah_kembalian ?? null;
+        $pengembalian->status = "dikembalikan";
+
+        $pengembalian->save();
+
+        if ($pengembalian) {
+            // Kirim Pemberitahua ke anggota
+            Pemberitahuan::create([
+                "anggota_id"   =>    $anggota_id,
+                "pesan"        =>    $pesan1
+            ]);
+
+
+            return back()->with('success', 'pengembalian berhasil di konfirmasi');
+        }
+    }
+
     // Aktivitas
     public function aktivitas(Request $request)
     {

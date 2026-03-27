@@ -74,6 +74,7 @@ class PeminjamanController extends Controller
         Pengembalian::create([
             "peminjam_id"   =>   $peminjaman->id,
             "total_hari_terlambat" => $terlambat,
+            "tanggal_kembalikan"   => Carbon::now(),
             "status"        =>   "menunggu"
         ]);
 
