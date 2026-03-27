@@ -237,6 +237,15 @@ class PetugasController extends Controller
         $pengembalian->jumlah_kembalian = $request->jumlah_kembalian ?? null;
         $pengembalian->status = "dikembalikan";
 
+        // Peminjaman Update Status
+        $peminjaman = $pengembalian->peminjaman;
+        $peminjaman->status = "dikembalikan";
+
+        // Kembalikan Stok Buku
+        $buku = $peminjaman->buku;
+        $buku->increment('stok_buku');
+
+        $peminjaman->save();
         $pengembalian->save();
 
         if ($pengembalian) {
