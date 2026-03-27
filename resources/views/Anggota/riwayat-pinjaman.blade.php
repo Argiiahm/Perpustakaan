@@ -100,6 +100,10 @@
                             </td>
                         </tr>
                     @empty
+                        <tr>
+                            <td colspan="9" class="text-center py-4 text-gray-500">Tidak ada data yang ditemukan.
+                            </td>
+                        </tr>
                     @endforelse
                 </tbody>
             </table>
@@ -116,35 +120,40 @@
             <table class="w-full">
                 <thead>
                     <tr class="text-left border-b border-gray-200">
-                        <th class="pb-4 text-center text-gray-400 font-normal">Cover</th>
+                        <th class="pb-4 text-center text-gray-400 font-normal">Kode Buku</th>
                         <th class="pb-4 text-center text-gray-400 font-normal">Judul Buku</th>
                         <th class="pb-4 text-center text-gray-400 font-normal">Tanggal Pinjam</th>
-                        <th class="pb-4 text-center text-gray-400 font-normal">Tanggal Jatuh Tempo</th>
+                        <th class="pb-4 text-center text-gray-400 font-normal">Tanggal Kembalikan</th>
                         <th class="pb-4 text-center text-gray-400 font-normal">Detail</th>
-                        <th class="pb-4 text-center text-gray-400 font-normal">Status</th>
+                        <th class="pb-4 text-center text-gray-400 font-normal">Status Buku</th>
                     </tr>
                 </thead>
                 <tbody class="text-[#35094D]">
-                    <tr class="border-b border-gray-200">
-                        <td class="py-4 flex justify-center">
-                            <img class="w-10"
-                                src="https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1516602134i/36393774.jpg"
-                                alt="">
-                        </td>
-                        <td class="py-4 text-center">Laut Bercerita</td>
-                        <td class="py-4 text-center">20/1/2026</td>
-                        <td class="py-4 text-center">1/2/2026</td>
-                        <td class="py-4">
-                            <div class="flex justify-center">
-                                <img src="{{ asset('icons/svg/detail.svg') }}" alt="">
-                            </div>
-                        </td>
-                        <td class="py-4 text-center">
-                            <span class="bg-[#16C09861] text-[#008767] px-6 py-2 rounded-full">
-                                Dikembalikan
-                            </span>
-                        </td>
-                    </tr>
+                    @forelse ($pengembalians as $pengembalian)
+                        <tr class="border-b border-gray-200">
+                            <td class="py-4 text-center">
+                                {{ $pengembalian->peminjaman->buku->kode_buku ?? 'N/A' }}
+                            </td>
+                            <td class="py-4 text-center">{{ $pengembalian->peminjaman->buku->judul_buku ?? 'N/A' }}</td>
+                            <td class="py-4 text-center">{{ $pengembalian->peminjaman->tanggal_pinjam ?? 'N/A' }}</td>
+                            <td class="py-4 text-center">{{ $pengembalian->tanggal_kembalikan ?? 'N/A' }}</td>
+                            <td class="py-4">
+                                <div class="flex justify-center">
+                                    <img src="{{ asset('icons/svg/detail.svg') }}" alt="">
+                                </div>
+                            </td>
+                            <td class="py-4 text-center">
+                                <span class="bg-[#16C09861] text-[#008767] px-6 py-2 rounded-full">
+                                    {{ $pengembalian->status ?? 'Dikembalikan' }}
+                                </span>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="9" class="text-center py-4 text-gray-500">Tidak ada data yang ditemukan.
+                            </td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

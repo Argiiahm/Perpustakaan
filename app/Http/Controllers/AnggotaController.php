@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Buku;
 use App\Models\Peminjaman;
+use App\Models\Pengembalian;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -78,8 +79,17 @@ class AnggotaController extends Controller
             ->where('anggota_id', $anggota_id)
             ->paginate(10);
 
+        $pengembalians = Pengembalian::with('peminjaman')
+            ->where('status','dikembalikan')
+            ->whereHas('peminjaman', function ($query) use ($anggota_id) {
+                $query->where('anggota_id', $anggota_id);
+            })
+            ->paginate(10);
+        // dd($pengembalians);
+
         return view('Anggota.riwayat-pinjaman', [
-            "pengajuans"   =>    $pengajuans
+            "pengajuans"   =>    $pengajuans,
+            "pengembalians" =>   $pengembalians
         ]);
     }
 
