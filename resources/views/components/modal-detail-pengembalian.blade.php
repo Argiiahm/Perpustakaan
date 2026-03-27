@@ -75,11 +75,23 @@
                                  class="total_hari_terlambat w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-700 font-semibold">
                          </div>
                      </div>
-                     <div>
-                         <label class="block text-[10px] font-bold text-gray-500 uppercase mb-1">Status</label>
-                         <span class="status inline-flex items-center px-3 py-1 rounded-full text-xs font-medium">
-                             -
-                         </span>
+                     <div class="flex gap-8 items-center">
+                         <div>
+                             <label class="block text-[10px] font-bold text-gray-500 uppercase mb-1">Status
+                                 Pinjaman</label>
+                             <span
+                                 class="status_pinjaman inline-flex items-center px-3 py-1 rounded-full text-xs font-medium">
+                                 -
+                             </span>
+                         </div>
+                         <div>
+                             <label class="block text-[10px] font-bold text-gray-500 uppercase mb-1">Status
+                                 Kembalian</label>
+                             <span
+                                 class="status_pengembalian inline-flex items-center px-3 py-1 rounded-full text-xs font-medium">
+                                 -
+                             </span>
+                         </div>
                      </div>
                  </div>
 
@@ -129,7 +141,8 @@
      const pengembalianTglTempo = modalPengembalian.querySelector('.tgl_tempo');
      const pengembalianTglKembali = modalPengembalian.querySelector('.tgl_kembalikan');
      const pengembalianHariTelat = modalPengembalian.querySelector('.total_hari_terlambat');
-     const pengembalianStatus = modalPengembalian.querySelector('.status');
+     const pengembalianStatusPinjaman = modalPengembalian.querySelector('.status_pinjaman');
+     const pengembalianStatusPengembalian = modalPengembalian.querySelector('.status_pengembalian');
 
      const pengembalianKodeBuku = modalPengembalian.querySelector('.kode_buku');
      const pengembalianJudulBuku = modalPengembalian.querySelector('.judul_buku');
@@ -148,7 +161,9 @@
              const tgl_kembalikan = this.dataset.tgl_kembalikan;
              const hariTelat = this.dataset.total_hari_telat;
 
-             const status = this.dataset.status;
+             const status_pinjaman = this.dataset.status_pinjaman;
+             const status_kembalikan = this.dataset.status_kembalikan;
+
              const kode_buku = this.dataset.kode_buku;
              const judul_buku = this.dataset.judul_buku;
              const penulis = this.dataset.penulis;
@@ -166,18 +181,23 @@
              pengembalianTglKembali.value = tgl_kembalikan ?? '-';
              pengembalianHariTelat.value = hariTelat ?? 0;
 
-             pengembalianStatus.className =
-                 "status inline-flex items-center px-3 py-1 rounded-full text-xs font-medium";
-
-             if (status === "dipinjamkan" || status === "dipinjam") {
-                 pengembalianStatus.classList.add('bg-green-200', 'text-green-500');
-             } else if (status === "ditolak") {
-                 pengembalianStatus.classList.add('bg-red-200', 'text-red-500');
-             } else {
-                 pengembalianStatus.classList.add('bg-yellow-200', 'text-yellow-500');
+             //  Status Peminjaman
+             if (status_pinjaman === "dipinjamkan" || status_pinjaman === "dipinjam") {
+                 pengembalianStatusPinjaman.classList.add('bg-green-200', 'text-green-500');
+             } else if (status_pinjaman === 'dikembalikan') {
+                 pengembalianStatusPinjaman.classList.add('bg-blue-200', 'text-blue-500');
              }
 
-             pengembalianStatus.innerHTML = status ?? '-';
+             pengembalianStatusPinjaman.innerHTML = status_pinjaman ?? '-';
+
+             //  Status Pengembalian
+             if (status_kembalikan === "menunggu") {
+                 pengembalianStatusPengembalian.classList.add('bg-yellow-200', 'text-yellow-500');
+             } else if (status_kembalikan === 'dikembalikan') {
+                 pengembalianStatusPengembalian.classList.add('bg-blue-200', 'text-blue-500');
+             }
+
+             pengembalianStatusPengembalian.innerHTML = status_kembalikan ?? '-';
 
              pengembalianKodeBuku.value = kode_buku ?? '-';
              pengembalianJudulBuku.value = judul_buku ?? '-';
