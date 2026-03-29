@@ -72,7 +72,7 @@
                         @endif
                         <th class="pb-4 text-center text-gray-400 font-normal">Petugas</th>
                         <th class="pb-4 text-center text-gray-400 font-normal">Detail</th>
-                        <th class="pb-4 text-center text-gray-400 font-normal">Status</th>
+                        <th class="pb-4 text-center text-gray-400 font-normal">Status Konfirmasi</th>
                     </tr>
                 </thead>
                 <tbody class="text-[#35094D]">

@@ -116,7 +116,7 @@
                     <th>Nama Peminjam</th>
                     <th>Tgl Pinjam</th>
                     <th>Jatuh Tempo</th>
-                    <th>Status</th>
+                    <th>Status Konfirmasi</th>
                 </tr>
             </thead>
             <tbody>

@@ -40,10 +40,10 @@
         {{-- Jumlah Keseluruhan Pengajuan --}}
         <div class="bg-[#4C5EFD] p-6 rounded-[32px]">
             <div class="flex flex-col gap-4">
-                <span class="text-[20px] text-[#FFFFFF]">Jumlah Keseluruhan <br> Pengajuan</span>
-                <span class="text-5xl text-[#FFFFFF]">9</span>
+                <span class="text-[20px] text-[#FFFFFF]">Jumlah Keseluruhan <br> Peminjaman</span>
+                <span class="text-5xl text-[#FFFFFF]">{{ $jumlah_peminjaman }}</span>
                 <span class="text-[#FFFFFF90] text-[10px]">
-                    *Menampilkan Jumlah Keseluruhan <br> Pengajuan
+                    *Menampilkan Jumlah Keseluruhan <br> Peminjaman
                 </span>
             </div>
         </div>
@@ -51,7 +51,7 @@
         <div class="bg-[#31CEA8] p-6 rounded-[32px]">
             <div class="flex flex-col gap-4">
                 <span class="text-[20px] text-[#FFFFFF]">Jumlah Keseluruhan <br> Pengembalian</span>
-                <span class="text-5xl text-[#FFFFFF]">9</span>
+                <span class="text-5xl text-[#FFFFFF]">{{ $jumlah_pengembalian }}</span>
                 <span class="text-[#FFFFFF90] text-[10px]">
                     *Menampilkan Jumlah Keseluruhan <br> Pengembalian
                 </span>

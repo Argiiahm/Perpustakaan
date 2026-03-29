@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Buku;
+use App\Models\Peminjaman;
 use App\Models\Pengembalian;
 use App\Models\RiwayatPengajuan;
 use App\Models\User;
@@ -30,13 +31,32 @@ class KepalaPerpusController extends Controller
         return Buku::count();
     }
 
+    // Jumlah keseluruhan peminjaman
+    private function jumlahPeminjaman()
+    {
+        $peminjaman = RiwayatPengajuan::where('status', 'dipinjamkan')
+            ->count();
+         return $peminjaman;
+    }
+
+    // Jumlah keseluruhan pengembalian
+    private function jumlahPengembalian()
+    {
+        $pengembalian = Pengembalian::where('status', 'dikembalikan')
+            ->count();
+         return $pengembalian;
+    }
+
+
     // Dashboard Kepala Perpustakaan
     public function Dashboard_Kepala_Perpustakaan()
     {
         return view('Kepala_perpus.dashboard', [
             "Jumlah_Anggota" => $this->jumlahAnggota(),
             "Jumlah_Petugas" => $this->jumlahPetugas(),
-            "jumlah_buku"    => $this->jumlahBuku()
+            "jumlah_buku"    => $this->jumlahBuku(),
+            "jumlah_peminjaman" => $this->jumlahPeminjaman(),
+            "jumlah_pengembalian"  =>  $this->jumlahPengembalian()
         ]);
     }
 
