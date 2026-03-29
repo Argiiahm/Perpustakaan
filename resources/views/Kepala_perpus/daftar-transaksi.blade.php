@@ -70,6 +70,7 @@
                             <th class="pb-4 text-center text-gray-400 font-normal">Tanggal Pinjam</th>
                             <th class="pb-4 text-center text-gray-400 font-normal">Tanggal Jatuh Tempo</th>
                         @endif
+                        <th class="pb-4 text-center text-gray-400 font-normal">Petugas</th>
                         <th class="pb-4 text-center text-gray-400 font-normal">Detail</th>
                         <th class="pb-4 text-center text-gray-400 font-normal">Status</th>
                     </tr>
@@ -93,6 +94,7 @@
                                 <td class="py-4 text-center">{{ $item->peminjaman->tanggal_pinjam ?? 'N/A' }}</td>
                                 <td class="py-4 text-center">{{ $item->peminjaman->tanggal_jatuh_tempo ?? 'N/A' }}</td>
                             @endif
+                            <td class="py-4 text-center">{{ $item->peminjaman->petugas->nama_lengkap ?? 'N/A' }}</td>
                             <td class="py-4">
                                 @if ($jenis_transaksi === 'pengembalian')
                                     <button class="openModalDetailPengembalian mx-auto flex justify-center cursor-pointer"
