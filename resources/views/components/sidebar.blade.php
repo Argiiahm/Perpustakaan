@@ -184,14 +184,6 @@
 
                 @role('anggota')
                     <li>
-                        <a href="/tagihan" class="{{ request()->is('tagihan*') ? 'text-[#35094D] font-semibold' : 'text-[#35094d90]' }} flex items-center gap-2 text-[16px]">
-                            <div class="w-6 h-6 flex items-center justify-center">
-                                <img src="{{ request()->is('tagihan*') ? asset('icons/svg/payment-aktif.svg') : asset('icons/svg/payment-inaktif.svg') }}" class="w-6 h-6 object-contain" alt="">
-                            </div>
-                            <span>Tagihan</span>
-                        </a>
-                    </li>
-                    <li>
                         <a href="/profile-anggota" class="{{ request()->is('profile-anggota*') ? 'text-[#35094D] font-semibold' : 'text-[#35094d90]' }} flex items-center gap-2 text-[16px]">
                             <div class="w-6 h-6 flex items-center justify-center">
                                 <img src="{{ request()->is('profile-aktif.svg') ? asset('icons/svg/profile-aktif.svg') : asset('icons/svg/profile-inactive.svg') }}" class="w-6 h-6 object-contain" alt="">
@@ -250,7 +242,6 @@
     </section>
 
     <script>
-        // Logika Modal sederhana
         const openModalBtn = document.querySelector('.btn_open_modal');
         const closeModalBtn = document.querySelector('.btn_close');
         const modal = document.querySelector('.open_modal');
@@ -258,7 +249,6 @@
         openModalBtn.addEventListener('click', () => modal.classList.remove('hidden'));
         closeModalBtn.addEventListener('click', () => modal.classList.add('hidden'));
 
-        // Logika Loading
         const logoutForm = document.getElementById('logout_form');
         const btnLogout = document.getElementById('btn_logout');
         const spinner = document.getElementById('spinner');

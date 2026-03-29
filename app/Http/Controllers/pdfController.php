@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pengembalian;
 use App\Models\RiwayatPengajuan;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
@@ -13,17 +14,28 @@ class pdfController extends Controller
     public function cetakPengajuan(Request $request)
     {
         $nama = Auth::user()->Petugas->nama_lengkap ?? Auth::user()->username;
+        $jenis_aktivitas = $request->input('jenis_aktivitas', 'pengajuan');
 
-        $query = RiwayatPengajuan::with('peminjaman')
-            ->whereHas('peminjaman', function ($q) {
-                $q->where('petugas_id', Auth::user()->petugas->id);
-            });
+        if ($jenis_aktivitas === 'pengembalian') {
+            $query = Pengembalian::with(['peminjaman.buku', 'peminjaman.anggota'])
+                ->where('status', 'dikembalikan')
+                ->whereHas('peminjaman', function ($q) {
+                    $q->where('petugas_id', Auth::user()->petugas->id);
+                });
+        } else {
+            $query = RiwayatPengajuan::with('peminjaman')
+                ->whereHas('peminjaman', function ($q) {
+                    $q->where('petugas_id', Auth::user()->petugas->id);
+                });
+        }
 
         // Filter Waktu
         if ($request->filter_waktu) {
-            // Filter Minngu ini
+            $dateColumn = ($jenis_aktivitas === 'pengembalian') ? 'updated_at' : 'created_at';
+
+            // Filter Minggu ini
             if ($request->filter_waktu === 'minggu_ini') {
-                $query->whereBetween('created_at', [
+                $query->whereBetween($dateColumn, [
                     now()->startOfWeek(),
                     now()->endOfWeek()
                 ]);
@@ -31,25 +43,32 @@ class pdfController extends Controller
 
             // Filter Bulan Ini
             if ($request->filter_waktu == 'bulan_ini') {
-                $query->whereMonth('created_at', now()->month)
-                    ->whereYear('created_at', now()->year);
+                $query->whereMonth($dateColumn, now()->month)
+                    ->whereYear($dateColumn, now()->year);
             }
 
             // Bulan Lalu
             if ($request->filter_waktu == 'bulan_lalu') {
-                $lastMonth = now()->subMonth();
+                $lastMonth = now()->subMonthNoOverflow();
 
-                $query->whereMonth('created_at', $lastMonth->month)
-                    ->whereYear('created_at', $lastMonth->year);
+                $query->whereMonth($dateColumn, $lastMonth->month)
+                    ->whereYear($dateColumn, $lastMonth->year);
             }
         }
 
-        $pengajuans_konfirmasi = $query->latest()->get();
-        $pdf = Pdf::loadView('pdf.pengajuan', [
-            "pengajuans_konfirmasi"  =>   $pengajuans_konfirmasi
-        ]);
-
+        $aktivitas_data = $query->latest()->get();
         $namaFile = Str::slug($nama);
-        return $pdf->download('pengajuan-konfirmasi-' . $namaFile . '.pdf');
+
+        if ($jenis_aktivitas === 'pengembalian') {
+            $pdf = Pdf::loadView('pdf.pengembalian', [
+                "aktivitas_data" => $aktivitas_data
+            ]);
+            return $pdf->download('pengembalian-konfirmasi-' . $namaFile . '.pdf');
+        } else {
+            $pdf = Pdf::loadView('pdf.pengajuan', [
+                "pengajuans_konfirmasi" => $aktivitas_data
+            ]);
+            return $pdf->download('pengajuan-konfirmasi-' . $namaFile . '.pdf');
+        }
     }
 }

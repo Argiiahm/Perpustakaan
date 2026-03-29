@@ -140,14 +140,14 @@
                             <td class="py-4">
                                 <div class="flex justify-center">
                                     <button class="openModalDetailPengembalian flex justify-center cursor-pointer"
-                                        data-id="{{ $pengembalian->peminjaman->id }}"
+                                       data-id="{{ $pengembalian->peminjaman->id }}"
                                         data-nomer_induk="{{ $pengembalian->peminjaman->anggota->nomer_induk }}"
                                         data-nama="{{ $pengembalian->peminjaman->anggota->nama_lengkap }}"
                                         data-jk="{{ $pengembalian->peminjaman->anggota->jenis_kelamin }}"
                                         data-alamat="{{ $pengembalian->peminjaman->anggota->alamat }}"
                                         data-tgl_pinjam="{{ $pengembalian->peminjaman->tanggal_pinjam }}"
                                         data-tgl_tempo="{{ $pengembalian->peminjaman->tanggal_jatuh_tempo }}"
-                                        data-tgl_kembalikan="{{ $pengembalian->tanggal_kembalikan }}"
+                                        data-tgl_kembalikan="{{ $pengembalian->tanggal_kembalikan ?? $pengembalian->updated_at->format('Y-m-d') }}"
                                         data-total_hari_telat="{{ $pengembalian->total_hari_terlambat }}"
                                         data-status_pinjaman="{{ $pengembalian->peminjaman->status }}"
                                         data-status_kembalikan="{{ $pengembalian->status }}"
@@ -155,8 +155,10 @@
                                         data-judul_buku="{{ $pengembalian->peminjaman->buku->judul_buku }}"
                                         data-penulis="{{ $pengembalian->peminjaman->buku->penulis }}"
                                         data-thn_terbit="{{ $pengembalian->peminjaman->buku->tahun_terbit }}"
-                                        type="button">
-
+                                        data-jumlah_denda="{{ $pengembalian->jumlah_denda }}"
+                                        data-total_bayar="{{ $pengembalian->total_bayar }}"
+                                        data-jumlah_bayar="{{ $pengembalian->jumlah_bayar }}"
+                                        data-jumlah_kembalian="{{ $pengembalian->jumlah_kembalian }}" type="button">
                                         <img src="{{ asset('icons/svg/detail.svg') }}" alt="">
                                     </button>
                                 </div>

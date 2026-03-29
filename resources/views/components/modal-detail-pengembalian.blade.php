@@ -121,6 +121,35 @@
                          </div>
                      </div>
                  </div>
+
+                 <div class="space-y-4 pt-4 border-t border-gray-200">
+                     <div class="mb-2">
+                         <h3 class="font-semibold text-gray-400 uppercase tracking-wider text-sm">Rincian Pembayaran Denda</h3>
+                     </div>
+                     <div class="grid grid-cols-2 gap-4">
+                         <div>
+                             <label class="block text-[10px] font-bold text-gray-500 uppercase mb-1">Total Denda</label>
+                             <input type="text" readonly value=""
+                                 class="jumlah_denda w-full bg-red-50 border border-red-100 rounded-lg px-3 py-2 text-sm text-red-600 font-bold">
+                         </div>
+                         <div>
+                             <label class="block text-[10px] font-bold text-gray-500 uppercase mb-1">Jumlah Bayar (Tunai)</label>
+                             <input type="text" readonly value=""
+                                 class="jumlah_bayar w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-700 font-bold">
+                         </div>
+                         <div>
+                             <label class="block text-[10px] font-bold text-gray-500 uppercase mb-1">Kembalian</label>
+                             <input type="text" readonly value=""
+                                 class="jumlah_kembalian w-full bg-green-50 border border-green-100 rounded-lg px-3 py-2 text-sm text-green-600 font-bold">
+                         </div>
+                         <div>
+                             <label class="block text-[10px] font-bold text-gray-500 uppercase mb-1">Total Denda Bayar</label>
+                             <input type="text" readonly value=""
+                                 class="total_bayar w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-700 font-bold">
+                         </div>
+                     </div>
+                 </div>
+
              </div>
          </div>
      </div>
@@ -130,84 +159,108 @@
      // Modal Detail Pengembalian
      const btnOpenPengembalian = document.querySelectorAll('.openModalDetailPengembalian');
      const modalPengembalian = document.querySelector('.modal_detail_Pengembalian');
-     const btnClosePengembalian = modalPengembalian.querySelector('.closeModalPengembalian');
+     
+     if (modalPengembalian) {
+         const btnClosePengembalian = modalPengembalian.querySelector('.closeModalPengembalian');
 
-     const pengembalianNomerInduk = modalPengembalian.querySelector('.nomer_induk');
-     const pengembalianNama = modalPengembalian.querySelector('.nama_lengkap');
-     const pengembalianJk = modalPengembalian.querySelector('.jenis_kelamin');
-     const pengembalianAlamat = modalPengembalian.querySelector('.alamat');
+         const pengembalianNomerInduk = modalPengembalian.querySelector('.nomer_induk');
+         const pengembalianNama = modalPengembalian.querySelector('.nama_lengkap');
+         const pengembalianJk = modalPengembalian.querySelector('.jenis_kelamin');
+         const pengembalianAlamat = modalPengembalian.querySelector('.alamat');
 
-     const pengembalianTglPinjam = modalPengembalian.querySelector('.tgl_pinjam');
-     const pengembalianTglTempo = modalPengembalian.querySelector('.tgl_tempo');
-     const pengembalianTglKembali = modalPengembalian.querySelector('.tgl_kembalikan');
-     const pengembalianHariTelat = modalPengembalian.querySelector('.total_hari_terlambat');
-     const pengembalianStatusPinjaman = modalPengembalian.querySelector('.status_pinjaman');
-     const pengembalianStatusPengembalian = modalPengembalian.querySelector('.status_pengembalian');
+         const pengembalianTglPinjam = modalPengembalian.querySelector('.tgl_pinjam');
+         const pengembalianTglTempo = modalPengembalian.querySelector('.tgl_tempo');
+         const pengembalianTglKembali = modalPengembalian.querySelector('.tgl_kembalikan');
+         const pengembalianHariTelat = modalPengembalian.querySelector('.total_hari_terlambat');
+         const pengembalianStatusPinjaman = modalPengembalian.querySelector('.status_pinjaman');
+         const pengembalianStatusPengembalian = modalPengembalian.querySelector('.status_pengembalian');
 
-     const pengembalianKodeBuku = modalPengembalian.querySelector('.kode_buku');
-     const pengembalianJudulBuku = modalPengembalian.querySelector('.judul_buku');
-     const pengembalianPenulis = modalPengembalian.querySelector('.penulis');
-     const pengembalianThnTerbit = modalPengembalian.querySelector('.thn_terbit');
+         const pengembalianKodeBuku = modalPengembalian.querySelector('.kode_buku');
+         const pengembalianJudulBuku = modalPengembalian.querySelector('.judul_buku');
+         const pengembalianPenulis = modalPengembalian.querySelector('.penulis');
+         const pengembalianThnTerbit = modalPengembalian.querySelector('.thn_terbit');
 
-     btnOpenPengembalian.forEach(btn => {
-         btn.addEventListener("click", function() {
-             const no_induk = this.dataset.nomer_induk;
-             const nama_lengkap = this.dataset.nama;
-             const jk = this.dataset.jk;
-             const alamat = this.dataset.alamat;
+         const pengembalianJumlahDenda = modalPengembalian.querySelector('.jumlah_denda');
+         const pengembalianJumlahBayar = modalPengembalian.querySelector('.jumlah_bayar');
+         const pengembalianJumlahKembalian = modalPengembalian.querySelector('.jumlah_kembalian');
+         const pengembalianTotalBayar = modalPengembalian.querySelector('.total_bayar');
 
-             const tgl_pinjam = this.dataset.tgl_pinjam;
-             const tgl_tempo = this.dataset.tgl_tempo;
-             const tgl_kembalikan = this.dataset.tgl_kembalikan;
-             const hariTelat = this.dataset.total_hari_telat;
+         btnOpenPengembalian.forEach(btn => {
+             btn.addEventListener("click", function() {
+                 const no_induk = this.dataset.nomer_induk;
+                 const nama_lengkap = this.dataset.nama;
+                 const jk = this.dataset.jk;
+                 const alamat = this.dataset.alamat;
 
-             const status_pinjaman = this.dataset.status_pinjaman;
-             const status_kembalikan = this.dataset.status_kembalikan;
+                 const tgl_pinjam = this.dataset.tgl_pinjam;
+                 const tgl_tempo = this.dataset.tgl_tempo;
+                 const tgl_kembalikan = this.dataset.tgl_kembalikan;
+                 const hariTelat = this.dataset.total_hari_telat;
 
-             const kode_buku = this.dataset.kode_buku;
-             const judul_buku = this.dataset.judul_buku;
-             const penulis = this.dataset.penulis;
-             const thn_terbit = this.dataset.thn_terbit;
+                 const status_pinjaman = this.dataset.status_pinjaman;
+                 const status_kembalikan = this.dataset.status_kembalikan;
 
-             modalPengembalian.classList.remove("hidden");
+                 const kode_buku = this.dataset.kode_buku;
+                 const judul_buku = this.dataset.judul_buku;
+                 const penulis = this.dataset.penulis;
+                 const thn_terbit = this.dataset.thn_terbit;
 
-             pengembalianNomerInduk.value = no_induk ?? 'N/A';
-             pengembalianNama.value = nama_lengkap ?? 'N/A';
-             pengembalianJk.value = jk ?? 'N/A';
-             pengembalianAlamat.value = alamat ?? 'Tidak Ada Alamat';
+                 const jumlah_denda = this.dataset.jumlah_denda;
+                 const jumlah_bayar = this.dataset.jumlah_bayar;
+                 const jumlah_kembalian = this.dataset.jumlah_kembalian;
+                 const total_bayar = this.dataset.total_bayar;
 
-             pengembalianTglPinjam.value = tgl_pinjam ?? '-';
-             pengembalianTglTempo.value = tgl_tempo ?? '-';
-             pengembalianTglKembali.value = tgl_kembalikan ?? '-';
-             const hariFix = Math.ceil(hariTelat || 0);
-             pengembalianHariTelat.value = hariFix + " hari";
+                 modalPengembalian.classList.remove("hidden");
 
-             //  Status Peminjaman
-             if (status_pinjaman === "dipinjamkan" || status_pinjaman === "dipinjam") {
-                 pengembalianStatusPinjaman.classList.add('bg-green-200', 'text-green-500');
-             } else if (status_pinjaman === 'dikembalikan') {
-                 pengembalianStatusPinjaman.classList.add('bg-blue-200', 'text-blue-500');
+                 pengembalianNomerInduk.value = no_induk ?? 'N/A';
+                 pengembalianNama.value = nama_lengkap ?? 'N/A';
+                 pengembalianJk.value = jk ?? 'N/A';
+                 pengembalianAlamat.value = alamat ?? 'Tidak Ada Alamat';
+
+                 pengembalianTglPinjam.value = tgl_pinjam ?? '-';
+                 pengembalianTglTempo.value = tgl_tempo ?? '-';
+                 pengembalianTglKembali.value = tgl_kembalikan ?? '-';
+                 const hariFix = Math.ceil(hariTelat || 0);
+                 pengembalianHariTelat.value = hariFix + " hari";
+
+                 //  Status Peminjaman
+                 pengembalianStatusPinjaman.className = 'status_pinjaman inline-flex items-center px-3 py-1 rounded-full text-xs font-medium';
+                 if (status_pinjaman === "dipinjamkan" || status_pinjaman === "dipinjam") {
+                     pengembalianStatusPinjaman.classList.add('bg-green-200', 'text-green-500');
+                 } else if (status_pinjaman === 'dikembalikan') {
+                     pengembalianStatusPinjaman.classList.add('bg-blue-200', 'text-blue-500');
+                 }
+                 pengembalianStatusPinjaman.innerHTML = status_pinjaman ?? '-';
+
+                 //  Status Pengembalian
+                 pengembalianStatusPengembalian.className = 'status_pengembalian inline-flex items-center px-3 py-1 rounded-full text-xs font-medium';
+                 if (status_kembalikan === "menunggu") {
+                     pengembalianStatusPengembalian.classList.add('bg-yellow-200', 'text-yellow-500');
+                 } else if (status_kembalikan === 'dikembalikan') {
+                     pengembalianStatusPengembalian.classList.add('bg-blue-200', 'text-blue-500');
+                 }
+                 pengembalianStatusPengembalian.innerHTML = status_kembalikan ?? '-';
+
+                 pengembalianKodeBuku.value = kode_buku ?? '-';
+                 pengembalianJudulBuku.value = judul_buku ?? '-';
+                 pengembalianPenulis.value = penulis ?? '-';
+                 pengembalianThnTerbit.value = thn_terbit ?? '-';
+
+                 function convertRupiah(angka) {
+                     return 'Rp ' + (parseInt(angka) || 0).toLocaleString('id-ID');
+                 }
+
+                 if (pengembalianJumlahDenda) pengembalianJumlahDenda.value = convertRupiah(jumlah_denda);
+                 if (pengembalianJumlahBayar) pengembalianJumlahBayar.value = convertRupiah(jumlah_bayar);
+                 if (pengembalianJumlahKembalian) pengembalianJumlahKembalian.value = convertRupiah(jumlah_kembalian);
+                 if (pengembalianTotalBayar) pengembalianTotalBayar.value = convertRupiah(total_bayar);
+             });
+
+             if (btnClosePengembalian) {
+                 btnClosePengembalian.addEventListener("click", function() {
+                     modalPengembalian.classList.add('hidden');
+                 });
              }
-
-             pengembalianStatusPinjaman.innerHTML = status_pinjaman ?? '-';
-
-             //  Status Pengembalian
-             if (status_kembalikan === "menunggu") {
-                 pengembalianStatusPengembalian.classList.add('bg-yellow-200', 'text-yellow-500');
-             } else if (status_kembalikan === 'dikembalikan') {
-                 pengembalianStatusPengembalian.classList.add('bg-blue-200', 'text-blue-500');
-             }
-
-             pengembalianStatusPengembalian.innerHTML = status_kembalikan ?? '-';
-
-             pengembalianKodeBuku.value = kode_buku ?? '-';
-             pengembalianJudulBuku.value = judul_buku ?? '-';
-             pengembalianPenulis.value = penulis ?? '-';
-             pengembalianThnTerbit.value = thn_terbit ?? '-';
          });
-     });
-
-     btnClosePengembalian.addEventListener("click", function() {
-         modalPengembalian.classList.add('hidden');
-     });
+     }
  </script>

@@ -289,19 +289,30 @@ class PetugasController extends Controller
         return back()->with('success', 'Pengembalian berhasil dikonfirmasi');
     }
 
-    // Aktivitas
     public function aktivitas(Request $request)
     {
-        $query = RiwayatPengajuan::with('peminjaman')
-            ->whereHas('peminjaman', function ($q) {
-                $q->where('petugas_id', Auth::user()->petugas->id);
-            });
+        $jenis_aktivitas = $request->input('jenis_aktivitas', 'pengajuan');
+
+        if ($jenis_aktivitas === 'pengembalian') {
+            $query = Pengembalian::with(['peminjaman.buku', 'peminjaman.anggota'])
+                ->where('status', 'dikembalikan')
+                ->whereHas('peminjaman', function ($q) {
+                    $q->where('petugas_id', Auth::user()->petugas->id);
+                });
+        } else {
+            $query = RiwayatPengajuan::with(['peminjaman.buku', 'peminjaman.anggota'])
+                ->whereHas('peminjaman', function ($q) {
+                    $q->where('petugas_id', Auth::user()->petugas->id);
+                });
+        }
 
         // Filter Waktu
         if ($request->filter_waktu) {
-            // Filter Minngu ini
+            $dateColumn = ($jenis_aktivitas === 'pengembalian') ? 'updated_at' : 'created_at';
+
+            // Filter Minggu ini
             if ($request->filter_waktu === 'minggu_ini') {
-                $query->whereBetween('created_at', [
+                $query->whereBetween($dateColumn, [
                     now()->startOfWeek(),
                     now()->endOfWeek()
                 ]);
@@ -309,23 +320,24 @@ class PetugasController extends Controller
 
             // Filter Bulan Ini
             if ($request->filter_waktu == 'bulan_ini') {
-                $query->whereMonth('created_at', now()->month)
-                    ->whereYear('created_at', now()->year);
+                $query->whereMonth($dateColumn, now()->month)
+                    ->whereYear($dateColumn, now()->year);
             }
 
             // Bulan Lalu
             if ($request->filter_waktu == 'bulan_lalu') {
-                $lastMonth = now()->subMonth();
+                $lastMonth = now()->subMonthNoOverflow();
 
-                $query->whereMonth('created_at', $lastMonth->month)
-                    ->whereYear('created_at', $lastMonth->year);
+                $query->whereMonth($dateColumn, $lastMonth->month)
+                    ->whereYear($dateColumn, $lastMonth->year);
             }
         }
 
-        $pengajuans_konfirmasi = $query->latest()->get();
+        $aktivitas_data = $query->latest()->get();
 
         return view('petugas.aktivitas', [
-            "pengajuans_konfirmasi"  =>   $pengajuans_konfirmasi
+            "aktivitas_data"   => $aktivitas_data,
+            "jenis_aktivitas"  => $jenis_aktivitas
         ]);
     }
 }
