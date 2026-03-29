@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\KelolaPenggunaController;
 use App\Http\Controllers\KepalaPerpusController;
+use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\pdfController;
 use App\Http\Controllers\PemberitahuanController;
 use App\Http\Controllers\PeminjamanController;
@@ -77,6 +78,10 @@ Route::middleware(isPetugas::class)->group(function () {
 
     // Aktivitas
     Route::get('/aktivitas',[PetugasController::class, 'aktivitas']);
+
+    // Kelola Laporan
+    Route::get('/laporan', [LaporanController::class, 'indexPetugas']);
+    Route::post('/laporan', [LaporanController::class, 'storeLaporan']);
 
     // Cetak PDF
     Route::get('/cetak-pdf/pengajuan',[pdfController::class, 'cetakPengajuan']);

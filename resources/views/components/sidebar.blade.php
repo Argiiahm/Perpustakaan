@@ -165,9 +165,9 @@
                         </a>
                     </li>
                     <li>
-                        <a href="/kelola-laporan" class="{{ request()->is('kelola-laporan*') ? 'text-[#35094D] font-semibold' : 'text-[#35094d90]' }} flex items-center gap-2 text-[16px]">
+                        <a href="/laporan" class="{{ request()->is('laporan*') ? 'text-[#35094D] font-semibold' : 'text-[#35094d90]' }} flex items-center gap-2 text-[16px]">
                             <div class="w-6 h-6 flex items-center justify-center">
-                                <img src="{{ request()->is('kelola-laporan*') ? asset('icons/svg/laporan-aktif.svg') : asset('icons/svg/laporan-inaktif.svg') }}" class="w-5 h-5 object-contain" alt="">
+                                <img src="{{ request()->is('laporan*') ? asset('icons/svg/laporan-aktif.svg') : asset('icons/svg/laporan-inaktif.svg') }}" class="w-5 h-5 object-contain" alt="">
                             </div>
                             <span>Laporan</span>
                         </a>

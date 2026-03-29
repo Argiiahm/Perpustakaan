@@ -22,4 +22,9 @@ class Petugas extends Model
         // Satu Petugas Bisa Mengerjakan Banyak Peminjaman
         return $this->hasMany(Peminjaman::class, 'petugas_id'); 
     }
+
+    // Relasi Petugas dngn Laporan
+    public function laporan() {
+        return $this->hasMany(Laporan::class, 'petugas_id');
+    }
 }

@@ -26,5 +26,6 @@ class Anggota extends Model
     public function pemberitahuan() {
         return $this->hasMany(Pemberitahuan::class);
     }
+    
 
 }
