@@ -22,7 +22,7 @@
         <div class="bg-[#F99D22] p-6 rounded-[32px]">
             <div class="flex flex-col gap-4">
                 <span class="text-[20px] text-[#FFFFFF]">Jumlah Kembalikan <br> Buku</span>
-                <span class="text-5xl text-[#FFFFFF]">18</span>
+                <span class="text-5xl text-[#FFFFFF]">{{ $Pengembalian }}</span>
                 <span class="text-[#FFFFFF90] text-[10px]">
                     *setiap Anggota Mengajukan Pinjaman Buku <br> Angka Akan Bertambah
                 </span>

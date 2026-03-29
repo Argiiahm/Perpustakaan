@@ -67,11 +67,20 @@ class PetugasController extends Controller
         return $pengajuan_latest;
     }
 
+    // Jumlah Pengembalian Buku
+    private function PengembalianBuku()
+    {
+        $pengembalian = Pengembalian::where('status', 'dikembalikan')
+            ->count();
+        return $pengembalian;
+    }
+
     // Dashboard Petugas
     public function Dashboard_petugas()
     {
         return view('petugas.dashboard', [
             "Pengajuan"    =>    $this->PengajuanBukuSaatIni(),
+            "Pengembalian" =>    $this->PengembalianBuku(),
             "Pengajuan_terbaru" =>  $this->PengajuanTerbaru(),
             "Presentase"   =>    $this->calculatePresentase(),
         ]);
