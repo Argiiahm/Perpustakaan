@@ -88,7 +88,16 @@
                             </td>
                             <td class="py-4 text-center">
                                 @if ($isTerlambat)
-                                    <button class="bg-red-500 cursor-pointer text-white px-6 py-2 rounded-full">
+                                    <button type="button"
+                                        class="btnHitungDenda bg-red-500 text-white px-6 py-2 rounded-full"
+                                        data-id="{{ $pengembalian->id }}"
+                                        data-judul="{{ $pengembalian->peminjaman->buku->judul_buku }}"
+                                        data-kode="{{ $pengembalian->peminjaman->buku->kode_buku }}"
+                                        data-nama="{{ $pengembalian->peminjaman->anggota->nama_lengkap }}"
+                                        data-nis="{{ $pengembalian->peminjaman->anggota->nomer_induk }}"
+                                        data-pinjam="{{ $pengembalian->peminjaman->tanggal_pinjam }}"
+                                        data-tempo="{{ $pengembalian->peminjaman->tanggal_jatuh_tempo }}"
+                                        data-telat="{{ $pengembalian->total_hari_terlambat }}">
                                         Hitung Denda
                                     </button>
                                 @else
@@ -154,24 +163,226 @@
         </div>
     </section>
 
+    {{-- Hitung Denda --}}
+    <div
+        class="modalHitungDenda hidden fixed inset-0 bg-[#0F172A]/50 backdrop-blur-sm flex justify-center items-center z-50 p-4 transition-all">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden border border-slate-100">
+
+            <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center">
+                <h2 class="text-lg font-bold text-indigo-950">Hitung Denda</h2>
+            </div>
+
+            <form class="form_denda p-6 space-y-4" method="POST">
+                @csrf
+                <input type="hidden" name="jumlah_denda" class="inputJumlahDendaHidden">
+                <input type="hidden" name="total_bayar" class="inputTotalBayarHidden">
+                <input type="hidden" name="jumlah_kembalian" class="inputKembalianHidden">
+                <input type="hidden" name="jumlah_bayar" class="inputJumlahBayarReal">
+
+                <div class="bg-slate-50 rounded-xl p-4 border border-slate-100">
+                    <div class="grid grid-cols-2 gap-y-2 text-xs">
+                        <div>
+                            <p class="text-slate-500">Judul Buku</p>
+                            <p class="textBuku font-bold text-indigo-900">Matahari (BOOK3301)</p>
+                        </div>
+                        <div>
+                            <p class="text-slate-500">Peminjam</p>
+                            <p class="textAnggota font-bold text-indigo-900">Argi Ahes (2200121)</p>
+                        </div>
+                        <div class="col-span-2 mt-2 pt-2 border-t border-slate-200/60 flex justify-between">
+                            <div class="flex items-center gap-2">
+                                <span class="text-slate-400">Pinjam:</span>
+                                <span class="textTglPinjam font-semibold text-slate-700">20/01/26</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-red-400">Tempo:</span>
+                                <span class="textTglTempo font-semibold text-red-600">26/01/26</span>
+                                <span
+                                    class="textHariTerlambat px-3 py-1 bg-red-50 text-red-600 text-xs font-bold rounded-full">Terlambat
+                                    2 Hari</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Rincian Pembayaran</h3>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="p-3 bg-white border border-slate-200 rounded-lg">
+                            <label class="block text-[10px] text-slate-500 mb-1">Denda/Hari</label>
+                            <input value="4000" type="number" readonly
+                                class="inputDenda font-bold text-slate-700 outline-0">
+                        </div>
+                        <div class="p-3 bg-white border border-slate-200 rounded-lg">
+                            <label class="block text-[10px] text-slate-500 mb-1">Input Total Telat</label>
+                            <div class="flex items-center gap-1">
+                                <input type="number" value="0" required
+                                    class="inputTotalTelat w-10 font-bold text-indigo-600 outline-none">
+                                <span class="text-[10px] text-slate-400 font-medium">Hari</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-indigo-50/50 border border-indigo-100 rounded-xl">
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="text-sm text-slate-600 font-medium">Total Denda</span>
+                            <span class="textTotalDenda text-lg font-black text-indigo-900">Rp 8.000</span>
+                        </div>
+
+                        <div class="space-y-2 pt-3 border-t border-indigo-200/50">
+                            <div class="flex justify-between items-center text-sm">
+                                <span class="text-slate-500">Jumlah Bayar (Rp)</span>
+                                <input type="text" value="" required
+                                    class="inputJumlahBayar w-24 text-right font-bold text-slate-700 bg-white border border-slate-200 rounded px-2 py-1 outline-none focus:border-indigo-400">
+                            </div>
+                            <div class="flex justify-between items-center text-sm">
+                                <span class="text-slate-500">Kembalian</span>
+                                <span class="textKembalian font-bold text-green-600">Rp 2.000</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex gap-2 pt-2">
+                    <button type="button"
+                        class="btnCloseDenda flex-1 py-2.5 text-sm font-bold text-slate-500 hover:bg-slate-50 rounded-xl transition">
+                        Batal
+                    </button>
+                    <button type="submit"
+                        class="flex-[2] py-2.5 bg-indigo-950 text-white text-sm font-bold rounded-xl shadow-lg shadow-indigo-200 hover:bg-black transition">
+                        Simpan Konfirmasi
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
         // Modal Pengembalian
         const openModalPengembalian = document.querySelectorAll('.openModalPengembalian');
-        const modalPengembalian = document.querySelector('.open_modal_pengembalian');
+        const modalkonfirmasiPengembalian = document.querySelector('.open_modal_pengembalian');
         const formPengembalian = document.querySelector('.form_pengenbalian');
         const closeModalPengembalian = document.querySelector('.btn_close_pengembalian');
 
         openModalPengembalian.forEach(btn => {
             btn.addEventListener("click", function() {
                 const id = this.dataset.id;
-                modalPengembalian.classList.remove('hidden');
+                modalkonfirmasiPengembalian.classList.remove('hidden');
                 formPengembalian.action = `/pengembalian/${id}`;
             });
         });
 
         closeModalPengembalian.addEventListener("click", function() {
-            modalPengembalian.classList.add('hidden');
+            modalkonfirmasiPengembalian.classList.add('hidden');
         });
+
+        // Hitung Denda
+        const btnHitung = document.querySelectorAll('.btnHitungDenda');
+        const modalDenda = document.querySelector('.modalHitungDenda');
+        const formDenda = document.querySelector('.form_denda');
+
+        const textBuku = document.querySelector('.textBuku');
+        const textAnggota = document.querySelector('.textAnggota');
+        const textTglPinjam = document.querySelector('.textTglPinjam');
+        const textTglTempo = document.querySelector('.textTglTempo');
+        const textHariTerlambat = document.querySelector('.textHariTerlambat');
+
+        const inputDenda = document.querySelector('.inputDenda');
+        const inputTotalTelat = document.querySelector('.inputTotalTelat');
+        const textTotalDenda = document.querySelector('.textTotalDenda');
+
+        const inputJumlahBayar = document.querySelector('.inputJumlahBayar'); // tampilan
+        const inputJumlahBayarReal = document.querySelector('.inputJumlahBayarReal'); // real value
+
+        const textKembalian = document.querySelector('.textKembalian');
+
+        const inputJumlahDendaHidden = document.querySelector('.inputJumlahDendaHidden');
+        const inputTotalBayarHidden = document.querySelector('.inputTotalBayarHidden');
+        const inputKembalianHidden = document.querySelector('.inputKembalianHidden');
+
+        function formatRupiah(angka) {
+            return 'Rp ' + (angka || 0).toLocaleString('id-ID');
+        }
+
+        function hitungDenda() {
+            const denda = parseInt(inputDenda.value) || 0;
+            const telat = parseInt(inputTotalTelat.value) || 0;
+
+            const total = denda * telat;
+
+            textTotalDenda.textContent = formatRupiah(total);
+            inputJumlahDendaHidden.value = total;
+
+            hitungKembalian(total);
+        }
+
+
+        function hitungKembalian(totalDenda) {
+            let bayar = inputJumlahBayarReal.value || 0;
+            bayar = parseInt(bayar) || 0;
+
+            const kembalian = bayar - totalDenda;
+            const fix = kembalian > 0 ? kembalian : 0;
+
+            textKembalian.textContent = formatRupiah(fix);
+
+            inputTotalBayarHidden.value = bayar;
+            inputKembalianHidden.value = fix;
+        }
+
+        inputTotalTelat.addEventListener('input', hitungDenda);
+
+        inputJumlahBayar.addEventListener('input', function() {
+            let angka = this.value.replace(/\D/g, '');
+
+            this.value = angka ? parseInt(angka).toLocaleString('id-ID') : '';
+
+            inputJumlahBayarReal.value = angka;
+
+            const total = (parseInt(inputDenda.value) || 0) * (parseInt(inputTotalTelat.value) || 0);
+            hitungKembalian(total);
+        });
+
+
+        btnHitung.forEach(btn => {
+            btn.addEventListener('click', function() {
+
+                const id = this.dataset.id;
+                const judul = this.dataset.judul;
+                const kode = this.dataset.kode;
+                const nama = this.dataset.nama;
+                const nis = this.dataset.nis;
+                const pinjam = this.dataset.pinjam;
+                const tempo = this.dataset.tempo;
+                const telat = Math.ceil(parseFloat(this.dataset.telat)) || 0;
+
+                textBuku.textContent = `${judul} (${kode})`;
+                textAnggota.textContent = `${nama} (${nis})`;
+                textTglPinjam.textContent = pinjam;
+                textTglTempo.textContent = tempo;
+                textHariTerlambat.textContent = `Terlambat ${telat} Hari`;
+
+                inputTotalTelat.value = telat;
+
+                // reset input
+                inputJumlahBayar.value = '';
+                inputJumlahBayarReal.value = 0;
+
+                modalDenda.classList.remove('hidden');
+                formDenda.action = `/pengembalian/${id}`;
+
+                hitungDenda();
+            });
+        });
+
+        const btnCloseDenda = document.querySelector('.modalHitungDenda .btnCloseDenda');
+
+        if (btnCloseDenda) {
+            btnCloseDenda.addEventListener('click', () => {
+                modalDenda.classList.add('hidden');
+            });
+        }
     </script>
 
 @endsection

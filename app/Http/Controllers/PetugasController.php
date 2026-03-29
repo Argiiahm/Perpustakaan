@@ -10,6 +10,7 @@ use App\Models\RiwayatPengajuan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PetugasController extends Controller
 {
@@ -217,47 +218,75 @@ class PetugasController extends Controller
         }
     }
 
-    // Konfirmasi Pengembalian
+
     public function pengembalianKonfirmasi(Request $request, $id)
     {
-        $pengembalian = Pengembalian::findOrFail($id);
+        $request->validate([
+            'jumlah_denda' => 'nullable|numeric|min:0',
+            'total_bayar' => 'nullable|numeric|min:0',
+            'jumlah_bayar' => 'nullable|numeric|min:0',
+            'jumlah_kembalian' => 'nullable|numeric|min:0',
+        ]);
 
-        $anggota_id = $pengembalian->peminjaman->anggota->id;
+        $pengembalian = Pengembalian::with(['peminjaman.buku', 'peminjaman.anggota'])
+            ->findOrFail($id);
 
-
-        $pesan1 = "Pengembalian buku Anda telah dikonfirmasi.
-                    Rincian:
-                    - Judul Buku          : {$pengembalian->peminjaman->buku->judul_buku}
-                    - Tanggal Kembalian      : " . Carbon::parse($pengembalian->tanggal_kembalian)->format('d/m/Y') . "
-                Terimakasih telah meminjam buku di perpustakaan kami dan terima kasih sudah mengembalikan buku tepat waktu.";
-
-        $pengembalian->jumlah_denda = $request->jumlah_denda ?? 0;
-        $pengembalian->total_bayar = $request->total_bayar ?? null;
-        $pengembalian->jumlah_bayar = $request->jumlah_bayar ?? null;
-        $pengembalian->jumlah_kembalian = $request->jumlah_kembalian ?? null;
-        $pengembalian->status = "dikembalikan";
-
-        // Peminjaman Update Status
         $peminjaman = $pengembalian->peminjaman;
-        $peminjaman->status = "dikembalikan";
-
-        // Kembalikan Stok Buku
         $buku = $peminjaman->buku;
-        $buku->increment('stok_buku');
+        $anggota = $peminjaman->anggota;
 
-        $peminjaman->save();
-        $pengembalian->save();
+        $jumlah_denda = $request->jumlah_denda ?? 0;
+        $total_bayar = $request->total_bayar ?? 0;
+        $jumlah_bayar = $request->jumlah_bayar ?? 0;
 
-        if ($pengembalian) {
-            // Kirim Pemberitahua ke anggota
-            Pemberitahuan::create([
-                "anggota_id"   =>    $anggota_id,
-                "pesan"        =>    $pesan1
+        $jumlah_kembalian = $jumlah_bayar - $jumlah_denda;
+        if ($jumlah_kembalian < 0) {
+            $jumlah_kembalian = 0;
+        }
+
+        $pesan = "Pengembalian buku Anda telah dikonfirmasi.\n
+                    Rincian:
+                    - Judul Buku : {$buku->judul_buku}
+                    - Tanggal Kembalian : " . Carbon::parse($pengembalian->tanggal_kembalian)->format('d/m/Y') . "\n
+                 Terima kasih telah meminjam dan mengembalikan buku.";
+
+
+        DB::transaction(function () use (
+            $pengembalian,
+            $peminjaman,
+            $buku,
+            $anggota,
+            $jumlah_denda,
+            $total_bayar,
+            $jumlah_bayar,
+            $jumlah_kembalian,
+            $pesan
+        ) {
+            // update pengembalian
+            $pengembalian->update([
+                'jumlah_denda' => $jumlah_denda,
+                'total_bayar' => $total_bayar,
+                'jumlah_bayar' => $jumlah_bayar,
+                'jumlah_kembalian' => $jumlah_kembalian,
+                'status' => 'dikembalikan',
             ]);
 
+            // update peminjaman
+            $peminjaman->update([
+                'status' => 'dikembalikan'
+            ]);
 
-            return back()->with('success', 'pengembalian berhasil di konfirmasi');
-        }
+            // update stok buku
+            $buku->increment('stok_buku');
+
+            // notif
+            Pemberitahuan::create([
+                'anggota_id' => $anggota->id,
+                'pesan' => $pesan
+            ]);
+        });
+
+        return back()->with('success', 'Pengembalian berhasil dikonfirmasi');
     }
 
     // Aktivitas
