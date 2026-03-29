@@ -3,8 +3,8 @@
 use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BukuController;
-use App\Http\Controllers\DashboardKepalaPerpusController;
 use App\Http\Controllers\KelolaPenggunaController;
+use App\Http\Controllers\KepalaPerpusController;
 use App\Http\Controllers\pdfController;
 use App\Http\Controllers\PemberitahuanController;
 use App\Http\Controllers\PeminjamanController;
@@ -79,7 +79,6 @@ Route::middleware(isPetugas::class)->group(function () {
     Route::get('/aktivitas',[PetugasController::class, 'aktivitas']);
 
     // Cetak PDF
-    // Pengajuan 
     Route::get('/cetak-pdf/pengajuan',[pdfController::class, 'cetakPengajuan']);
 
     // Profile Petugas
@@ -91,9 +90,17 @@ Route::middleware(isPetugas::class)->group(function () {
 // Kepala Perpustakaan Routes
 Route::middleware(isKepalaPerpus::class)->group(function () {
     // Dashboard Kepala Perpus
-    Route::get('/dashboard-kepala-perpustakaan', [DashboardKepalaPerpusController::class, 'Dashboard_Kepala_Perpustakaan']);
+    Route::get('/dashboard-kepala-perpustakaan', [KepalaPerpusController::class, 'Dashboard_Kepala_Perpustakaan']);
     // End Dashboard Kepala Perpus
 
+    // Kelola Daftar Transaksi
+    Route::get('/daftar-transaksi', [KepalaPerpusController::class, 'daftar_transaksi']);
+    // End Kelola Daftar Transaksi
+
+    // Cetak PDF
+    Route::get('/cetak-pdf/transaksi',[pdfController::class, 'cetakTransaksi']);
+    // End Cetak PDF
+    
     // Kelola Pengguna
     Route::get('/daftar-pengguna', [KelolaPenggunaController::class, 'daftar_pengguna']);
     Route::delete('/daftar-pengguna/{user:id}', [KelolaPenggunaController::class, 'delete_pengguna']);

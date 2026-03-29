@@ -11,6 +11,7 @@ use Illuminate\Support\Str;
 
 class pdfController extends Controller
 {
+    // Cetak PDF Pengajuan
     public function cetakPengajuan(Request $request)
     {
         $nama = Auth::user()->Petugas->nama_lengkap ?? Auth::user()->username;
@@ -20,12 +21,12 @@ class pdfController extends Controller
             $query = Pengembalian::with(['peminjaman.buku', 'peminjaman.anggota'])
                 ->where('status', 'dikembalikan')
                 ->whereHas('peminjaman', function ($q) {
-                    $q->where('petugas_id', Auth::user()->petugas->id);
+                    $q->where('petugas_id', Auth::user()->petugas->id ?? null);
                 });
         } else {
             $query = RiwayatPengajuan::with('peminjaman')
                 ->whereHas('peminjaman', function ($q) {
-                    $q->where('petugas_id', Auth::user()->petugas->id);
+                    $q->where('petugas_id', Auth::user()->petugas->id ?? null);
                 });
         }
 
@@ -66,6 +67,62 @@ class pdfController extends Controller
             return $pdf->download('pengembalian-konfirmasi-' . $namaFile . '.pdf');
         } else {
             $pdf = Pdf::loadView('pdf.pengajuan', [
+                "pengajuans_konfirmasi" => $aktivitas_data
+            ]);
+            return $pdf->download('pengajuan-konfirmasi-' . $namaFile . '.pdf');
+        }
+    }
+
+    // Cetak Transaksi untuk Kepala Perpus
+    public function cetakTransaksi(Request $request)
+    {
+        $nama = Auth::user()->Petugas->nama_lengkap ?? Auth::user()->username;
+        $jenis_transaksi = $request->input('jenis_transaksi', 'pengajuan');
+
+        if ($jenis_transaksi === 'pengembalian') {
+            $query = Pengembalian::with(['peminjaman.buku', 'peminjaman.anggota'])
+                ->where('status', 'dikembalikan');
+        } else {
+            $query = RiwayatPengajuan::with('peminjaman');
+        }
+
+        // Filter Waktu
+        if ($request->filter_waktu) {
+            $dateColumn = ($jenis_transaksi === 'pengembalian') ? 'updated_at' : 'created_at';
+
+            // Filter Minggu ini
+            if ($request->filter_waktu === 'minggu_ini') {
+                $query->whereBetween($dateColumn, [
+                    now()->startOfWeek(),
+                    now()->endOfWeek()
+                ]);
+            }
+
+            // Filter Bulan Ini
+            if ($request->filter_waktu == 'bulan_ini') {
+                $query->whereMonth($dateColumn, now()->month)
+                    ->whereYear($dateColumn, now()->year);
+            }
+
+            // Bulan Lalu
+            if ($request->filter_waktu == 'bulan_lalu') {
+                $lastMonth = now()->subMonthNoOverflow();
+
+                $query->whereMonth($dateColumn, $lastMonth->month)
+                    ->whereYear($dateColumn, $lastMonth->year);
+            }
+        }
+
+        $aktivitas_data = $query->latest()->get();
+        $namaFile = Str::slug($nama);
+
+        if ($jenis_transaksi === 'pengembalian') {
+            $pdf = Pdf::loadView('pdf.transaksi-pengembalian', [
+                "aktivitas_data" => $aktivitas_data
+            ]);
+            return $pdf->download('pengembalian-konfirmasi-' . $namaFile . '.pdf');
+        } else {
+            $pdf = Pdf::loadView('pdf.transaksi-pengajuan', [
                 "pengajuans_konfirmasi" => $aktivitas_data
             ]);
             return $pdf->download('pengajuan-konfirmasi-' . $namaFile . '.pdf');
