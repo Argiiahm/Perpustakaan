@@ -72,24 +72,30 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     });
+    
     // Loading Mencari Data
     const formsCari = document.querySelectorAll(".form-cari");
     const loading_spinner = document.querySelector("#loading_spinner");
     const text_loading = document.querySelector(".text-loading");
     const modalLoading = document.querySelector(".open_modal_loading");
 
-    if (formsCari.length > 0 && loading_spinner && text_loading && modalLoading) {
+    if (
+        formsCari.length > 0 &&
+        loading_spinner &&
+        text_loading &&
+        modalLoading
+    ) {
         formsCari.forEach((form) => {
             form.addEventListener("submit", function () {
                 modalLoading.classList.remove("hidden");
                 loading_spinner.classList.remove("hidden");
-                
-                if (this.action.includes('cetak-pdf')) {
+
+                if (this.action.includes("cetak-pdf")) {
                     text_loading.textContent = "Sedang menyiapkan PDF...";
                 } else {
                     text_loading.textContent = "Sedang mencari data...";
                 }
-                
+
                 setTimeout(() => {
                     modalLoading.classList.add("hidden");
                     loading_spinner.classList.add("hidden");
@@ -107,7 +113,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const textBtn = deleteForm?.querySelector(".text_close_delete_pengguna");
 
     if (modalDelete && deleteForm && deleteButtons.length > 0) {
-        // Buka modal & set action form sesuai row
         deleteButtons.forEach((btn) => {
             btn.addEventListener("click", () => {
                 const userId = btn.dataset.userId;
@@ -116,19 +121,16 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
 
-        // Tutup modal via tombol Batal
         closeBtn?.addEventListener("click", () => {
             modalDelete.classList.add("hidden");
         });
 
-        // Tutup modal dengan klik background
         modalDelete.addEventListener("click", (e) => {
             if (e.target === modalDelete) {
                 modalDelete.classList.add("hidden");
             }
         });
 
-        // Submit form → spinner + disable button
         deleteForm.addEventListener("submit", () => {
             const submitBtn = deleteForm.querySelector(".btn_delete_pengguna");
             submitBtn.disabled = true;
@@ -153,7 +155,6 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
     if (modalDeleteBuku && deleteFormBuku && deleteButtonsBuku.length > 0) {
-        // Buka modal & set action form sesuai row
         deleteButtonsBuku.forEach((btn) => {
             btn.addEventListener("click", () => {
                 const bukuId = btn.dataset.bukuId;
@@ -162,25 +163,66 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
 
-        // Tutup modal via tombol Batal
         closeBtnBuku?.addEventListener("click", () => {
             modalDeleteBuku.classList.add("hidden");
         });
 
-        // Tutup modal dengan klik background
         modalDeleteBuku.addEventListener("click", (e) => {
             if (e.target === modalDeleteBuku) {
                 modalDeleteBuku.classList.add("hidden");
             }
         });
 
-        // Submit form → spinner + disable button
         deleteFormBuku.addEventListener("submit", () => {
             const submitBtn = deleteFormBuku.querySelector(".btn_delete_buku");
             submitBtn.disabled = true;
             submitBtn.classList.add("opacity-70", "cursor-not-allowed");
             spinnerBuku.classList.remove("hidden");
             textBtnBuku.innerText = "Tunggu...";
+        });
+    }
+
+    // Loading Sidebar
+    const modalLoadingSidebar = document.querySelector(
+        ".open_modal_loading_sidebar",
+    );
+    const textLoadingSidebar = document.querySelector(".text-loading-sidebar");
+
+    if (modalLoadingSidebar && textLoadingSidebar) {
+        const sidebarLinks = document.querySelectorAll("#sidebar-nav a[href]");
+
+        sidebarLinks.forEach((link) => {
+            link.addEventListener("click", function (e) {
+                const href = link.getAttribute("href");
+                if (
+                    !href ||
+                    href.startsWith("#") ||
+                    link.target === "_blank" ||
+                    window.location.pathname === href
+                ) {
+                    return;
+                }
+
+                const modalSearch = document.querySelector(
+                    ".open_modal_loading",
+                );
+                const spinnerSearch =
+                    document.querySelector("#loading_spinner");
+                if (modalSearch && !modalSearch.classList.contains("hidden")) {
+                    return;
+                }
+
+                textLoadingSidebar.textContent = "Sedang memuat halaman...";
+                modalLoadingSidebar.classList.remove("hidden");
+
+                setTimeout(() => {
+                    modalLoadingSidebar.classList.add("hidden");
+                }, 5000);
+            });
+        });
+
+        window.addEventListener("pageshow", () => {
+            modalLoadingSidebar.classList.add("hidden");
         });
     }
 });

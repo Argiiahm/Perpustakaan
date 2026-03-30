@@ -50,6 +50,9 @@
     {{-- Loading Search --}}
     @include('components.loading-cari')
 
+    {{-- Loading Sidebar Navigation --}}
+    @include('components.loading-sidebar')
+
     <script src="{{ asset('js/script.js') }}"></script>
 
 </body>

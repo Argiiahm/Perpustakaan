@@ -59,7 +59,6 @@
                 <thead>
                     <tr class="text-left border-b border-gray-200">
                         <th class="pb-4 text-center text-gray-400 font-normal">Kode Buku</th>
-                        <th class="pb-4 text-center text-gray-400 font-normal">Judul Buku</th>
                         <th class="pb-4 text-center text-gray-400 font-normal">Nik/Nis</th>
                         <th class="pb-4 text-center text-gray-400 font-normal">Nama Peminjam</th>
                         @if ($jenis_transaksi === 'pengembalian')
@@ -79,7 +78,6 @@
                     @forelse ($transaksis as $item)
                         <tr class="border-b border-gray-200">
                             <td class="py-4 text-center">{{ $item->peminjaman->buku->kode_buku ?? 'N/A' }}</td>
-                            <td class="py-4 text-center">{{ $item->peminjaman->buku->judul_buku ?? 'N/A' }}</td>
                             <td class="py-4 text-center">{{ $item->peminjaman->anggota->nomer_induk ?? 'N/A' }}</td>
                             <td class="py-4 text-center">{{ $item->peminjaman->anggota->nama_lengkap ?? 'N/A' }}</td>
                             @if ($jenis_transaksi === 'pengembalian')
