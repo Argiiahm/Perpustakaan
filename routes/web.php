@@ -57,38 +57,45 @@ Route::middleware(isAnggota::class)->group(function () {
     Route::put('/profile-anggota', [ProfileController::class, 'profile_update']);
     // End Profile Anggota
 
+    // Pemberitahuan Anggota
     Route::get('/pemberitahuan',[PemberitahuanController::class, 'index']);
     Route::get('/pemberitahuan/detail/{pemberitahuan:id}',[PemberitahuanController::class, 'detailPemberitahuan']);
     Route::post('/pemberitahuan/read/{id}',[PemberitahuanController::class, 'readPemberitahuan']);
+    // End Pemberitahuan Anggota
 });
 
 // Petugas Routes
 Route::middleware(isPetugas::class)->group(function () {
     // Dashboard Petugas
     Route::get('/dashboard-petugas', [PetugasController::class, 'Dashboard_petugas']);
+    // End Dashboard Petugas
 
-    // view Pengajuan & pengembalian
+    // Pengajuan & pengembalian
     Route::get('/pengajuan',[PetugasController::class, 'pengajuan']);
     Route::get('/pengembalian',[PetugasController::class, 'pengembalian']);
     Route::post('/pengembalian/{id}',[PetugasController::class, 'pengembalianKonfirmasi']);
 
-
     Route::post('/pengajuan/konfirmasi/{id}',[PetugasController::class, 'konfirmasi']);
     Route::post('/pengajuan/tolak/{id}',[PetugasController::class, 'tolak']);
+    // End Pengajuan & Pengembalian
 
     // Aktivitas
     Route::get('/aktivitas',[PetugasController::class, 'aktivitas']);
+    // EndAktivitas
 
     // Kelola Laporan
     Route::get('/laporan', [LaporanController::class, 'indexPetugas']);
     Route::post('/laporan', [LaporanController::class, 'storeLaporan']);
+    // End Kelola Laporan
 
     // Cetak PDF
     Route::get('/cetak-pdf/pengajuan',[pdfController::class, 'cetakPengajuan']);
+    // End Cetak PDF
 
     // Profile Petugas
     Route::get('/profile-petugas', [ProfileController::class, 'profile_petugas']);
     Route::put('/profile-petugas', [ProfileController::class, 'profile_update']);
+    // End Profile Petugas
     
 });
 
@@ -101,6 +108,10 @@ Route::middleware(isKepalaPerpus::class)->group(function () {
     // Kelola Daftar Transaksi
     Route::get('/daftar-transaksi', [KepalaPerpusController::class, 'daftar_transaksi']);
     // End Kelola Daftar Transaksi
+
+    // Daftar Laporan
+    Route::get('/daftar-laporan', [LaporanController::class, 'daftarLaporanKepalaPerpus']);
+    // End Daftar Laporan
 
     // Cetak PDF
     Route::get('/cetak-pdf/transaksi',[pdfController::class, 'cetakTransaksi']);

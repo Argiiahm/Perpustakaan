@@ -72,6 +72,15 @@
                             <span>Transaksi</span>
                         </a>
                     </li>
+
+                    <li>
+                        <a href="/daftar-laporan" class="{{ request()->is('daftar-laporan*') ? 'text-[#35094D] font-semibold' : 'text-[#35094d90]' }} flex items-center gap-2 text-[16px]">
+                            <div class="w-6 h-6 flex items-center justify-center">
+                                <img src="{{ request()->is('daftar-laporan*') ? asset('icons/svg/laporan-aktif.svg') : asset('icons/svg/laporan-inaktif.svg') }}" class="w-6 h-6 object-contain" alt="">
+                            </div>
+                            <span>Laporan</span>
+                        </a>
+                    </li>
                 @endrole
 
                 {{-- Fitur Petugas --}}

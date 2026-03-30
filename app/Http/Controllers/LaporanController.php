@@ -20,7 +20,7 @@ class LaporanController extends Controller
             })
             ->paginate(10)
             ->withQueryString();
-        return view('petugas.laporan',[
+        return view('petugas.laporan', [
             "laporans" => $laporans
         ]);
     }
@@ -49,5 +49,26 @@ class LaporanController extends Controller
         ]);
 
         return back()->with('success', 'Laporan berhasil diupload!');
+    }
+
+    // Daftar Laporan Kepala Perpus
+    public function daftarLaporanKepalaPerpus(Request $request)
+    {
+        $jenis_laporan = $request->input('jenis_laporan', 'Semua');
+
+        if ($jenis_laporan == 'Semua') {
+            $laporans = Laporan::paginate(10)->withQueryString();
+        } elseif ($jenis_laporan == 'Konfirmasi Pengajuan') {
+            $laporans = Laporan::where('tipe_laporan', 'Konfirmasi Pengajuan')
+                ->paginate(10)
+                ->withQueryString();
+        } elseif ($jenis_laporan == 'Konfirmasi Pengembalian') {
+            $laporans = Laporan::where('tipe_laporan', 'Konfirmasi Pengembalian')
+                ->paginate(10)
+                ->withQueryString();
+        }
+        return view('Kepala_perpus.daftar-laporan', [
+            "laporans" => $laporans
+        ]);
     }
 }
