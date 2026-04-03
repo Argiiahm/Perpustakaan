@@ -35,9 +35,10 @@
                                 <td class="py-4 text-center text-[#35094D66]">Menunggu...</td>
                             @else
                                 @php
-                                    $isTerlambat = \Carbon\Carbon::now()->gt(
-                                        \Carbon\Carbon::parse($pengajuan->tanggal_jatuh_tempo),
-                                    );
+                                // Cek Apakah Sudah Terlambat Atau Belum
+                                    $isTerlambat =
+                                        now()->toDateString() >
+                                        \Carbon\Carbon::parse($pengajuan->tanggal_jatuh_tempo)->toDateString();
                                 @endphp
                                 <td class="py-4 text-center {{ $isTerlambat ? 'text-red-500 font-semibold' : '' }}">
                                     {{ $pengajuan->tanggal_jatuh_tempo }}</td>
@@ -140,7 +141,7 @@
                             <td class="py-4">
                                 <div class="flex justify-center">
                                     <button class="openModalDetailPengembalian flex justify-center cursor-pointer"
-                                       data-id="{{ $pengembalian->peminjaman->id }}"
+                                        data-id="{{ $pengembalian->peminjaman->id }}"
                                         data-nomer_induk="{{ $pengembalian->peminjaman->anggota->nomer_induk }}"
                                         data-nama="{{ $pengembalian->peminjaman->anggota->nama_lengkap }}"
                                         data-jk="{{ $pengembalian->peminjaman->anggota->jenis_kelamin }}"

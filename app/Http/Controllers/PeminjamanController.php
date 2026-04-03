@@ -9,6 +9,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+use function Symfony\Component\Clock\now;
+
 class PeminjamanController extends Controller
 {
     // Ajukan Pinjaman Buku
@@ -22,13 +24,13 @@ class PeminjamanController extends Controller
         if (!$user->anggota) {
             return back()->with('error', 'Opps!, Profile Kamu Sepertinya Masih Kurang lengkap nih!, silahkan isi data yang lengkap yaaa.');
         }
-        
+
         // Ambil Data Anggota Id
         $anggota_id = Auth::user()->Anggota->id;
 
 
         // Waktu Saat Ini
-        $SaatIni = Carbon::now();
+        $SaatIni = Carbon::today();
 
         // Ambil Data Buku
         $buku = Buku::findOrFail($buku_id);
@@ -66,9 +68,9 @@ class PeminjamanController extends Controller
         $peminjaman = Peminjaman::findOrFail($id);
 
         // Waktu Hari Ini
-        $hariIni = Carbon::now();
+        $hariIni = Carbon::today();
         // Waktu Jatuh Tempo
-        $jatuhTempo = Carbon::parse($peminjaman->tanggal_jatuh_tempo);
+        $jatuhTempo = Carbon::parse($peminjaman->tanggal_jatuh_tempo)->startOfDay();
 
         // hitung selisih hari
         $terlambat = 0;
@@ -82,7 +84,7 @@ class PeminjamanController extends Controller
         Pengembalian::create([
             "peminjam_id"   =>   $peminjaman->id,
             "total_hari_terlambat" => $terlambat,
-            "tanggal_kembalikan"   => Carbon::now(),
+            "tanggal_kembalikan"   => Carbon::today(),
             "status"        =>   "menunggu"
         ]);
 

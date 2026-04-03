@@ -44,9 +44,10 @@
                 <tbody class="text-[#35094D]">
                     @forelse ($pengembalians as $pengembalian)
                         @php
-                            $isTerlambat = \Carbon\Carbon::parse($pengembalian->tanggal_kembalian)->gt(
-                                \Carbon\Carbon::parse($pengembalian->peminjaman->tanggal_jatuh_tempo),
-                            );
+                        // Cek Apakah Sudah Terlambat Atau Belum
+                            $isTerlambat =
+                                \Carbon\Carbon::parse($pengembalian->tanggal_kembalikan)->toDateString() >
+                                \Carbon\Carbon::parse($pengembalian->peminjaman->tanggal_jatuh_tempo)->toDateString();
                         @endphp
                         <tr class="border-b border-gray-200">
                             <td class="py-4 text-center">{{ $pengembalian->peminjaman->buku->kode_buku ?? 'N/A' }}</td>
@@ -301,8 +302,8 @@
         const inputTotalTelat = document.querySelector('.inputTotalTelat');
         const textTotalDenda = document.querySelector('.textTotalDenda');
 
-        const inputJumlahBayar = document.querySelector('.inputJumlahBayar'); // tampilan
-        const inputJumlahBayarReal = document.querySelector('.inputJumlahBayarReal'); // real value
+        const inputJumlahBayar = document.querySelector('.inputJumlahBayar');
+        const inputJumlahBayarReal = document.querySelector('.inputJumlahBayarReal');
 
         const textKembalian = document.querySelector('.textKembalian');
 
