@@ -14,17 +14,22 @@ class PeminjamanController extends Controller
     // Ajukan Pinjaman Buku
     public function ajukanBuku(Request $request)
     {
+        // Ambil Data Buku Id
         $buku_id = $request->buku_id;
+
         // Jika Anggota id NuLL
         $user = Auth::user();
         if (!$user->anggota) {
             return back()->with('error', 'Opps!, Profile Kamu Sepertinya Masih Kurang lengkap nih!, silahkan isi data yang lengkap yaaa.');
         }
+        
+        // Ambil Data Anggota Id
         $anggota_id = Auth::user()->Anggota->id;
 
 
         // Waktu Saat Ini
         $SaatIni = Carbon::now();
+
         // Ambil Data Buku
         $buku = Buku::findOrFail($buku_id);
 
@@ -45,32 +50,35 @@ class PeminjamanController extends Controller
             return back()->with('error', 'kamu telah mencapai batas pengajuan buku!, silahkan tunggu konfirmasi buku yang kamu pinjam sebelumnya.');
         }
 
+        // Buat Data Peminjaman
         Peminjaman::create([
             "buku_id"         =>   $buku_id,
             "anggota_id"      =>   $anggota_id,
             "tanggal_pinjam"  =>   $SaatIni
         ]);
 
-        // Kurangi Stok Buku
-        // $buku->decrement('stok_buku');
-
         return back()->with('success', 'selamat, pengajuan buku berhasil silahkan menunggu konfirmasi..');
     }
 
     public function kembalikanBuku($id)
     {
+        // Ambil Data Peminjaman
         $peminjaman = Peminjaman::findOrFail($id);
 
+        // Waktu Hari Ini
         $hariIni = Carbon::now();
+        // Waktu Jatuh Tempo
         $jatuhTempo = Carbon::parse($peminjaman->tanggal_jatuh_tempo);
 
         // hitung selisih hari
         $terlambat = 0;
 
+        // Jika Hari Ini Lebih Besar Dari Jatuh Tempo, maka hitung keterlambatan
         if ($hariIni->gt($jatuhTempo)) {
             $terlambat = $jatuhTempo->diffInDays($hariIni);
         }
 
+        // Buat Data Pengembalian
         Pengembalian::create([
             "peminjam_id"   =>   $peminjaman->id,
             "total_hari_terlambat" => $terlambat,

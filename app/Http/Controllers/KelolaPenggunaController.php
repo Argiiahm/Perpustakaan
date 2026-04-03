@@ -18,22 +18,22 @@ class KelolaPenggunaController extends Controller
         // Searcing
         $cari = $request->input('cari');
 
+        // Ambil Data User Berdasarkan Pencarian di Kolom Username, Email, Nama Lengkap, Nomer Induk
         $users = User::where(function ($query) use ($cari) {
 
+        // Pencarian di Kolom Username, Email
             $query->where('username', 'like', "%{$cari}%")
                 ->orWhere('email', 'like', "%{$cari}%")
-
                 // Anggota
                 ->orWhereHas('anggota', function ($q) use ($cari) {
                     $q->where('nama_lengkap', 'like', "%{$cari}%")
                         ->orWhere('nomer_induk', 'like', "%{$cari}%");
                 })
-
+                // Petugas
                 ->orWhereHas('petugas', function ($q) use ($cari) {
                     $q->where('nama_lengkap', 'like', "%{$cari}%")
                         ->orWhere('nomer_induk', 'like', "%{$cari}%");
                 })
-
                 // Kpala Perpus
                 ->orWhereHas('KepalaPerpus', function ($q) use ($cari) {
                     $q->where('nama_lengkap', 'like', "%{$cari}%")
@@ -65,6 +65,7 @@ class KelolaPenggunaController extends Controller
     // Tambah Pengguna
     public function tambah_pengguna(Request $request)
     {
+        // Validasi Input
         $request->validate([
             "username" => "required|max:14|unique:users,username",
             "no_telepon" => "required|numeric|digits_between:10,15",
@@ -106,12 +107,13 @@ class KelolaPenggunaController extends Controller
             "profile_photo.max" => "Profile Photo maksimal berukuran 2MB",
         ]);
 
+        // Inisialisasi Variabel Profile Photo
         $profilePhoto = null;
 
+        // Jika Ada File Profile Photo, Simpan File dan Ambil Path-nya
         if ($request->hasFile('profile_photo')) {
             $profilePhoto = $request->file('profile_photo')->store('profile_photos', 'public');
         }
-
 
         // Buat Data User Baru
         $user = User::create([
@@ -166,8 +168,10 @@ class KelolaPenggunaController extends Controller
         ]);
     }
 
+    // Update Pengguna
     public function update_pengguna(Request $request, User $user)
     {
+        // Validasi Input
         $request->validate([
             "username" => "required|max:14|unique:users,username," . $user->id,
             "no_telepon" => "required|numeric|digits_between:10,15",
@@ -213,6 +217,7 @@ class KelolaPenggunaController extends Controller
             if ($user->profile_photo && Storage::disk('public')->exists($user->profile_photo)) {
                 Storage::disk('public')->delete($user->profile_photo);
             }
+            // Simpan Foto Baru dan Update Path Foto di Database
             $fhoto = $request->file('profile_photo')->store('profile_photos', 'public');
             $user->profile_photo = $fhoto;
         }
@@ -222,11 +227,14 @@ class KelolaPenggunaController extends Controller
             $user->password = bcrypt($request->password);
         }
 
+        // CEK ROLE
         $role_saatIni = $user->role;
+        // Role Baru dari Request
         $newRole = $request->role;
 
         // CEK ROLE KEPALA PERPUS
         if ($role_saatIni === 'kepala_perpus') {
+            // Cek Jumlah Kepala Perpus
             $jumlahKepala = User::where('role', 'kepala_perpus')->count();
 
             // jika cuma 1 kepala perpus, role tidak boleh diubah
@@ -235,6 +243,7 @@ class KelolaPenggunaController extends Controller
             }
         }
 
+        // Update Data User
         $user->username = $request->username;
         $user->email = $request->email;
         $user->no_telepon = $request->no_telepon;
@@ -300,6 +309,7 @@ class KelolaPenggunaController extends Controller
             return back()->with('error', "Gagal!, Tidak dapat Menghapus <br> Akun Default.");
         }
 
+        // Hapus Foto Profil Jika Ada
         if ($user->profile_photo && Storage::disk('public')->exists($user->profile_photo)) {
             Storage::disk('public')->delete($user->profile_photo);
         }

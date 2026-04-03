@@ -91,6 +91,7 @@ class PetugasController extends Controller
     {
         $cari = $request->input('cari');
 
+        // Ambil data pengajuan dgn status menunggu beserta relasi anggota
         $pengajuans = Peminjaman::where('status', 'menunggu')
             ->when($cari, function ($query, $cari) {
                 $query->whereHas('anggota', function ($q) use ($cari) {
@@ -111,6 +112,7 @@ class PetugasController extends Controller
     {
         $cari = $request->input('cari');
 
+        // Ambil data pengembalian beserta relasi peminjaman dan anggota
         $pengembalians = Pengembalian::with('peminjaman.anggota')
             ->where('status', 'menunggu')
             ->when($cari, function ($query, $cari) {
@@ -158,7 +160,6 @@ class PetugasController extends Controller
             return back()->with('error', 'Jumlah Pinjaman Pengguna ini sudah Mencapai batas pinjaman.');
         }
 
-
         $data->petugas_id = $petugas_id;
         $anggota_id  = $data->anggota_id;
         $data->tanggal_jatuh_tempo = $request->tanggal_jatuh_tempo;
@@ -170,6 +171,7 @@ class PetugasController extends Controller
         // Simpam Data
         $data->save();
 
+        // Pesan Pemberitahuan
         $pesan = "Peminjaman buku Anda telah disetujui.
                     Rincian:
                     - Judul Buku          : {$data->buku->judul_buku}
@@ -227,7 +229,7 @@ class PetugasController extends Controller
         }
     }
 
-
+    // Konfirmasi Pengembalian
     public function pengembalianKonfirmasi(Request $request, $id)
     {
         $request->validate([
@@ -237,6 +239,7 @@ class PetugasController extends Controller
             'jumlah_kembalian' => 'nullable|numeric|min:0',
         ]);
 
+        // Ambil data pengembalian beserta relasi peminjaman, buku, dan anggota
         $pengembalian = Pengembalian::with(['peminjaman.buku', 'peminjaman.anggota'])
             ->findOrFail($id);
 
@@ -253,6 +256,7 @@ class PetugasController extends Controller
             $jumlah_kembalian = 0;
         }
 
+        // Pesan Pemberitahuan
         $pesan = "Pengembalian buku Anda telah dikonfirmasi.\n
                     Rincian:
                     - Judul Buku : {$buku->judul_buku}
@@ -260,6 +264,7 @@ class PetugasController extends Controller
                  Terima kasih telah meminjam dan mengembalikan buku.";
 
 
+        // Gunakan transaksi untuk memastikan semua operasi database berhasil atau gagal bersama-sama
         DB::transaction(function () use (
             $pengembalian,
             $peminjaman,
@@ -298,6 +303,7 @@ class PetugasController extends Controller
         return back()->with('success', 'Pengembalian berhasil dikonfirmasi');
     }
 
+    // Halaman Aktivitas Petugas
     public function aktivitas(Request $request)
     {
         $jenis_aktivitas = $request->input('jenis_aktivitas', 'pengajuan');
@@ -342,6 +348,7 @@ class PetugasController extends Controller
             }
         }
 
+        // Ambil Data Aktivitas
         $aktivitas_data = $query->latest()->get();
 
         return view('petugas.aktivitas', [

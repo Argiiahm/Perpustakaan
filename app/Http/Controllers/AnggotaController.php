@@ -14,6 +14,7 @@ class AnggotaController extends Controller
     // Menghitung Presentase Kelengkapan Profile Anggota
     private function calculatePresentase()
     {
+        // Ambil Data Anggota
         $anggota = Auth::user();
         // dd($anggota);
 
@@ -51,15 +52,18 @@ class AnggotaController extends Controller
     // Menampilkan Dashboard Anggota
     public function Dashboard_Anggota()
     {
-        
+        // Ambil Data Anggota Id
         $anggota_id = Auth::user()->Anggota->id ?? null;
+        // Ambil Data Total Pinjaman dan Total Pengembalian
         $totalPinjaman = Peminjaman::where('anggota_id', $anggota_id)->where('status','dipinjam')->count();
+        // Ambil Data Total Pengembalian
         $totalPengembalian = Pengembalian::with('peminjaman')
             ->where('status', 'dikembalikan')
             ->whereHas('peminjaman', function ($query) use ($anggota_id) {
                 $query->where('anggota_id', $anggota_id);
             })->count();
 
+        // Ambil Data Pinjaman Aktif
         $Pinjaman_aktif = Peminjaman::with('buku')->where('anggota_id', $anggota_id)
             ->where('status', 'dipinjam')
             ->get();
@@ -73,6 +77,7 @@ class AnggotaController extends Controller
                 $pinjaman->sisa_hari = null;
             }
         }
+
         return view('Anggota.dashboard', [
             "Presentase"   =>    $this->calculatePresentase(),
             "Pinjaman_aktif"  =>  $Pinjaman_aktif,
@@ -84,11 +89,14 @@ class AnggotaController extends Controller
     // Halaman Riwayat Pinjaman
     public function riwayat_pinjaman()
     {
+        // Ambil Data Anggota Id
         $anggota_id = Auth::user()->Anggota->id ?? null;
+        // Ambil Data Pengajuan dan Pengembalian Berdasarkan Anggota Id
         $pengajuans = Peminjaman::whereIn('status', ['dipinjam', 'menunggu'])
             ->where('anggota_id', $anggota_id)
             ->paginate(10);
 
+        // Ambil Data Pengembalian Berdasarkan Anggota Id
         $pengembalians = Pengembalian::with([
             'peminjaman.anggota',
             'peminjaman.buku'
@@ -109,9 +117,10 @@ class AnggotaController extends Controller
     // Halaman Daftar Buku
     public function daftar_buku(Request $request)
     {
+        
         $cari = $request->input('cari');
+        // Cari Buku Berdasarkan Kode Buku, Judul Buku, atau Penulis
         $bukus = Buku::where(function ($query) use ($cari) {
-
             $query->where('judul_buku', 'like', "%{$cari}%")
                 ->orWhere('penulis', 'like', "%{$cari}%")
                 ->orWhere('kode_buku', 'like', "%{$cari}%");
@@ -127,6 +136,7 @@ class AnggotaController extends Controller
     // Detail Buku
     public function detail_buku(Buku $buku)
     {
+        // Ambil Data Anggota Id
         $anggota_id = Auth::user()->Anggota->id ?? null;
         // Button Sedang pending
         $pengajuan_pending = Peminjaman::where('anggota_id', $anggota_id)->where('buku_id', $buku->id)->where('status', 'menunggu')->exists();

@@ -12,6 +12,7 @@ class BukuController extends Controller
     {
         $cari = $request->input('cari');
 
+        // Cari Buku Berdasarkan Kode Buku atau Judul Buku
         $bukus = Buku::where(function ($query) use ($cari) {
             $query->where('kode_buku', 'like', "%{$cari}%")
                 ->orWhere('judul_buku', 'like', "%{$cari}%");
@@ -30,6 +31,7 @@ class BukuController extends Controller
 
     public function store_buku(Request $request)
     {
+        // Validasi Input
         $validasiBuku = $request->validate([
             "kode_buku"     =>     "required|unique:buku,kode_buku",
             "judul_buku"    =>     "required|max:30",
@@ -55,11 +57,12 @@ class BukuController extends Controller
             "cover_buku.max"                  =>     "Cover buku maskimal berukuran 2mb.",
         ]);
 
-
+        // CEK COVER BUKU
         if ($request->hasFile('cover_buku')) {
             $validasiBuku['cover_buku'] = $request->file('cover_buku')->store('cover_bukus', 'public');
         }
 
+        // Buat Data Buku
         Buku::create($validasiBuku);
 
         return redirect('/kelola-buku')->with('success', 'Buku Berhasil Ditambahkan.');
@@ -74,6 +77,7 @@ class BukuController extends Controller
 
     public function update_buku(Request $request, Buku $buku)
     {
+        // Validasi Input
         $validasiBuku = $request->validate([
             'kode_buku' => 'required|unique:buku,kode_buku,' . $buku->id,
             "judul_buku"    =>     "required|max:30",
@@ -104,19 +108,22 @@ class BukuController extends Controller
             if ($buku->cover_buku && Storage::disk('public')->exists($buku->cover_buku)) {
                 Storage::disk('public')->delete($buku->cover_buku);
             }
+            // Simpan Foto Baru dan Update Path Foto di Database
             $validasiBuku['cover_buku'] = $request->file('cover_buku')->store('cover_bukus', 'public');
         }
 
+        // Update Data Buku
         $buku->update($validasiBuku);
         return back()->with('success', 'Buku Berhasil DiPembaharui.');
     }
 
     public function delete_buku(Buku $buku)
     {
+        // CEK COVER BUKU
         if ($buku->cover_buku && Storage::disk('public')->exists($buku->cover_buku)) {
             Storage::disk('public')->delete($buku->cover_buku);
         }
-
+        // Hapus Data Buku
         $buku->delete($buku->id);
         return back()->with('success', 'Buku Berhasil dihapus.');
     }

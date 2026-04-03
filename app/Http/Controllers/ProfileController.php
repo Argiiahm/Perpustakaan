@@ -35,6 +35,7 @@ class ProfileController extends Controller
         // dd($request->all());
         $user = Auth::user();
 
+        // VALIDASI INPUT
         $request->validate([
             "username" => "required|max:14|unique:users,username," . $user->id,
             "no_telepon" => "required|numeric|digits_between:10,15",

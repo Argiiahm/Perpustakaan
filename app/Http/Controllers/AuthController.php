@@ -25,6 +25,7 @@ class AuthController extends Controller
     // Fungsi Login
     public function masuk(Request $request)
     {
+        // Validasi Input
         $request->validate([
             "email"      =>    "email|required",
             "password"   =>    "required"
@@ -32,6 +33,7 @@ class AuthController extends Controller
             "email.email" => "Format email tidak valid.",
         ]);
 
+        // Ambil Data User Berdasarkan Email
         $user = User::where('email', $request->email)->first();
 
         // Cek Apakah Akun Tersebut Ada
@@ -56,6 +58,7 @@ class AuthController extends Controller
     // Fungsi Register
     public function daftar(Request $request)
     {
+        // Validasi Input
         $validasiData = $request->validate([
             "username" => "required|max:14|unique:users,username",
             "no_telepon" => "required|numeric|digits_between:10,15",
@@ -79,9 +82,12 @@ class AuthController extends Controller
             "password.min" => "Password minimal 6 karakter."
         ]);
 
+        // Buat Data User
         $data = $validasiData;
+        // Enkripsi Password
         $data['password'] = Hash::make($data['password']);
 
+        // Simpan Data User ke Database
         User::create($data);
 
         return redirect('/login');
@@ -90,6 +96,7 @@ class AuthController extends Controller
     // Fungsi Logout
     public function logout(Request $request)
     {
+        // Logout User
         $request->session()->regenerateToken();
         $request->session()->invalidate();
 
