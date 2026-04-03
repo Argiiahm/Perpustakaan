@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Laporan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class LaporanController extends Controller
 {
@@ -70,5 +71,33 @@ class LaporanController extends Controller
         return view('Kepala_perpus.daftar-laporan', [
             "laporans" => $laporans
         ]);
+    }
+
+    //(Kepala Perpus) - Approve Laporan
+    public function approveLaporan($id)
+    {
+        $laporan = Laporan::findOrFail($id);
+
+        $laporan->status = "approved";
+        $laporan->save();
+
+        return back()->with('success', 'Laporan Berhasil Di Approved');
+    }
+
+    //(Kepala Perpus) - Reject Laporan
+    public function rejectLaporan($id)
+    {
+        $laporan = Laporan::findOrFail($id);
+
+        // Hapus FILE Laporan jika ada
+        if ($laporan->file) {
+            Storage::disk('public')->delete($laporan->file);
+        }
+
+        $laporan->status = "rejected";
+        $laporan->file = "Laporan Ditolak";
+        $laporan->save();
+
+        return back()->with('success', 'Laporan Berhasil Di Rejected');
     }
 }

@@ -116,6 +116,10 @@ Route::middleware(isKepalaPerpus::class)->group(function () {
     // Cetak PDF
     Route::get('/cetak-pdf/transaksi',[pdfController::class, 'cetakTransaksi']);
     // End Cetak PDF
+
+    // Approve dan rejected Laporan
+    Route::post('/approve/laporan/{id}',[LaporanController::class, 'approveLaporan']);
+    Route::post('/reject/laporan/{id}',[LaporanController::class, 'rejectLaporan']);
     
     // Kelola Pengguna
     Route::get('/daftar-pengguna', [KelolaPenggunaController::class, 'daftar_pengguna']);
