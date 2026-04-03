@@ -60,24 +60,49 @@ class LaporanController extends Controller
     // Daftar Laporan Kepala Perpus
     public function daftarLaporanKepalaPerpus(Request $request)
     {
-        // Ambil Jenis Laporan dari Reques
+        // Ambil Filter Jenis Laporan dari Reques
         $jenis_laporan = $request->input('jenis_laporan', 'Semua');
 
-        // Ambil Data Laporan Berdasarkan Jenis Laporan
-        if ($jenis_laporan == 'Semua') {
-            // Jika Jenis Laporan Semua, Ambil Semua Data Laporan
-            $laporans = Laporan::paginate(10)->withQueryString();
-        } elseif ($jenis_laporan == 'Konfirmasi Pengajuan') {
-            // Jika Jenis Laporan Konfirmasi Pengajuan, Ambil Data Laporan dengan Tipe Laporan Konfirmasi Pengajuan
-            $laporans = Laporan::where('tipe_laporan', 'Konfirmasi Pengajuan')
-                ->paginate(10)
-                ->withQueryString();
+        // INIT QUERY
+        $query = Laporan::query();
+
+        // FILTER JENIS
+        if ($jenis_laporan == 'Konfirmasi Pengajuan') {
+            $query->where('tipe_laporan', 'Konfirmasi Pengajuan');
         } elseif ($jenis_laporan == 'Konfirmasi Pengembalian') {
-            // Jika Jenis Laporan Konfirmasi Pengembalian, Ambil Data Laporan dengan Tipe Laporan Konfirmasi Pengembalian
-            $laporans = Laporan::where('tipe_laporan', 'Konfirmasi Pengembalian')
-                ->paginate(10)
-                ->withQueryString();
+            $query->where('tipe_laporan', 'Konfirmasi Pengembalian');
         }
+
+        // FILTER WAKTU
+        if ($request->filter_waktu) {
+            $dateColumn = ($jenis_laporan === 'Semua') ? 'updated_at' : 'created_at';
+
+            // Minggu Ini
+            if ($request->filter_waktu === 'minggu_ini') {
+                $query->whereBetween($dateColumn, [
+                    now()->startOfWeek(),
+                    now()->endOfWeek()
+                ]);
+            }
+
+            // Bulan Ini
+            if ($request->filter_waktu == 'bulan_ini') {
+                $query->whereMonth($dateColumn, now()->month)
+                    ->whereYear($dateColumn, now()->year);
+            }
+
+            // Bulan Lalu
+            if ($request->filter_waktu == 'bulan_lalu') {
+                $lastMonth = now()->subMonthNoOverflow();
+
+                $query->whereMonth($dateColumn, $lastMonth->month)
+                    ->whereYear($dateColumn, $lastMonth->year);
+            }
+        }
+
+        // AMBIL DATA LAPORAN
+        $laporans = $query->paginate(10)->withQueryString();
+
         return view('Kepala_perpus.daftar-laporan', [
             "laporans" => $laporans
         ]);
