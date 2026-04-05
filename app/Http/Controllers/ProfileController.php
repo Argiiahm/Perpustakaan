@@ -19,7 +19,8 @@ class ProfileController extends Controller
     }
 
     // Profile petugas
-    public function profile_petugas() {
+    public function profile_petugas()
+    {
         return view('petugas.profile');
     }
 
@@ -42,7 +43,7 @@ class ProfileController extends Controller
             "email" => "required|email|unique:users,email," . $user->id,
             "tanggal_lahir" => "required|date",
             "nama_lengkap" => "required|string|min:4|max:32",
-            "nomer_induk" => "required|string|min:6",
+            "nomer_induk" => "required|string|min:6|unique:anggota,nomer_induk," . optional($user->anggota)->id . "|unique:petugas,nomer_induk," . optional($user->petugas)->id . "|unique:kepala_perpus,nomer_induk," . optional($user->kepala_perpus)->id,
             "jenis_kelamin" => "required",
             "alamat" => "required|min:10",
             "profile_photo" => "nullable|image|mimes:jpeg,png,jpg|max:2048",
@@ -63,6 +64,7 @@ class ProfileController extends Controller
             "nama_lengkap.min" => "Nama Lengkap minimal 4 karakter",
             "nama_lengkap.max" => "Nama Lengkap maksimal 32 karakter",
             "nomer_induk.string" => "Nomer Induk harus berupa string",
+            "nomer_induk.unique" => "Nomer Induk sudah digunakan",
             "nomer_induk.min" => "Nomer Induk minimal 6 karakter",
             "nomer_induk.required" => "Nomer Induk harus di isi",
             "alamat.min" => "Alamat Lengkap  minimal 10 karakter",
