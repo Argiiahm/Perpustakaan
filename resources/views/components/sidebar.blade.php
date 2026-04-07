@@ -236,14 +236,28 @@
                             <span>Profile</span>
                         </a>
                     </li>
-                    <li>
+                    <li class="relative">
+                        @php
+                            $user = Auth::user();
+                            // Ambil semua pemberitahuan (collection)
+                            $pemberitahuan = $user->Anggota->pemberitahuan;
+                            // Hitung yang belum dilihat
+                            $belumDilihat = $pemberitahuan->where('sudah_dilihat', false)->count();
+                        @endphp
                         <a href="/pemberitahuan"
                             class="{{ request()->is('pemberitahuan*') ? 'text-[#35094D] font-semibold' : 'text-[#35094d90]' }} flex items-center gap-2 text-[16px]">
                             <div class="w-6 h-6 flex items-center justify-center">
-                                <img src="{{ request()->is('pemberitahuan*') ? asset('icons/svg/lonceng-aktif.svg') : asset('icons/svg/lonceng-inactive.svg') }}"
+                                <img src="{{ request()->is('pemberitahuan*')
+                                    ? asset('icons/svg/lonceng-aktif.svg')
+                                    : asset('icons/svg/lonceng-inactive.svg') }}"
                                     class="w-5 h-5 object-contain" alt="">
                             </div>
                             <span>Pemberitahuan</span>
+                            @if ($belumDilihat > 0)
+                                <span class="text-xs bg-red-500 text-white px-2 py-0.5 rounded-full">
+                                    {{ $belumDilihat }}
+                                </span>
+                            @endif
                         </a>
                     </li>
                 @endrole
