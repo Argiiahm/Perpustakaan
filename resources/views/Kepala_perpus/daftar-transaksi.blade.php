@@ -114,6 +114,9 @@
                                         data-jumlah_denda="{{ $item->jumlah_denda }}"
                                         data-total_bayar="{{ $item->total_bayar }}"
                                         data-jumlah_bayar="{{ $item->jumlah_bayar }}"
+                                        data-buku_rusak="{{ $item->buku_rusak }}"
+                                        data-buku_hilang="{{ $item->buku_hilang }}"
+                                        data-status_pembayaran="{{ $item->status_pembayaran }}"
                                         data-jumlah_kembalian="{{ $item->jumlah_kembalian }}" type="button">
                                         <img src="{{ asset('icons/svg/detail.svg') }}" alt="">
                                     </button>

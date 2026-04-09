@@ -79,10 +79,10 @@ class PetugasController extends Controller
     public function Dashboard_petugas()
     {
         return view('petugas.dashboard', [
-            "Pengajuan"    =>    $this->PengajuanBukuSaatIni(),
-            "Pengembalian" =>    $this->PengembalianBuku(),
-            "Pengajuan_terbaru" =>  $this->PengajuanTerbaru(),
-            "Presentase"   =>    $this->calculatePresentase(),
+            "Pengajuan" => $this->PengajuanBukuSaatIni(),
+            "Pengembalian" => $this->PengembalianBuku(),
+            "Pengajuan_terbaru" => $this->PengajuanTerbaru(),
+            "Presentase" => $this->calculatePresentase(),
         ]);
     }
 
@@ -103,7 +103,7 @@ class PetugasController extends Controller
 
 
         return view('petugas.pengajuan', [
-            "pengajuans"     =>     $pengajuans,
+            "pengajuans" => $pengajuans,
         ]);
     }
 
@@ -125,7 +125,7 @@ class PetugasController extends Controller
             })->paginate(5)->withQueryString();
         // dd($pengembalians);
         return view('petugas.pengembalian', [
-            "pengembalians"   =>    $pengembalians
+            "pengembalians" => $pengembalians
         ]);
     }
 
@@ -133,13 +133,13 @@ class PetugasController extends Controller
     public function konfirmasi(Request $request, $id)
     {
         $request->validate([
-            "tanggal_jatuh_tempo"  =>     "required|date",
+            "tanggal_jatuh_tempo" => "required|date",
         ]);
 
         $data = Peminjaman::findOrFail($id);
         $tglPinjam = Carbon::parse($data->tanggal_pinjam);
-        $tglTempo  = Carbon::parse($request->tanggal_jatuh_tempo)->endOfDay();
-        $petugas_id  = Auth::user()->Petugas->id ?? null;
+        $tglTempo = Carbon::parse($request->tanggal_jatuh_tempo)->endOfDay();
+        $petugas_id = Auth::user()->Petugas->id ?? null;
 
 
         // Cek Apakah Tgl Jatuh Tempo lebih kecil dari tanggal pinjam
@@ -161,7 +161,7 @@ class PetugasController extends Controller
         }
 
         $data->petugas_id = $petugas_id;
-        $anggota_id  = $data->anggota_id;
+        $anggota_id = $data->anggota_id;
         $data->tanggal_jatuh_tempo = $tglTempo;
         $data->status = "dipinjam";
 
@@ -182,14 +182,14 @@ class PetugasController extends Controller
         if ($data) {
             // Simpan Data Riwayat Konfirmasi Pengajuan
             RiwayatPengajuan::create([
-                "peminjam_id"    =>    $data->id,
-                "status"         =>    "dipinjamkan"
+                "peminjam_id" => $data->id,
+                "status" => "dipinjamkan"
             ]);
 
             // Kirim Pemberitahua ke anggota
             Pemberitahuan::create([
-                "anggota_id"   =>    $anggota_id,
-                "pesan"        =>    $pesan
+                "anggota_id" => $anggota_id,
+                "pesan" => $pesan
             ]);
             return back()->with('success', 'Peminjaman Berhasil Di Konfirmai');
         }
@@ -199,12 +199,12 @@ class PetugasController extends Controller
     public function tolak(Request $request, $id)
     {
         $request->validate([
-            "alasan"  =>     "required",
+            "alasan" => "required",
         ]);
 
         $data = Peminjaman::findOrFail($id);
-        $petugas_id  = Auth::user()->Petugas->id;
-        $anggota_id  = $data->anggota_id;
+        $petugas_id = Auth::user()->Petugas->id;
+        $anggota_id = $data->anggota_id;
         $alasan = $request->alasan;
 
         $data->petugas_id = $petugas_id;
@@ -215,14 +215,14 @@ class PetugasController extends Controller
         if ($data) {
             // Simpan Data Riwayat Konfirmasi Pengajuan
             RiwayatPengajuan::create([
-                "peminjam_id"    =>    $data->id,
-                "status"         =>    "ditolak"
+                "peminjam_id" => $data->id,
+                "status" => "ditolak"
             ]);
 
             //Kirim Pemberitahuan ke anggota
             Pemberitahuan::create([
-                "anggota_id"   =>    $anggota_id,
-                "pesan"        =>    $alasan
+                "anggota_id" => $anggota_id,
+                "pesan" => $alasan
             ]);
 
             return back()->with('success', 'berhasil menolak pengajuan.');
@@ -232,14 +232,17 @@ class PetugasController extends Controller
     // Konfirmasi Pengembalian
     public function pengembalianKonfirmasi(Request $request, $id)
     {
+        // dd($request->all()); // debug kalau perlu
+
         $request->validate([
             'jumlah_denda' => 'nullable|numeric|min:0',
             'total_bayar' => 'nullable|numeric|min:0',
             'jumlah_bayar' => 'nullable|numeric|min:0',
             'jumlah_kembalian' => 'nullable|numeric|min:0',
+            'buku_rusak' => 'nullable|numeric|min:0',
+            'buku_hilang' => 'nullable|numeric|min:0',
         ]);
 
-        // Ambil data pengembalian beserta relasi peminjaman, buku, dan anggota
         $pengembalian = Pengembalian::with(['peminjaman.buku', 'peminjaman.anggota'])
             ->findOrFail($id);
 
@@ -248,59 +251,144 @@ class PetugasController extends Controller
         $anggota = $peminjaman->anggota;
 
         $jumlah_denda = $request->jumlah_denda ?? 0;
-        $total_bayar = $request->total_bayar ?? 0;
         $jumlah_bayar = $request->jumlah_bayar ?? 0;
+        $total_bayar  = $request->total_bayar ?? 0;
+        $jumlah_kembalian = $request->jumlah_kembalian ?? 0;
 
-        $jumlah_kembalian = $jumlah_bayar - $jumlah_denda;
-        if ($jumlah_kembalian < 0) {
+        $is_rusak  = $request->is_rusak == 1;
+        $is_hilang = $request->is_hilang == 1;
+
+        // nilai input
+        $buku_rusak  = $request->buku_rusak ?? 0;
+        $buku_hilang = $request->buku_hilang ?? 0;
+
+        // bayar nanti
+        $bayar_nanti = $request->has('bayar_nanti');
+
+        // VALIDASI KONDISI BUKU
+        if ($is_rusak && $is_hilang) {
+            return back()->with('error', 'Pilih salah satu: buku rusak atau hilang');
+        }
+
+        // rusak aktif tapi kosong
+        if ($is_rusak && $buku_rusak <= 0) {
+            return back()->with('error', 'Isi biaya buku rusak');
+        }
+
+        // hilang aktif tapi kosong
+        if ($is_hilang && $buku_hilang <= 0) {
+            return back()->with('error', 'Isi harga buku hilang');
+        }
+
+        // VALIDASI PEMBAYARAN
+        if ($jumlah_denda > 0 && !$bayar_nanti) {
+
+            // belum isi bayar
+            if ($jumlah_bayar <= 0) {
+                return back()->with('error', 'Silahkan isi jumlah bayar');
+            }
+
+            // uang kurang
+            if ($jumlah_bayar < $jumlah_denda) {
+                return back()->with('error', 'Uang bayar kurang dari denda');
+            }
+        }
+
+        // HITUNG KEMBALIAN
+        $jumlah_kembalian = max($jumlah_bayar - $jumlah_denda, 0);
+
+        // default status
+        $status_pembayaran = 'lunas';
+
+        // tidak ada transaksi
+        if ($jumlah_denda == 0 && $buku_rusak == 0 && $buku_hilang == 0) {
+
+            $status_pembayaran = null;
+
+            $jumlah_bayar = 0;
+            $total_bayar = 0;
+            $jumlah_kembalian = 0;
+        }
+        // bayar nanti
+        elseif ($bayar_nanti) {
+
+            $status_pembayaran = 'tertunda';
+
+            $jumlah_bayar = 0;
+            $total_bayar = 0;
             $jumlah_kembalian = 0;
         }
 
-        // Pesan Pemberitahuan
-        $pesan = "Pengembalian buku Anda telah dikonfirmasi.\n
-                    Rincian:
-                    - Judul Buku : {$buku->judul_buku}
-                    - Tanggal Kembalian : " . Carbon::parse($pengembalian->tanggal_kembalian)->format('d/m/Y') . "\n
-                 Terima kasih telah meminjam dan mengembalikan buku.";
+        // PESAN NOTIF
+        $pesan = "Pengembalian buku Anda telah dikonfirmasi.\n\n";
+        $pesan .= "Rincian:\n";
+        $pesan .= "- Judul Buku : {$buku->judul_buku}\n";
+        $pesan .= "- Tanggal Kembalian : " . Carbon::parse($pengembalian->tanggal_kembalian)->format('d/m/Y') . "\n";
 
+        if ($jumlah_denda == 0 && $buku_rusak == 0 && $buku_hilang == 0) {
 
-        // Gunakan transaksi untuk memastikan semua operasi database berhasil atau gagal bersama-sama
+            $pesan .= "\nTidak ada denda.";
+        } elseif ($bayar_nanti) {
+
+            $pesan .= "\nTotal denda: Rp " . number_format($jumlah_denda, 0, ',', '.');
+            $pesan .= "\nStatus: Hutang";
+        } else {
+
+            $pesan .= "\nTotal denda: Rp " . number_format($jumlah_denda, 0, ',', '.');
+            $pesan .= "\nBayar: Rp " . number_format($jumlah_bayar, 0, ',', '.');
+            $pesan .= "\nKembalian: Rp " . number_format($jumlah_kembalian, 0, ',', '.');
+        }
+
+        if ($buku_rusak > 0) {
+            $pesan .= "\nBiaya rusak: Rp " . number_format($buku_rusak, 0, ',', '.');
+        }
+
+        if ($buku_hilang > 0) {
+            $pesan .= "\nBiaya hilang: Rp " . number_format($buku_hilang, 0, ',', '.');
+        }
+
+        $pesan .= "\n\nTerima kasih.";
+
+        // SIMPAN DATA
         DB::transaction(function () use (
             $pengembalian,
             $peminjaman,
             $buku,
             $anggota,
             $jumlah_denda,
+            $is_rusak,
+            $is_hilang,
             $total_bayar,
             $jumlah_bayar,
             $jumlah_kembalian,
+            $status_pembayaran,
             $pesan
         ) {
-            // update pengembalian
+
             $pengembalian->update([
                 'jumlah_denda' => $jumlah_denda,
                 'total_bayar' => $total_bayar,
                 'jumlah_bayar' => $jumlah_bayar,
                 'jumlah_kembalian' => $jumlah_kembalian,
+                'buku_rusak' => $is_rusak,
+                'buku_hilang' => $is_hilang,
                 'status' => 'dikembalikan',
+                'status_pembayaran' => $status_pembayaran
             ]);
 
-            // update peminjaman
             $peminjaman->update([
                 'status' => 'dikembalikan'
             ]);
 
-            // update stok buku
             $buku->increment('stok_buku');
 
-            // notif
             Pemberitahuan::create([
                 'anggota_id' => $anggota->id,
                 'pesan' => $pesan
             ]);
         });
 
-        return back()->with('success', 'Pengembalian berhasil dikonfirmasi');
+        return back()->with('success', 'Pengembalian berhasil');
     }
 
     // Halaman Aktivitas Petugas
@@ -352,8 +440,8 @@ class PetugasController extends Controller
         $aktivitas_data = $query->latest()->get();
 
         return view('petugas.aktivitas', [
-            "aktivitas_data"   => $aktivitas_data,
-            "jenis_aktivitas"  => $jenis_aktivitas
+            "aktivitas_data" => $aktivitas_data,
+            "jenis_aktivitas" => $jenis_aktivitas
         ]);
     }
 }

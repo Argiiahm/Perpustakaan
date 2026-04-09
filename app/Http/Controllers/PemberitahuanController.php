@@ -12,7 +12,7 @@ class PemberitahuanController extends Controller
     {
         // Ambil Data Pemberitahuan Berdasarkan Anggota Id
         $anggota_id     =  Auth::user()->Anggota->id ?? null;
-        $pemberitahuans = Pemberitahuan::where('anggota_id', $anggota_id)->get();
+        $pemberitahuans = Pemberitahuan::where('anggota_id', $anggota_id)->latest()->get();
         return view('Anggota.pemberitahuan', [
             "pemberitahuans"   =>   $pemberitahuans
         ]);

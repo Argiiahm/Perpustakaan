@@ -239,7 +239,7 @@
                     <li class="relative">
                         @php
                             $user = Auth::user();
-                            // Ambil semua pemberitahuan (collection)
+                            // Ambil semua pemberitahuan
                             $pemberitahuan = $user->Anggota->pemberitahuan;
                             // Hitung yang belum dilihat
                             $belumDilihat = $pemberitahuan->where('sudah_dilihat', false)->count();

@@ -75,11 +75,11 @@
                         <th class="pb-4 text-center text-gray-400 font-normal">Kode Buku</th>
                         <th class="pb-4 text-center text-gray-400 font-normal">Judul Buku</th>
                         <th class="pb-4 text-center text-gray-400 font-normal">Nik/Nis</th>
-                        <th class="pb-4 text-center text-gray-400 font-normal">Nama Peminjam</th>
                         @if ($jenis_aktivitas === 'pengembalian')
                             <th class="pb-4 text-center text-gray-400 font-normal">Tanggal Dikembalikan</th>
                             <th class="pb-4 text-center text-gray-400 font-normal">Hari Telat</th>
-                            <th class="pb-4 text-center text-gray-400 font-normal">Denda Terbayar</th>
+                            <th class="pb-4 text-center text-gray-400 font-normal">Total Denda</th>
+                            <th class="pb-4 text-center text-gray-400 font-normal">Status Pembayaran</th>
                         @else
                             <th class="pb-4 text-center text-gray-400 font-normal">Tanggal Pinjam</th>
                             <th class="pb-4 text-center text-gray-400 font-normal">Tanggal Jatuh Tempo</th>
@@ -94,7 +94,6 @@
                             <td class="py-4 text-center">{{ $item->peminjaman->buku->kode_buku ?? 'N/A' }}</td>
                             <td class="py-4 text-center">{{ $item->peminjaman->buku->judul_buku ?? 'N/A' }}</td>
                             <td class="py-4 text-center">{{ $item->peminjaman->anggota->nomer_induk ?? 'N/A' }}</td>
-                            <td class="py-4 text-center">{{ $item->peminjaman->anggota->nama_lengkap ?? 'N/A' }}</td>
                             @if ($jenis_aktivitas === 'pengembalian')
                                 <td class="py-4 text-center">
                                     {{ $item->tanggal_kembalikan ?? $item->updated_at->format('Y-m-d') }}</td>
@@ -103,6 +102,17 @@
                                     {{ ceil($item->total_hari_terlambat ?? 0) }} hari
                                 </td>
                                 <td class="py-4 text-center">Rp {{ number_format($item->jumlah_denda, 0, ',', '.') }}</td>
+                                <td class="py-4 text-center">
+                                    @if ($item->status_pembayaran === 'lunas')
+                                        <span
+                                            class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full">Lunas</span>
+                                    @elseif ($item->status_pembayaran === 'tertunda')
+                                        <span
+                                            class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded-full">Tertunda</span>
+                                    @else
+                                        <span>-</span>
+                                    @endif
+                                </td>
                             @else
                                 <td class="py-4 text-center">{{ $item->peminjaman->tanggal_pinjam ?? 'N/A' }}</td>
                                 <td class="py-4 text-center">{{ $item->peminjaman->tanggal_jatuh_tempo ?? 'N/A' }}</td>
@@ -128,6 +138,9 @@
                                         data-jumlah_denda="{{ $item->jumlah_denda }}"
                                         data-total_bayar="{{ $item->total_bayar }}"
                                         data-jumlah_bayar="{{ $item->jumlah_bayar }}"
+                                        data-buku_rusak="{{ $item->buku_rusak }}"
+                                        data-buku_hilang="{{ $item->buku_hilang }}"
+                                        data-status_pembayaran="{{ $item->status_pembayaran }}"
                                         data-jumlah_kembalian="{{ $item->jumlah_kembalian }}" type="button">
                                         <img src="{{ asset('icons/svg/detail.svg') }}" alt="">
                                     </button>
