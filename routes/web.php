@@ -70,9 +70,11 @@ Route::middleware(isPetugas::class)->group(function () {
     Route::get('/dashboard-petugas', [PetugasController::class, 'Dashboard_petugas']);
     // End Dashboard Petugas
 
-    // Pengajuan & pengembalian
+    // Pengajuan & pengembalian & pembayaran
     Route::get('/pengajuan',[PetugasController::class, 'pengajuan']);
     Route::get('/pengembalian',[PetugasController::class, 'pengembalian']);
+    Route::get('/pembayaran',[PetugasController::class, 'pembayaran']);
+    Route::post('/pembayaran/{id}',[PetugasController::class, 'pembayaranProses']);
     Route::post('/pengembalian/{id}',[PetugasController::class, 'pengembalianKonfirmasi']);
 
     Route::post('/pengajuan/konfirmasi/{id}',[PetugasController::class, 'konfirmasi']);

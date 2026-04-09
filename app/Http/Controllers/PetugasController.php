@@ -129,6 +129,61 @@ class PetugasController extends Controller
         ]);
     }
 
+    // Halaman Pembayaran
+    public function pembayaran(Request $request)
+    {
+        $cari = $request->input('cari');
+
+        $tertunda = Pengembalian::with('peminjaman.anggota')
+            ->where('status', 'dikembalikan')
+            ->where('status_pembayaran', 'tertunda')
+            ->when($cari, function ($query, $cari) {
+                $query->whereHas('peminjaman', function ($q) use ($cari) {
+                    $q->whereHas('anggota', function ($q2) use ($cari) {
+                        $q2->where('nomer_induk', 'like', '%' . $cari . '%')
+                            ->orWhere('nama_lengkap', 'like', '%' . $cari . '%');
+                    });
+                });
+            })
+            ->paginate(5)->withQueryString();
+        return view('petugas.pembayaran', [
+            "pengembalians" => $tertunda
+        ]);
+    }
+
+    // Proses Pembayaran
+    public function pembayaranProses(Request $request, $id)
+    {
+        // dd($request->all(), $id);
+        $request->validate([
+            'jumlah_bayar' => 'required|numeric|min:0',
+        ]);
+
+        $pengembalian = Pengembalian::findOrFail($id);
+        $pengembalian->total_bayar = $request->total_bayar;
+        $pengembalian->jumlah_bayar = $request->jumlah_bayar;
+        $pengembalian->jumlah_kembalian = $request->jumlah_kembalian;
+        $pengembalian->status_pembayaran = 'lunas';
+        $pengembalian->save();
+
+        if ($pengembalian) {
+            // Kirim Pemberitahuan ke anggota
+            $pesan = "Pembayaran denda Anda telah diproses.\n\n";
+            $pesan .= "Rincian:\n";
+            $pesan .= "- Judul Buku : {$pengembalian->peminjaman->buku->judul_buku}\n";
+            $pesan .= "- Total Denda : Rp " . number_format($pengembalian->jumlah_bayar, 0, ',', '.') . "\n";
+            $pesan .= "- Kembalian : Rp " . number_format($pengembalian->jumlah_kembalian, 0, ',', '.') . "\n\n";
+            $pesan .= "Terima kasih atas pembayaran Anda.";
+
+            Pemberitahuan::create([
+                'anggota_id' => $pengembalian->peminjaman->anggota_id,
+                'pesan' => $pesan
+            ]);
+        }
+
+        return back()->with('success', 'Pembayaran berhasil diproses');
+    }
+
     // Konfirmasi Terima Peminjaman
     public function konfirmasi(Request $request, $id)
     {

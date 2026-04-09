@@ -116,6 +116,17 @@
                             <span>Pengembalian</span>
                         </a>
                     </li>
+                    {{-- Pembayaran - Petugas --}}
+                    <li>
+                        <a href="/pembayaran"
+                            class="{{ request()->is('pembayaran*') ? 'text-[#35094D] font-semibold' : 'text-[#35094d90]' }} flex items-center gap-2 text-[16px]">
+                            <div class="w-6 h-6 flex items-center justify-center">
+                                <img src="{{ request()->is('pembayaran*') ? asset('icons/svg/payment-aktif.svg') : asset('icons/svg/payment-inaktif.svg') }}"
+                                    class="w-5 h-5 object-contain" alt="">
+                            </div>
+                            <span>Pembayaran</span>
+                        </a>
+                    </li>
                     <span class="text-[10px] font-medium text-[#35094d90]">DATA BUKU</span>
                     <li class="mt-2">
                         <a href="/kelola-buku"
@@ -128,32 +139,40 @@
                         </a>
                     </li>
                 @endrole
-
-                {{-- Fitur Anggota --}}
-                @role('anggota')
-                    <li>
-                        <a href="/riwayat-pinjaman"
-                            class="{{ request()->is('riwayat-pinjaman') ? 'text-[#35094D] font-semibold' : 'text-[#35094d90]' }} flex items-center gap-2 text-[16px]">
-                            <div class="w-6 h-6 flex items-center justify-center">
-                                <img src="{{ request()->is('riwayat-pinjaman') ? asset('icons/svg/riwayat-pinjaman-aktif.svg') : asset('icons/svg/riwayat-pinjaman-inactive.svg') }}"
-                                    class="w-7 h-7 object-contain" alt="">
-                            </div>
-                            <span>Riwayat Peminjaman</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/daftar-buku"
-                            class="{{ request()->is('daftar-buku*') ? 'text-[#35094D] font-semibold' : 'text-[#35094d90]' }} flex items-center gap-2 text-[16px]">
-                            <div class="w-6 h-6 flex items-center justify-center">
-                                <img src="{{ request()->is('daftar-buku*') ? asset('icons/svg/buku-aktif.svg') : asset('icons/svg/buku-inactive.svg') }}"
-                                    class="w-5 h-5 object-contain" alt="">
-                            </div>
-                            <span>Daftar Buku</span>
-                        </a>
-                    </li>
-                @endrole
             </ul>
         </div>
+
+        @role('anggota')
+            {{-- TRANSAKSI --}}
+            <div class="mb-5">
+                <span class="text-[10px] font-medium text-[#35094d90] ">TRANSAKSI</span>
+                <ul class="mt-2 space-y-4">
+                    {{-- Denda Anggota --}}
+                    @role('anggota')
+                        <li>
+                            <a href="/riwayat-pinjaman"
+                                class="{{ request()->is('riwayat-pinjaman') ? 'text-[#35094D] font-semibold' : 'text-[#35094d90]' }} flex items-center gap-2 text-[16px]">
+                                <div class="w-6 h-6 flex items-center justify-center">
+                                    <img src="{{ request()->is('riwayat-pinjaman') ? asset('icons/svg/riwayat-pinjaman-aktif.svg') : asset('icons/svg/riwayat-pinjaman-inactive.svg') }}"
+                                        class="w-7 h-7 object-contain" alt="">
+                                </div>
+                                <span>Riwayat Peminjaman</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/denda-anggota"
+                                class="{{ request()->is('denda-anggota*') ? 'text-[#35094D] font-semibold' : 'text-[#35094d90]' }} flex items-center gap-2 text-[16px]">
+                                <div class="w-6 h-6 flex items-center justify-center">
+                                    <img src="{{ request()->is('denda-anggota*') ? asset('icons/svg/payment-aktif.svg') : asset('icons/svg/payment-inaktif.svg') }}"
+                                        class="w-5 h-5 object-contain" alt="">
+                                </div>
+                                <span>Denda Saya</span>
+                            </a>
+                        </li>
+                    @endrole
+                </ul>
+            </div>
+        @endrole
 
         {{-- LAINNYA --}}
         <div>
@@ -226,6 +245,16 @@
                 @endrole
 
                 @role('anggota')
+                    <li>
+                        <a href="/daftar-buku"
+                            class="{{ request()->is('daftar-buku*') ? 'text-[#35094D] font-semibold' : 'text-[#35094d90]' }} flex items-center gap-2 text-[16px]">
+                            <div class="w-6 h-6 flex items-center justify-center">
+                                <img src="{{ request()->is('daftar-buku*') ? asset('icons/svg/buku-aktif.svg') : asset('icons/svg/buku-inactive.svg') }}"
+                                    class="w-5 h-5 object-contain" alt="">
+                            </div>
+                            <span>Daftar Buku</span>
+                        </a>
+                    </li>
                     <li>
                         <a href="/profile-anggota"
                             class="{{ request()->is('profile-anggota*') ? 'text-[#35094D] font-semibold' : 'text-[#35094d90]' }} flex items-center gap-2 text-[16px]">
