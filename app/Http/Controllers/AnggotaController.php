@@ -55,7 +55,7 @@ class AnggotaController extends Controller
         // Ambil Data Anggota Id
         $anggota_id = Auth::user()->Anggota->id ?? null;
         // Ambil Data Total Pinjaman dan Total Pengembalian
-        $totalPinjaman = Peminjaman::where('anggota_id', $anggota_id)->where('status','dipinjam')->count();
+        $totalPinjaman = Peminjaman::where('anggota_id', $anggota_id)->where('status', 'dipinjam')->count();
         // Ambil Data Total Pengembalian
         $totalPengembalian = Pengembalian::with('peminjaman')
             ->where('status', 'dikembalikan')
@@ -94,7 +94,7 @@ class AnggotaController extends Controller
         // Ambil Data Pengajuan dan Pengembalian Berdasarkan Anggota Id
         $pengajuans = Peminjaman::whereIn('status', ['dipinjam', 'menunggu'])
             ->where('anggota_id', $anggota_id)
-            ->paginate(10);
+            ->paginate(3);
 
         // Ambil Data Pengembalian Berdasarkan Anggota Id
         $pengembalians = Pengembalian::with([
@@ -104,8 +104,8 @@ class AnggotaController extends Controller
             ->where('status', 'dikembalikan')
             ->whereHas('peminjaman', function ($query) use ($anggota_id) {
                 $query->where('anggota_id', $anggota_id);
-            })
-            ->paginate(10);
+            })->latest()
+            ->paginate(5);
         // dd($pengembalians);
 
         return view('Anggota.riwayat-pinjaman', [
@@ -114,10 +114,37 @@ class AnggotaController extends Controller
         ]);
     }
 
+    // Halaman Denda Saya
+    public function dendaAnggota()
+    {
+        $anggota_id  = Auth::user()->anggota->id;
+
+        // ambil peminjaman yg sudah dikembalikan
+        $peminjamans = Peminjaman::where('anggota_id', $anggota_id)
+            ->where('status', 'dikembalikan')
+            ->get();
+
+        // ambil pengembalian berdasarkan peminjaman
+        $pengembalians = Pengembalian::whereIn('peminjam_id', $peminjamans->pluck('id'))
+            ->where('status_pembayaran', 'tertunda')
+            ->paginate(3)->withQueryString();
+
+        // Riwayat Denda Saya
+        $RiwayatsDenda = Pengembalian::whereIn('peminjam_id', $peminjamans->pluck('id'))
+            ->where('status_pembayaran', 'lunas')
+            ->paginate(5)->withQueryString();
+
+
+        return view('Anggota.denda-saya', [
+            "pengembalians"  =>  $pengembalians,
+            "RiwayatsDenda"  =>  $RiwayatsDenda
+        ]);
+    }
+
     // Halaman Daftar Buku
     public function daftar_buku(Request $request)
     {
-        
+
         $cari = $request->input('cari');
         // Cari Buku Berdasarkan Kode Buku, Judul Buku, atau Penulis
         $bukus = Buku::where(function ($query) use ($cari) {

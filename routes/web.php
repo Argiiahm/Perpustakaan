@@ -43,6 +43,8 @@ Route::middleware(isAnggota::class)->group(function () {
     Route::get('/dashboard-anggota', [AnggotaController::class, 'Dashboard_Anggota']);
     // Riwayat Pinjaman
     Route::get('/riwayat-pinjaman', [AnggotaController::class, 'riwayat_pinjaman']);
+    // Denda Saya
+    Route::get('/denda-anggota', [AnggotaController::class, 'dendaAnggota']);
     // Daftar Buku
     Route::get('/daftar-buku', [AnggotaController::class, 'daftar_buku']);
     // Ajukan Buku

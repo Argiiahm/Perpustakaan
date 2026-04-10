@@ -178,6 +178,9 @@
                     @endforelse
                 </tbody>
             </table>
+            <div class="mt-2">
+                {{ $pengembalians->links() }}
+            </div>
         </div>
     </section>
 

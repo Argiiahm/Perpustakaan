@@ -41,6 +41,16 @@
                             <span>Dashboard</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="/daftar-buku"
+                            class="{{ request()->is('daftar-buku*') ? 'text-[#35094D] font-semibold' : 'text-[#35094d90]' }} flex items-center gap-2 text-[16px]">
+                            <div class="w-6 h-6 flex items-center justify-center">
+                                <img src="{{ request()->is('daftar-buku*') ? asset('icons/svg/buku-aktif.svg') : asset('icons/svg/buku-inactive.svg') }}"
+                                    class="w-5 h-5 object-contain" alt="">
+                            </div>
+                            <span>Daftar Buku</span>
+                        </a>
+                    </li>
                 @endrole
 
                 {{-- Dashboard Petugas --}}
@@ -245,16 +255,6 @@
                 @endrole
 
                 @role('anggota')
-                    <li>
-                        <a href="/daftar-buku"
-                            class="{{ request()->is('daftar-buku*') ? 'text-[#35094D] font-semibold' : 'text-[#35094d90]' }} flex items-center gap-2 text-[16px]">
-                            <div class="w-6 h-6 flex items-center justify-center">
-                                <img src="{{ request()->is('daftar-buku*') ? asset('icons/svg/buku-aktif.svg') : asset('icons/svg/buku-inactive.svg') }}"
-                                    class="w-5 h-5 object-contain" alt="">
-                            </div>
-                            <span>Daftar Buku</span>
-                        </a>
-                    </li>
                     <li>
                         <a href="/profile-anggota"
                             class="{{ request()->is('profile-anggota*') ? 'text-[#35094D] font-semibold' : 'text-[#35094d90]' }} flex items-center gap-2 text-[16px]">
