@@ -60,8 +60,8 @@
                 <div class="grid grid-cols-2 gap-3">
                     <div class="border border-slate-200 rounded-xl p-3">
                         <p class="text-[10px] text-slate-400 mb-1">Denda / hari</p>
-                        <p class="text-sm font-semibold text-slate-700">Rp 4.000</p>
-                        <input value="4000" type="number" readonly class="inputDenda hidden">
+                        <p class="text-sm font-semibold text-slate-700">Rp {{ number_format($config->denda_per_hari ?? 1000, 0, ',', '.') }}</p>
+                        <input value="{{ $config->denda_per_hari ?? 1000 }}" type="number" readonly class="inputDenda hidden">
                     </div>
                     <div class="border border-slate-200 rounded-xl p-3">
                         <p class="text-[10px] text-slate-400 mb-1">Total telat</p>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Buku;
 use App\Models\Peminjaman;
 use App\Models\Pengembalian;
+use App\Models\Setting;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,6 +17,12 @@ class PeminjamanController extends Controller
     // Ajukan Pinjaman Buku
     public function ajukanBuku(Request $request)
     {
+
+        // AMBIL DATA SETTING
+        $config = Setting::first();
+        $max_pinjam = $config->max_pinjam ?? 3;
+        $max_pengajuan = $config->max_pengajuan ?? 2;
+
         // Ambil Data Buku Id
         $buku_id = $request->buku_id;
 
@@ -40,15 +47,15 @@ class PeminjamanController extends Controller
             return back()->with('error', 'Mohon Maaf, Sepertinya stok buku ini kosong!');
         }
 
-        // Cek Apakah Pengguna ini sedang pinjam buku sebanyakk 3 buku?
+        // Cek Apakah Pengguna ini sedang pinjam buku sebanyakk $max_pinjam buku?
         $pinjaman = Peminjaman::where('anggota_id', $anggota_id)->where('status', 'dipinjam')->count();
-        if ($pinjaman === 3 || $pinjaman >= 3) {
+        if ($pinjaman === $max_pinjam || $pinjaman >= $max_pinjam) {
             return back()->with('error', 'Jumlah Pinjaman kamu sudah Mencapai batas pinjaman, silahkan kembalikan buku pinjamanmu terlebih dahulu!');
         }
 
         // batas pengajuan atau nunggu konfirmasi dulu,
         $batas_pengajuan_pending = Peminjaman::where('anggota_id', $anggota_id)->where('status', 'menunggu')->count();
-        if ($batas_pengajuan_pending === 2 || $batas_pengajuan_pending >= 2) {
+        if ($batas_pengajuan_pending === $max_pengajuan || $batas_pengajuan_pending >= $max_pengajuan) {
             return back()->with('error', 'kamu telah mencapai batas pengajuan buku!, silahkan tunggu konfirmasi buku yang kamu pinjam sebelumnya.');
         }
 

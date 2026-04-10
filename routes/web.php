@@ -12,6 +12,7 @@ use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\PetugasController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RedirectController;
+use App\Http\Controllers\SettingController;
 use App\Http\Middleware\is_pengguna_and_kepala_perpus;
 use App\Http\Middleware\isAnggota;
 use App\Http\Middleware\isKepalaPerpus;
@@ -116,6 +117,10 @@ Route::middleware(isKepalaPerpus::class)->group(function () {
     // Daftar Laporan
     Route::get('/daftar-laporan', [LaporanController::class, 'daftarLaporanKepalaPerpus']);
     // End Daftar Laporan
+
+    // Setting
+    Route::get('/setting', [SettingController::class, 'settingIndex']);
+    Route::put('/setting/{setting:id}', [SettingController::class, 'settingUpdate']);
 
     // Cetak PDF
     Route::get('/cetak-pdf/transaksi',[pdfController::class, 'cetakTransaksi']);

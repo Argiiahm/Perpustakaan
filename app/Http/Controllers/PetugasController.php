@@ -7,6 +7,7 @@ use App\Models\Pemberitahuan;
 use App\Models\Peminjaman;
 use App\Models\Pengembalian;
 use App\Models\RiwayatPengajuan;
+use App\Models\Setting;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -125,7 +126,8 @@ class PetugasController extends Controller
             })->paginate(5)->withQueryString();
         // dd($pengembalians);
         return view('petugas.pengembalian', [
-            "pengembalians" => $pengembalians
+            "pengembalians" => $pengembalians,
+            "config" => Setting::first(),
         ]);
     }
 
@@ -191,10 +193,16 @@ class PetugasController extends Controller
             "tanggal_jatuh_tempo" => "required|date",
         ]);
 
+        // Ambil Data Peminjaman
         $data = Peminjaman::findOrFail($id);
         $tglPinjam = Carbon::parse($data->tanggal_pinjam);
         $tglTempo = Carbon::parse($request->tanggal_jatuh_tempo)->endOfDay();
         $petugas_id = Auth::user()->Petugas->id ?? null;
+
+        // AMBIL DATA SETTING
+        $config = Setting::first();
+        $max_pinjam = $config->max_pinjam ?? 3;
+        $max_pengajuan = $config->max_pengajuan ?? 2;
 
 
         // Cek Apakah Tgl Jatuh Tempo lebih kecil dari tanggal pinjam
@@ -209,9 +217,9 @@ class PetugasController extends Controller
             return back()->with('error', 'Mohon Maaf, Sepertinya stok buku ini kosong!');
         }
 
-        // Cek Apakah Pengguna ini sedang pinjam buku sebanyakk 3 buku?
+        // Cek Apakah Pengguna ini sedang pinjam buku sebanyakk $max_pinjam buku?
         $pinjaman = Peminjaman::where('anggota_id', $data->anggota_id)->where('status', 'dipinjam')->count();
-        if ($pinjaman >= 3) {
+        if ($pinjaman >= $max_pinjam) {
             return back()->with('error', 'Jumlah Pinjaman Pengguna ini sudah Mencapai batas pinjaman.');
         }
 
@@ -298,13 +306,16 @@ class PetugasController extends Controller
             'buku_hilang' => 'nullable|numeric|min:0',
         ]);
 
+        // Ambil Data Pengembalian
         $pengembalian = Pengembalian::with(['peminjaman.buku', 'peminjaman.anggota'])
             ->findOrFail($id);
 
+        // Ambil Data Peminjaman, Buku, Anggota
         $peminjaman = $pengembalian->peminjaman;
         $buku = $peminjaman->buku;
         $anggota = $peminjaman->anggota;
 
+        // Ambil Data Input
         $jumlah_denda = $request->jumlah_denda ?? 0;
         $jumlah_bayar = $request->jumlah_bayar ?? 0;
         $total_bayar  = $request->total_bayar ?? 0;
