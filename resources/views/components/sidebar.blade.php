@@ -305,7 +305,7 @@
                                 @php
                                     $user = Auth::user();
                                     // Ambil semua pemberitahuan
-                                    $pemberitahuan = $user->Anggota->pemberitahuan;
+                                    $pemberitahuan = $user->Anggota->pemberitahuan ?? collect();
                                     // Hitung yang belum dilihat
                                     $belumDilihat = $pemberitahuan->where('sudah_dilihat', false)->count();
                                 @endphp

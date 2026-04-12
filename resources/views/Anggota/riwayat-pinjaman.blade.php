@@ -35,7 +35,7 @@
                                 <td class="py-4 text-center text-[#35094D66]">Menunggu...</td>
                             @else
                                 @php
-                                // Cek Apakah Sudah Terlambat Atau Belum
+                                    // Cek Apakah Sudah Terlambat Atau Belum
                                     $isTerlambat =
                                         now()->toDateString() >
                                         \Carbon\Carbon::parse($pengajuan->tanggal_jatuh_tempo)->toDateString();
@@ -159,6 +159,9 @@
                                         data-jumlah_denda="{{ $pengembalian->jumlah_denda }}"
                                         data-total_bayar="{{ $pengembalian->total_bayar }}"
                                         data-jumlah_bayar="{{ $pengembalian->jumlah_bayar }}"
+                                        data-buku_rusak="{{ $pengembalian->buku_rusak }}"
+                                        data-buku_hilang="{{ $pengembalian->buku_hilang }}"
+                                        data-status_pembayaran="{{ $pengembalian->status_pembayaran }}"
                                         data-jumlah_kembalian="{{ $pengembalian->jumlah_kembalian }}" type="button">
                                         <img src="{{ asset('icons/svg/detail.svg') }}" alt="">
                                     </button>

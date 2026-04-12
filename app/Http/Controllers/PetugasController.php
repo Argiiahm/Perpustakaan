@@ -146,7 +146,7 @@ class PetugasController extends Controller
                             ->orWhere('nama_lengkap', 'like', '%' . $cari . '%');
                     });
                 });
-            })
+            })->latest()
             ->paginate(5)->withQueryString();
         return view('petugas.pembayaran', [
             "pengembalians" => $tertunda
@@ -166,6 +166,7 @@ class PetugasController extends Controller
         $pengembalian->jumlah_bayar = $request->jumlah_bayar;
         $pengembalian->jumlah_kembalian = $request->jumlah_kembalian;
         $pengembalian->status_pembayaran = 'lunas';
+        $pengembalian->petugas_id = Auth::user()->Petugas->id ?? null;
         $pengembalian->save();
 
         if ($pengembalian) {
@@ -439,7 +440,8 @@ class PetugasController extends Controller
                 'buku_rusak' => $is_rusak,
                 'buku_hilang' => $is_hilang,
                 'status' => 'dikembalikan',
-                'status_pembayaran' => $status_pembayaran
+                'status_pembayaran' => $status_pembayaran,
+                'petugas_id' => Auth::user()->Petugas->id ?? null,
             ]);
 
             $peminjaman->update([
@@ -465,9 +467,7 @@ class PetugasController extends Controller
         if ($jenis_aktivitas === 'pengembalian') {
             $query = Pengembalian::with(['peminjaman.buku', 'peminjaman.anggota'])
                 ->where('status', 'dikembalikan')
-                ->whereHas('peminjaman', function ($q) {
-                    $q->where('petugas_id', Auth::user()->petugas->id);
-                });
+                ->where('petugas_id', Auth::user()->petugas->id);
         } else {
             $query = RiwayatPengajuan::with(['peminjaman.buku', 'peminjaman.anggota'])
                 ->whereHas('peminjaman', function ($q) {
@@ -503,7 +503,7 @@ class PetugasController extends Controller
         }
 
         // Ambil Data Aktivitas
-        $aktivitas_data = $query->latest()->get();
+        $aktivitas_data = $query->latest()->paginate(5)->withQueryString();
 
         return view('petugas.aktivitas', [
             "aktivitas_data" => $aktivitas_data,

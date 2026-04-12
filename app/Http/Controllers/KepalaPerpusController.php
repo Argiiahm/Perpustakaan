@@ -108,7 +108,7 @@ class KepalaPerpusController extends Controller
         }
 
         // Ambil Data Transaksi Berdasarkan Filter Waktu
-        $transaksis = $query->latest()->get();
+        $transaksis = $query->latest()->paginate(5)->withQueryString();
 
         return view('Kepala_perpus.daftar-transaksi', [
             "transaksis"   => $transaksis,

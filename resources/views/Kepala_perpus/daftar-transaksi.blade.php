@@ -158,6 +158,9 @@
                     @endforelse
                 </tbody>
             </table>
+            <div class="mt-4">
+                {{ $transaksis->links() }}
+            </div>
         </div>
     </section>
 

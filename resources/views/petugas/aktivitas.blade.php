@@ -182,6 +182,9 @@
                     @endforelse
                 </tbody>
             </table>
+            <div class="mt-6">
+                {{ $aktivitas_data->links() }}
+            </div>
         </div>
     </section>
 
