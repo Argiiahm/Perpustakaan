@@ -62,6 +62,14 @@
                                     alt="">
                                 <span>Menunggu...</span>
                             </button>
+                        @elseif ($dipinjam)
+                            {{-- Sedang Dipinjam --}}
+                            <button type="button"
+                                class="flex-1 bg-[#35094d52] text-white font-bold cursor-no-drop py-4 rounded-2xl transition-all flex items-center justify-center gap-3">
+                                <img src="{{ asset('icons/svg/ajukan-jadwal.svg') }}" class="w-5 h-5 brightness-0 invert"
+                                    alt="">
+                                <span>Sedang Anda Pinjam</span>
+                            </button>
                         @else
                             {{-- Jika Tidak --}}
                             <button type="button"

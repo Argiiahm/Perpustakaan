@@ -47,6 +47,16 @@ class PeminjamanController extends Controller
             return back()->with('error', 'Mohon Maaf, Sepertinya stok buku ini kosong!');
         }
 
+        // Cek Apakah Buku Ini Sedang Dipinjam Oleh Pengguna Ini?
+        $cek_peminjaman = Peminjaman::where('buku_id', $buku_id)
+            ->where('anggota_id', $anggota_id)
+            ->whereIn('status', ['dipinjam', 'menunggu'])
+            ->exists();
+
+        if ($cek_peminjaman) {
+            return back()->with('error', 'Kamu Sedang meminjam buku ini, silahkan kembalikan buku ini terlebih dahulu untuk bisa meminjam lagi!');
+        }
+
         // Cek APakah Pengguna Ini Sedang Mempuyai Pembayaran Denda Tertunda?
         // Ambil Data Peminajaman
         $peminjamanIds = Peminjaman::where('anggota_id', $anggota_id)
