@@ -78,6 +78,9 @@
                                     Tolak
                                 </button>
                                 <button data-id="{{ $pengajuan->id }}"
+                                    data-nama_peminjam="{{ $pengajuan->anggota->nama_lengkap }}"
+                                    data-tgl_pinjam="{{ $pengajuan->tanggal_pinjam }}"
+                                    data-tgl_tempo="{{ $pengajuan->tanggal_jatuh_tempo }}"
                                     class="btn_open_modal_konir_ajukan bg-[#35094D] cursor-pointer text-white px-6 py-2 rounded-full">
                                     Konfirmasi
                                 </button>
@@ -110,39 +113,44 @@
             {{-- Form Body --}}
             <form id="form_konfir_ajukanKonfirmasi" action="" method="POST" class="all_form p-8">
                 @csrf
-                <div class="mb-8">
-                    <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2"
-                        for="jatuh_tempo">
-                        Atur Tanggal Jatuh Tempo <span class="text-red-500">*</span>
-                    </label>
-                    <div class="relative">
-                        <input type="date" name="tanggal_jatuh_tempo" id="jatuh_tempo" required
-                            class="w-full border border-gray-200 focus:border-[#35094D] focus:ring-2 focus:ring-[#35094D]/20 outline-none px-4 py-3 rounded-xl text-gray-700 transition-all appearance-none">
+                <div>
+                    <div class="mb-6">
+                        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
+                            Informasi Peminjaman
+                        </label>
+                        <div class="bg-gray-50 p-4 rounded-2xl">
+                            <p class="text-xs text-gray-400 font-bold uppercase mb-1">Nama Peminjam</p>
+                            <p class="textNamaPeminjam font-bold text-[#35094D]"></p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-2xl">
+                            <p class="text-xs text-gray-400 font-bold uppercase mb-1">Tanggal Pinjam</p>
+                            <p class="textTanggalPinjam font-bold text-[#35094D]"></p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-2xl">
+                            <p class="text-xs text-gray-400 font-bold uppercase mb-1">Tanggal Jatuh Tempo</p>
+                            <p class="textTanggalJatuhTempo font-bold text-[#35094D]"></p>
+                        </div>
                     </div>
-                    <p class="mt-2 text-[11px] text-gray-400 font-italic italic">*Batas waktu pengembalian buku oleh
-                        anggota.</p>
-                </div>
-
-                {{-- Action Buttons --}}
-                <div class="flex items-center justify-center gap-3">
-                    <button type="button"
-                        class="btn_close_konfir_ajukan border border-gray-300 text-gray-600 font-medium px-6 py-3 rounded-xl cursor-pointer">
-                        Nanti Saja
-                    </button>
-                    <button id="" type="submit"
-                        class="btn_simpan_perubahan bg-[#35094D] text-white font-medium px-6 py-3 rounded-xl cursor-pointer flex items-center gap-2">
-                        <svg id="" class="spinner_load hidden animate-spin h-5 w-5 text-white"
-                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                                stroke-width="4">
-                            </circle>
-                            <path class="opacity-75" fill="currentColor"
-                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                            </path>
-                        </svg>
-                        <span class="text_simpan">Ya, Konfirmasi</span>
-                    </button>
-                </div>
+                    {{-- Action Buttons --}}
+                    <div class="flex items-center justify-center gap-3">
+                        <button type="button"
+                            class="btn_close_konfir_ajukan border border-gray-300 text-gray-600 font-medium px-6 py-3 rounded-xl cursor-pointer">
+                            Nanti Saja
+                        </button>
+                        <button id="" type="submit"
+                            class="btn_simpan_perubahan bg-[#35094D] text-white font-medium px-6 py-3 rounded-xl cursor-pointer flex items-center gap-2">
+                            <svg id="" class="spinner_load hidden animate-spin h-5 w-5 text-white"
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                    stroke-width="4">
+                                </circle>
+                                <path class="opacity-75" fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                </path>
+                            </svg>
+                            <span class="text_simpan">Ya, Konfirmasi</span>
+                        </button>
+                    </div>
             </form>
         </div>
     </section>
@@ -224,14 +232,28 @@
             const openButtons = document.querySelectorAll('.btn_open_modal_konir_ajukan');
             const closeButtons = document.querySelectorAll('.btn_close_konfir_ajukan');
 
+            const textNamaPeminjam = modal_konfir_ajukan.querySelector('.textNamaPeminjam');
+            const textTanggalPinjam = modal_konfir_ajukan.querySelector('.textTanggalPinjam');
+            const textTanggalJatuhTempo = modal_konfir_ajukan.querySelector('.textTanggalJatuhTempo');
+
             // Fungsi Membuka Modal
             openButtons.forEach(button => {
                 button.addEventListener('click', function() {
                     const id = this.getAttribute('data-id');
+                    const namaPeminjam = this.getAttribute('data-nama_peminjam');
+                    const tglPinjam = this.getAttribute('data-tgl_pinjam');
+                    const tglTempo = this.getAttribute('data-tgl_tempo');
+
                     form_konfir_ajukan.action = `/pengajuan/konfirmasi/${id}`;
 
                     // Munculkan modal
                     modal_konfir_ajukan.classList.remove('hidden');
+
+                    // Set data ke dalam modal
+                    textNamaPeminjam.textContent = namaPeminjam;
+                    textTanggalPinjam.textContent = tglPinjam;
+                    textTanggalJatuhTempo.textContent = tglTempo;
+
                     modal_konfir_ajukan.classList.add('flex');
                 });
             });

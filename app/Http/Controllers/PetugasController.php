@@ -190,20 +190,16 @@ class PetugasController extends Controller
     // Konfirmasi Terima Peminjaman
     public function konfirmasi(Request $request, $id)
     {
-        $request->validate([
-            "tanggal_jatuh_tempo" => "required|date",
-        ]);
-
         // Ambil Data Peminjaman
         $data = Peminjaman::findOrFail($id);
         $tglPinjam = Carbon::parse($data->tanggal_pinjam);
-        $tglTempo = Carbon::parse($request->tanggal_jatuh_tempo)->endOfDay();
+        $tglTempo = Carbon::parse($data->tanggal_jatuh_tempo)->endOfDay();
         $petugas_id = Auth::user()->Petugas->id ?? null;
 
         // AMBIL DATA SETTING
         $config = Setting::first();
         $max_pinjam = $config->max_pinjam ?? 3;
-        $max_pengajuan = $config->max_pengajuan ?? 2;
+        // $max_pengajuan = $config->max_pengajuan ?? 2;
 
 
         // Cek Apakah Tgl Jatuh Tempo lebih kecil dari tanggal pinjam
@@ -226,7 +222,6 @@ class PetugasController extends Controller
 
         $data->petugas_id = $petugas_id;
         $anggota_id = $data->anggota_id;
-        $data->tanggal_jatuh_tempo = $tglTempo;
         $data->status = "dipinjam";
 
         // Kurangi Stok Buku
@@ -240,7 +235,7 @@ class PetugasController extends Controller
                     Rincian:
                     - Judul Buku          : {$data->buku->judul_buku}
                     - Tanggal Pinjam      : " . Carbon::parse($data->tanggal_pinjam)->format('d/m/Y') . "
-                    - Tanggal Jatuh Tempo : " . Carbon::parse($request->tanggal_jatuh_tempo)->format('d/m/Y') . "    
+                    - Tanggal Jatuh Tempo : " . Carbon::parse($data->tanggal_jatuh_tempo)->format('d/m/Y') . "    
                 Harap mengembalikan buku sebelum tanggal jatuh tempo untuk menghindari denda.";
 
         if ($data) {
