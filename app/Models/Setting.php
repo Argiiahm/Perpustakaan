@@ -12,5 +12,6 @@ class Setting extends Model
         'max_pinjam',
         'max_pengajuan',
         'denda_per_hari',
+        'tanggal_jatuh_tempo'
     ];
 }

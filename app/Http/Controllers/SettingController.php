@@ -29,6 +29,7 @@ class SettingController extends Controller
             'max_pinjam'     => 'required|integer|min:1',
             'max_pengajuan'  => 'required|integer|min:1',
             'denda_per_hari' => 'required|integer|min:1000',
+            'tanggal_jatuh_tempo'  =>  "required"
         ],[
             "max_pinjam.required" => "Batas maksimal peminjaman harus diisi.",
             "max_pinjam.integer" => "Batas maksimal peminjaman harus berupa angka.",
@@ -48,6 +49,7 @@ class SettingController extends Controller
                 'max_pinjam'     => $request->max_pinjam,
                 'max_pengajuan'  => $request->max_pengajuan,
                 'denda_per_hari' => $request->denda_per_hari,
+                'tanggal_jatuh_tempo'  => $request->tanggal_jatuh_tempo
             ]
         );
 

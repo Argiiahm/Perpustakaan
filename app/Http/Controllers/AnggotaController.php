@@ -144,7 +144,6 @@ class AnggotaController extends Controller
     // Halaman Daftar Buku
     public function daftar_buku(Request $request)
     {
-
         $cari = $request->input('cari');
         // Cari Buku Berdasarkan Kode Buku, Judul Buku, atau Penulis
         $bukus = Buku::where(function ($query) use ($cari) {
@@ -167,12 +166,9 @@ class AnggotaController extends Controller
         $anggota_id = Auth::user()->Anggota->id ?? null;
         // Button Sedang pending
         $pengajuan_pending = Peminjaman::where('anggota_id', $anggota_id)->where('buku_id', $buku->id)->where('status', 'menunggu')->exists();
-        // button sedang dipinjam
-        $pengajuan_dipinjam = Peminjaman::where('anggota_id', $anggota_id)->where('buku_id', $buku->id)->where('status', 'dipinjam')->first();
         return view('Anggota.detail-buku', [
             "buku"   =>    $buku,
-            "pending"  =>  $pengajuan_pending,
-            "dipinjam" =>  $pengajuan_dipinjam
+            "pending"  =>  $pengajuan_pending
         ]);
     }
 }

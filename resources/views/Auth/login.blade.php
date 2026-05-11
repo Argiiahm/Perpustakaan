@@ -23,10 +23,10 @@
         <div class="col-span-2 login_img_section hidden md:flex items-center justify-center">
             <div class="relative h-screen flex flex-col items-center justify-center pt-1 mx-auto w-full">
                 <div class="absolute top-4 left-5 flex items-center gap-3 text-white">
-                    <img class="w-10" src="{{ asset('icons/logo.png') }}" alt="">
+                    <img class="w-10" src="{{ asset('images/logo-smk.png') }}" alt="">
                     <div class="flex flex-col">
                         <span class="font-semibold text-[24px]">Perpustakaan</span>
-                        <span class="text-[16px] -mt-2">Saya</span>
+                        <span class="text-[16px] -mt-2">SMKN 3 BANJAR</span>
                     </div>
                 </div>
                 <h1 class="text-white text-4xl text-center font-semibold">Daftar Akun</h1>

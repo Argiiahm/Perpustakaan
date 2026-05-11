@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Anggota;
 use App\Models\Buku;
 use App\Models\Pemberitahuan;
 use App\Models\Peminjaman;
@@ -102,9 +103,14 @@ class PetugasController extends Controller
             })
             ->paginate(5)->withQueryString();
 
+        // AMBIL DATA SETTING
+        $config = Setting::first();
+        $max_pinjam = $config->max_pinjam ?? 3;
+
 
         return view('petugas.pengajuan', [
             "pengajuans" => $pengajuans,
+            "max_pinjam"  =>  $max_pinjam
         ]);
     }
 
@@ -167,6 +173,11 @@ class PetugasController extends Controller
         $pengembalian->jumlah_kembalian = $request->jumlah_kembalian;
         $pengembalian->status_pembayaran = 'lunas';
         $pengembalian->petugas_id = Auth::user()->Petugas->id ?? null;
+
+        $anggota = $pengembalian->peminjaman->anggota;
+        $anggota->total_denda = $anggota->total_denda - $request->total_bayar;
+        $anggota->save();
+
         $pengembalian->save();
 
         if ($pengembalian) {
@@ -221,7 +232,12 @@ class PetugasController extends Controller
         }
 
         $data->petugas_id = $petugas_id;
-        $anggota_id = $data->anggota_id;
+        // Update total_pinjam_sekarang Anggota
+        $anggota = Anggota::where('id', $data->anggota_id)->first();
+        $anggota->increment('total_pinjam_sekarang');
+        $anggota->save();
+
+
         $data->status = "dipinjam";
 
         // Kurangi Stok Buku
@@ -229,6 +245,7 @@ class PetugasController extends Controller
 
         // Simpam Data
         $data->save();
+
 
         // Pesan Pemberitahuan
         $pesan = "Peminjaman buku Anda telah disetujui.
@@ -247,7 +264,7 @@ class PetugasController extends Controller
 
             // Kirim Pemberitahua ke anggota
             Pemberitahuan::create([
-                "anggota_id" => $anggota_id,
+                "anggota_id" => $anggota->id,
                 "pesan" => $pesan
             ]);
             return back()->with('success', 'Peminjaman Berhasil Di Konfirmai');
@@ -309,7 +326,9 @@ class PetugasController extends Controller
         // Ambil Data Peminjaman, Buku, Anggota
         $peminjaman = $pengembalian->peminjaman;
         $buku = $peminjaman->buku;
-        $anggota = $peminjaman->anggota;
+        $anggota = Anggota::findOrFail($peminjaman->anggota_id);
+        $anggota->decrement('total_pinjam_sekarang');
+
 
         // Ambil Data Input
         $jumlah_denda = $request->jumlah_denda ?? 0;
@@ -375,6 +394,8 @@ class PetugasController extends Controller
         elseif ($bayar_nanti) {
 
             $status_pembayaran = 'tertunda';
+            $anggota->total_denda += $jumlah_denda;
+            $anggota->save();
 
             $jumlah_bayar = 0;
             $total_bayar = 0;

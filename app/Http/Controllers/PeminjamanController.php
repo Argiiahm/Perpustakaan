@@ -22,6 +22,7 @@ class PeminjamanController extends Controller
         $config = Setting::first();
         $max_pinjam = $config->max_pinjam ?? 3;
         $max_pengajuan = $config->max_pengajuan ?? 2;
+        $tanggal_tempo = $config->tanggal_jatuh_tempo ?? Carbon::now();
 
         // Ambil Data Buku Id
         $buku_id = $request->buku_id;
@@ -47,31 +48,6 @@ class PeminjamanController extends Controller
             return back()->with('error', 'Mohon Maaf, Sepertinya stok buku ini kosong!');
         }
 
-        // Cek Apakah Buku Ini Sedang Dipinjam Oleh Pengguna Ini?
-        $cek_peminjaman = Peminjaman::where('buku_id', $buku_id)
-            ->where('anggota_id', $anggota_id)
-            ->whereIn('status', ['dipinjam', 'menunggu'])
-            ->exists();
-
-        if ($cek_peminjaman) {
-            return back()->with('error', 'Kamu Sedang meminjam buku ini, silahkan kembalikan buku ini terlebih dahulu untuk bisa meminjam lagi!');
-        }
-
-        // Cek APakah Pengguna Ini Sedang Mempuyai Pembayaran Denda Tertunda?
-        // Ambil Data Peminajaman
-        $peminjamanIds = Peminjaman::where('anggota_id', $anggota_id)
-            ->where('status', 'dikembalikan')
-            ->pluck('id');
-
-        $tunggakan = Pengembalian::whereIn('peminjam_id', $peminjamanIds)
-            ->where('status', 'dikembalikan')
-            ->where('status_pembayaran', 'tertunda')
-            ->exists();
-
-        if ($tunggakan) {
-            return back()->with('error', 'Kamu masih memiliki tunggakan denda, silahkan selesaikan pembayaran denda kamu, Di Perpustakaan Terdekat.');
-        }
-
         // Cek Apakah Pengguna ini sedang pinjam buku sebanyakk $max_pinjam buku?
         $pinjaman = Peminjaman::where('anggota_id', $anggota_id)->where('status', 'dipinjam')->count();
         if ($pinjaman === $max_pinjam || $pinjaman >= $max_pinjam) {
@@ -89,8 +65,7 @@ class PeminjamanController extends Controller
             "buku_id"         =>   $buku_id,
             "anggota_id"      =>   $anggota_id,
             "tanggal_pinjam"  =>   $SaatIni,
-            "tanggal_jatuh_tempo" => Carbon::parse($request->tanggal_jatuh_tempo)->endOfDay(),
-            "status"          =>   "menunggu"
+            "tanggal_jatuh_tempo"  =>  $tanggal_tempo
         ]);
 
         return back()->with('success', 'selamat, pengajuan buku berhasil silahkan menunggu konfirmasi..');

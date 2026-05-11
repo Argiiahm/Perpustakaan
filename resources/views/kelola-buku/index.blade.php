@@ -109,7 +109,7 @@
                 <div class="flex flex-col items-center gap-4">
                     <img class="w-36" src="{{ asset('icons/svg/delete-icon.svg') }}" alt="">
                     <span class="text-[#35094D] font-bold text-center">
-                        Yakin ingin Hapus pengguna ini? <br>
+                        Yakin ingin Hapus Buku ini? <br>
                         <span class="font-normal text-[14px]">Tindakan Ini Akan Hapus Data Secara Permanen.</span>
                     </span>
                 </div>

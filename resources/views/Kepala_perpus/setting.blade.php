@@ -42,6 +42,16 @@
                             <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
+
+                    <div class="max-w-xs">
+                        <label for="tanggal_jatuh_tempo" class="block text-sm font-medium text-gray-700 mb-2">Aturan Tanggal Tempo</label>
+                        <input type="date" name="tanggal_jatuh_tempo" id="tanggal_jatuh_tempo"
+                            value="{{ old('tanggal_jatuh_tempo', $setting->tanggal_jatuh_tempo) }}" min="{{ date('Y-m-d') }}" max="{{ date('Y-m-d', strtotime('+30 days')) }}"
+                            class="block w-full rounded-lg border-gray-200 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 py-2.5 px-4 text-gray-700 transition-all @error('tanggal_jatuh_tempo') border-red-500 @enderror">
+                        @error('tanggal_jatuh_tempo')
+                            <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
                 </div>
             </div>
 
