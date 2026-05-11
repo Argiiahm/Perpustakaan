@@ -173,5 +173,5 @@ Project ini dibuat sebagai:
 
 ## Author
 
-Made with ☕ by Argi Ahmes Halepiyandra
+by Argi Ahmes Halepiyandra
 XII RPL 1 - 2026
